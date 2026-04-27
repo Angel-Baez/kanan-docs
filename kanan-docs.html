@@ -1,0 +1,4776 @@
+<link
+  href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Archivo:wght@900&family=Fraunces:ital,wght@1,400&display=swap"
+  rel="stylesheet"
+/>
+<style>
+  :root {
+    --c: #1f1d1b;
+    --t: #b95d34;
+    --o: #6b7a3f;
+    --cr: #f3ede3;
+    --p: #8b8279;
+    --accent: var(--o);
+    --accent-soft: rgba(107, 122, 63, 0.35);
+  }
+  body.m-base {
+    --accent: var(--p);
+    --accent-soft: rgba(139, 130, 121, 0.35);
+  }
+  body.m-t {
+    --accent: var(--t);
+    --accent-soft: rgba(185, 93, 52, 0.35);
+  }
+  body.m-o {
+    --accent: var(--o);
+    --accent-soft: rgba(107, 122, 63, 0.35);
+  }
+  body.m-plena {
+    --accent: var(--o);
+    --accent-soft: rgba(107, 122, 63, 0.35);
+  }
+  .kt,
+  .kb {
+    fill: var(--c);
+  }
+  body.m-t .kt {
+    fill: var(--t);
+  }
+  body.m-o .kt {
+    fill: var(--o);
+  }
+  body.m-plena .kt {
+    fill: var(--t);
+  }
+  body.m-plena .kb {
+    fill: var(--o);
+  }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    background: #c8bfb0;
+    font-family: "IBM Plex Mono", monospace;
+    color: var(--c);
+    min-height: 100vh;
+  }
+  nav {
+    background: var(--c);
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 0 16px;
+    position: sticky;
+    top: 0;
+    z-index: 9;
+    overflow-x: auto;
+    scrollbar-width: none;
+    min-height: 44px;
+  }
+  nav::-webkit-scrollbar {
+    display: none;
+  }
+  .nb {
+    color: var(--cr);
+    font-family: "Archivo", sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 0.22em;
+    margin-right: 10px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nt {
+    color: var(--p);
+    font:
+      11px/1 "IBM Plex Mono",
+      monospace;
+    padding: 5px 10px;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    border: 1px solid transparent;
+    background: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: 0.12s;
+  }
+  .nt:hover {
+    color: var(--cr);
+  }
+  .nt.on {
+    color: var(--cr);
+    border-color: var(--o);
+    background: rgba(107, 122, 63, 0.2);
+  }
+  .np {
+    margin-left: auto;
+    flex-shrink: 0;
+    background: var(--o);
+    color: var(--cr);
+    border: none;
+    padding: 6px 14px;
+    font:
+      11px/1 "IBM Plex Mono",
+      monospace;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+  }
+  main {
+    padding: 24px 16px 60px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .doc {
+    background: var(--cr);
+    padding: 40px;
+    display: none;
+  }
+  .doc.on {
+    display: block;
+  }
+  .hint {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--p);
+    text-align: center;
+    padding: 0 0 14px;
+    border-bottom: 1px dashed rgba(139, 130, 121, 0.3);
+    margin-bottom: 20px;
+  }
+  .dh {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--accent);
+    margin-bottom: 20px;
+  }
+  .lw {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .km {
+    flex-shrink: 0;
+  }
+  .wk {
+    font-family: "Archivo", sans-serif;
+    font-weight: 900;
+    font-size: 16px;
+    letter-spacing: 0.28em;
+    color: var(--c);
+    display: block;
+    line-height: 1;
+  }
+  .ws {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--p);
+    display: block;
+    margin-top: 3px;
+  }
+  .dr {
+    text-align: right;
+  }
+  .dty {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+  .dn {
+    font-size: 15px;
+    font-weight: 700;
+    margin-top: 3px;
+  }
+  .dd {
+    font-size: 11px;
+    color: var(--p);
+    margin-top: 3px;
+  }
+  .e {
+    outline: none;
+    border-bottom: 1px dashed var(--accent-soft);
+    min-width: 30px;
+    display: inline-block;
+    cursor: text;
+  }
+  .e:hover {
+    background: rgba(107, 122, 63, 0.07);
+  }
+  .e:focus {
+    background: rgba(107, 122, 63, 0.1);
+    border-bottom-color: var(--accent);
+  }
+  .lb {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  .cb {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 32px;
+    margin-bottom: 20px;
+  }
+  .cn {
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .cs {
+    font-size: 11px;
+    color: var(--p);
+    line-height: 1.75;
+    margin-top: 3px;
+  }
+  .sd {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin: 20px 0 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--accent-soft);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-align: left;
+    padding: 0 6px 8px 0;
+    border-bottom: 1px solid var(--accent);
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  th.r,
+  td.r {
+    text-align: right;
+    padding-right: 0;
+  }
+  td {
+    font-size: 11.5px;
+    padding: 9px 6px 9px 0;
+    border-bottom: 1px solid rgba(139, 130, 121, 0.16);
+    vertical-align: top;
+  }
+  td.sm {
+    font-size: 11px;
+    color: var(--p);
+  }
+  .tot {
+    display: flex;
+    justify-content: flex-end;
+    gap: 32px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(139, 130, 121, 0.3);
+  }
+  .ti {
+    text-align: right;
+  }
+  .tl {
+    font-size: 11px;
+    color: var(--p);
+    letter-spacing: 0.1em;
+  }
+  .tv {
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 2px;
+  }
+  .ti.g .tl {
+    color: var(--accent);
+  }
+  .ti.g .tv {
+    font-size: 18px;
+    color: var(--accent);
+  }
+  .trm {
+    border: 1px solid rgba(139, 130, 121, 0.28);
+    padding: 11px 13px;
+    font-size: 11px;
+    color: var(--p);
+    line-height: 1.7;
+    margin-top: 14px;
+  }
+  .sgs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 32px;
+  }
+  .sl {
+    height: 40px;
+    border-bottom: 1px solid var(--c);
+    margin-bottom: 5px;
+  }
+  .sll {
+    font-size: 11px;
+    color: var(--p);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .df {
+    margin-top: 28px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(139, 130, 121, 0.2);
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--p);
+    letter-spacing: 0.08em;
+  }
+  .ul {
+    list-style: none;
+  }
+  .ul li {
+    font-size: 11.5px;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(139, 130, 121, 0.14);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .ul li::before {
+    content: "—";
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .xl li::before {
+    content: "×";
+    color: var(--t);
+    flex-shrink: 0;
+    font-weight: 700;
+  }
+  .ot2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 32px;
+    margin-bottom: 20px;
+  }
+  .ov {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 0 4px;
+    border-bottom: 1px solid rgba(139, 130, 121, 0.22);
+    display: block;
+    margin-top: 3px;
+    width: 100%;
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    font-weight: 500;
+  }
+  .bp {
+    background: rgba(185, 93, 52, 0.13);
+    color: var(--t);
+  }
+  .ba {
+    background: rgba(107, 122, 63, 0.13);
+    color: var(--o);
+  }
+  .bd {
+    background: rgba(31, 29, 27, 0.08);
+    color: var(--p);
+  }
+  .ncf {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid var(--accent-soft);
+    background: rgba(107, 122, 63, 0.06);
+    padding: 7px 12px;
+    margin-bottom: 16px;
+  }
+  .ncf-l {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+  .ncf-v {
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 1px;
+  }
+  .gw {
+    overflow-x: auto;
+  }
+  .gg {
+    min-width: 560px;
+  }
+  .gh,
+  .gr {
+    display: grid;
+    grid-template-columns: 148px repeat(8, 1fr);
+    align-items: center;
+    margin-bottom: 2px;
+  }
+  .ghc {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    text-align: center;
+    padding: 0 0 8px;
+    text-transform: uppercase;
+  }
+  .ghc:first-child {
+    text-align: left;
+  }
+  .gp {
+    font-size: 11px;
+    padding-right: 8px;
+    line-height: 1.3;
+  }
+  .gc {
+    height: 22px;
+    border-left: 1px solid rgba(139, 130, 121, 0.12);
+  }
+  .gb {
+    height: 13px;
+    margin: 4px 2px;
+    border-radius: 1px;
+    opacity: 0.85;
+  }
+  .rec-a {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 14px 0 4px;
+  }
+  .rec-w {
+    font-size: 11px;
+    color: var(--p);
+    margin-bottom: 14px;
+  }
+  .modes {
+    background: #dcd5c8;
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid rgba(31, 29, 27, 0.1);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .modes::-webkit-scrollbar {
+    display: none;
+  }
+  .mb {
+    flex: 1;
+    min-width: 130px;
+    background: none;
+    border: none;
+    border-right: 1px solid rgba(31, 29, 27, 0.08);
+    padding: 11px 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+    transition: 0.12s;
+    font-family: inherit;
+  }
+  .mb:last-child {
+    border-right: none;
+  }
+  .mb:hover {
+    background: rgba(243, 237, 227, 0.5);
+  }
+  .mb.on {
+    background: var(--cr);
+  }
+  .mb-k {
+    flex-shrink: 0;
+  }
+  .mb-tx {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+    min-width: 0;
+  }
+  .mb-n {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--c);
+    text-transform: uppercase;
+  }
+  .mb-d {
+    font-size: 10px;
+    color: var(--p);
+    letter-spacing: 0.05em;
+    margin-top: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .mb.on .mb-n {
+    color: var(--c);
+  }
+  @media print {
+    nav,
+    .np,
+    .hint {
+      display: none !important;
+    }
+    body {
+      background: var(--cr);
+    }
+    main {
+      padding: 0;
+      max-width: none;
+    }
+    .doc {
+      padding: 28px;
+      display: none !important;
+    }
+    .doc.on {
+      display: block !important;
+    }
+  }
+</style>
+
+<nav>
+  <div class="nb">
+    <svg width="18" height="22" viewBox="0 0 32 40">
+      <rect x="0" width="8" height="40" fill="#F3EDE3" />
+      <rect x="24" width="8" height="8" fill="#6B7A3F" />
+      <rect x="16" y="8" width="8" height="8" fill="#F3EDE3" />
+      <rect x="8" y="16" width="8" height="8" fill="#F3EDE3" />
+      <rect x="16" y="24" width="8" height="8" fill="#F3EDE3" />
+      <rect x="24" y="32" width="8" height="8" fill="#F3EDE3" />
+    </svg>
+    KANAN
+  </div>
+  <button class="nt on" onclick="sw('cot', this)">01·COT</button>
+  <button class="nt" onclick="sw('fac', this)">02·FAC</button>
+  <button class="nt" onclick="sw('rec', this)">03·REC</button>
+  <button class="nt" onclick="sw('sow', this)">04·SOW</button>
+  <button class="nt" onclick="sw('ot', this)">05·OT</button>
+  <button class="nt" onclick="sw('gantt', this)">06·GANTT</button>
+  <button class="nt" onclick="sw('reg', this)">07·REG</button>
+  <button class="nt" onclick="sw('oc', this)">08·OC</button>
+  <button class="nt" onclick="sw('ae', this)">09·AE</button>
+  <button class="nt" onclick="sw('pl', this)">10·PL</button>
+  <button class="nt" onclick="sw('rd', this)">11·RD</button>
+  <button class="nt" onclick="sw('vt', this)">12·VT</button>
+  <button class="nt" onclick="sw('cs', this)">13·CS</button>
+  <button class="nt" onclick="sw('pv', this)">14·PV</button>
+  <button class="nt" onclick="sw('gr', this)">15·GR</button>
+  <button class="nt" onclick="sw('ec', this)">16·EC</button>
+  <button class="nt" onclick="sw('es', this)">17·ES</button>
+  <button class="nt" onclick="sw('ht', this)">18·HT</button>
+  <button class="nt" onclick="sw('rm', this)">19·RM</button>
+  <button class="nt" onclick="sw('ar', this)">20·AR</button>
+  <button class="np" onclick="window.print()">Imprimir</button>
+</nav>
+
+<div class="modes">
+  <button class="mb" data-m="base" onclick="sm(this)">
+    <svg class="mb-k" width="14" height="18" viewBox="0 0 32 40">
+      <rect x="0" width="8" height="40" fill="#1F1D1B" />
+      <rect x="24" width="8" height="8" fill="#1F1D1B" />
+      <rect x="16" y="8" width="8" height="8" fill="#1F1D1B" />
+      <rect x="8" y="16" width="8" height="8" fill="#1F1D1B" />
+      <rect x="16" y="24" width="8" height="8" fill="#1F1D1B" />
+      <rect x="24" y="32" width="8" height="8" fill="#1F1D1B" />
+    </svg>
+    <div class="mb-tx">
+      <span class="mb-n">Base</span
+      ><span class="mb-d">Uso diario · silencioso</span>
+    </div>
+  </button>
+  <button class="mb" data-m="t" onclick="sm(this)">
+    <svg class="mb-k" width="14" height="18" viewBox="0 0 32 40">
+      <rect x="0" width="8" height="40" fill="#1F1D1B" />
+      <rect x="24" width="8" height="8" fill="#B95D34" />
+      <rect x="16" y="8" width="8" height="8" fill="#1F1D1B" />
+      <rect x="8" y="16" width="8" height="8" fill="#1F1D1B" />
+      <rect x="16" y="24" width="8" height="8" fill="#1F1D1B" />
+      <rect x="24" y="32" width="8" height="8" fill="#1F1D1B" />
+    </svg>
+    <div class="mb-tx">
+      <span class="mb-n">Modo T</span
+      ><span class="mb-d">Familia · residencial</span>
+    </div>
+  </button>
+  <button class="mb on" data-m="o" onclick="sm(this)">
+    <svg class="mb-k" width="14" height="18" viewBox="0 0 32 40">
+      <rect x="0" width="8" height="40" fill="#1F1D1B" />
+      <rect x="24" width="8" height="8" fill="#6B7A3F" />
+      <rect x="16" y="8" width="8" height="8" fill="#1F1D1B" />
+      <rect x="8" y="16" width="8" height="8" fill="#1F1D1B" />
+      <rect x="16" y="24" width="8" height="8" fill="#1F1D1B" />
+      <rect x="24" y="32" width="8" height="8" fill="#1F1D1B" />
+    </svg>
+    <div class="mb-tx">
+      <span class="mb-n">Modo O</span
+      ><span class="mb-d">Oficio · comercial</span>
+    </div>
+  </button>
+  <button class="mb" data-m="plena" onclick="sm(this)">
+    <svg class="mb-k" width="14" height="18" viewBox="0 0 32 40">
+      <rect x="0" width="8" height="40" fill="#1F1D1B" />
+      <rect x="24" width="8" height="8" fill="#B95D34" />
+      <rect x="16" y="8" width="8" height="8" fill="#1F1D1B" />
+      <rect x="8" y="16" width="8" height="8" fill="#1F1D1B" />
+      <rect x="16" y="24" width="8" height="8" fill="#1F1D1B" />
+      <rect x="24" y="32" width="8" height="8" fill="#6B7A3F" />
+    </svg>
+    <div class="mb-tx">
+      <span class="mb-n">Plena</span
+      ><span class="mb-d">Institucional · bicolor</span>
+    </div>
+  </button>
+</div>
+
+<main>
+  <div class="doc on" id="cot">
+    <div class="hint">Haz clic en cualquier campo para editar</div>
+    <div class="dh">
+      <div class="lw">
+        <div class="km"></div>
+        <div>
+          <span class="wk">KANAN</span><span class="ws">REMODELACIONES</span>
+        </div>
+      </div>
+      <div class="dr">
+        <div class="dty">Cotización</div>
+        <div class="dn">
+          <span class="e" contenteditable>COT-2026-0001</span>
+        </div>
+        <div class="dd">
+          <span class="e" contenteditable>25 · ABR · 2026</span>
+        </div>
+        <div class="dd">
+          Válida hasta: <span class="e" contenteditable>25 · MAY · 2026</span>
+        </div>
+      </div>
+    </div>
+    <div class="cb">
+      <div>
+        <div class="lb">Cliente</div>
+        <div class="cn">
+          <span class="e" contenteditable>María González</span>
+        </div>
+        <div class="cs">
+          <span class="e" contenteditable>+1 809 555 0000</span><br /><span
+            class="e"
+            contenteditable
+            >maria@email.com</span
+          >
+        </div>
+      </div>
+      <div>
+        <div class="lb">Proyecto / Dirección</div>
+        <div
+          class="cs"
+          style="font-size: 12px; color: var(--c); font-weight: 500"
+        >
+          <span class="e" contenteditable
+            >Remodelación Cocina + Área Social</span
+          ><br /><span class="e" contenteditable
+            >Calle El Vergel #42, Apto 3B, Piantini</span
+          >
+        </div>
+      </div>
+    </div>
+    <div class="sd">Detalle de trabajos</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 44%">Descripción</th>
+          <th>Und/Cant</th>
+          <th class="r">P. Unit.</th>
+          <th class="r">Total RD$</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <span class="e" contenteditable
+              >Demolición y retiro de escombros</span
+            >
+          </td>
+          <td class="sm"><span class="e" contenteditable>Global/1</span></td>
+          <td class="r"><span class="e" contenteditable>18,000</span></td>
+          <td class="r"><span class="e" contenteditable>18,000</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable>Tabiques drywall ½" · 48m²</span>
+          </td>
+          <td class="sm"><span class="e" contenteditable>m²/48</span></td>
+          <td class="r"><span class="e" contenteditable>850</span></td>
+          <td class="r"><span class="e" contenteditable>40,800</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable>Plafón tablilla PVC · 28m²</span>
+          </td>
+          <td class="sm"><span class="e" contenteditable>m²/28</span></td>
+          <td class="r"><span class="e" contenteditable>950</span></td>
+          <td class="r"><span class="e" contenteditable>26,600</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable
+              >Porcelana 60×60 antideslizante · 32m²</span
+            >
+          </td>
+          <td class="sm"><span class="e" contenteditable>m²/32</span></td>
+          <td class="r"><span class="e" contenteditable>1,250</span></td>
+          <td class="r"><span class="e" contenteditable>40,000</span></td>
+        </tr>
+        <tr>
+          <td><span class="e" contenteditable>Instalación eléctrica</span></td>
+          <td class="sm"><span class="e" contenteditable>Pts/18</span></td>
+          <td class="r"><span class="e" contenteditable>1,800</span></td>
+          <td class="r"><span class="e" contenteditable>32,400</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable
+              >Pintura interior 2 manos · 120m²</span
+            >
+          </td>
+          <td class="sm"><span class="e" contenteditable>m²/120</span></td>
+          <td class="r"><span class="e" contenteditable>170</span></td>
+          <td class="r"><span class="e" contenteditable>20,400</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="tot">
+      <div class="ti">
+        <div class="tl">SUBTOTAL</div>
+        <div class="tv"><span class="e" contenteditable>178,200</span></div>
+      </div>
+      <div class="ti">
+        <div class="tl">ITBIS 18%</div>
+        <div class="tv"><span class="e" contenteditable>32,076</span></div>
+      </div>
+      <div class="ti g">
+        <div class="tl">TOTAL RD$</div>
+        <div class="tv"><span class="e" contenteditable>210,276</span></div>
+      </div>
+    </div>
+    <div class="trm">
+      <div class="lb" style="margin-bottom: 5px">Condiciones</div>
+      <span class="e" contenteditable
+        >50% al inicio · 25% al completar estructura · 25% a la entrega.
+        Validez: 30 días. Materiales no detallados no están incluidos.</span
+      >
+    </div>
+    <div class="sgs">
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Firma cliente · Aprobación</div>
+      </div>
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Kanan Remodelaciones · Director</div>
+      </div>
+    </div>
+    <div class="df">
+      <span>KANAN · HOLA@KANAN.DO</span
+      ><span>+1 809 000 0000 · Santo Domingo, RD</span>
+    </div>
+  </div>
+
+  <div class="doc" id="fac">
+    <div class="hint">Haz clic en cualquier campo para editar</div>
+    <div class="dh">
+      <div class="lw">
+        <div class="km"></div>
+        <div>
+          <span class="wk">KANAN</span><span class="ws">REMODELACIONES</span>
+        </div>
+      </div>
+      <div class="dr">
+        <div class="dty">Factura</div>
+        <div class="dn">
+          <span class="e" contenteditable>FAC-2026-0001</span>
+        </div>
+        <div class="dd">
+          <span class="e" contenteditable>25 · ABR · 2026</span>
+        </div>
+      </div>
+    </div>
+    <div class="ncf">
+      <div>
+        <div class="ncf-l">NCF</div>
+        <div class="ncf-v">
+          <span class="e" contenteditable>B0100000001</span>
+        </div>
+      </div>
+      <div
+        style="width: 1px; height: 28px; background: rgba(107, 122, 63, 0.3)"
+      ></div>
+      <div>
+        <div class="ncf-l">RNC / Cédula</div>
+        <div class="ncf-v">
+          <span class="e" contenteditable>001-0000000-0</span>
+        </div>
+      </div>
+      <div
+        style="width: 1px; height: 28px; background: rgba(107, 122, 63, 0.3)"
+      ></div>
+      <div>
+        <div class="ncf-l">Tipo</div>
+        <div class="ncf-v">
+          <span class="e" contenteditable>Consumidor Final</span>
+        </div>
+      </div>
+    </div>
+    <div class="cb">
+      <div>
+        <div class="lb">Facturar a</div>
+        <div class="cn">
+          <span class="e" contenteditable>María González</span>
+        </div>
+        <div class="cs">
+          Cédula: <span class="e" contenteditable>001-1234567-8</span
+          ><br /><span class="e" contenteditable>+1 809 555 0000</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Proyecto · Ref.</div>
+        <div class="cn" style="font-size: 12px">
+          <span class="e" contenteditable
+            >Remodelación Cocina + Área Social</span
+          >
+        </div>
+        <div class="cs" style="margin-top: 6px">
+          Ref. COT: <span class="e" contenteditable>COT-2026-0001</span>
+        </div>
+      </div>
+    </div>
+    <div class="sd">Detalle de facturación</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 44%">Descripción</th>
+          <th>Und/Cant</th>
+          <th class="r">P. Unit.</th>
+          <th class="r">Total RD$</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <span class="e" contenteditable
+              >Demolición y retiro de escombros</span
+            >
+          </td>
+          <td class="sm"><span class="e" contenteditable>Global/1</span></td>
+          <td class="r"><span class="e" contenteditable>18,000</span></td>
+          <td class="r"><span class="e" contenteditable>18,000</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable>Tabiques drywall ½" · 48m²</span>
+          </td>
+          <td class="sm"><span class="e" contenteditable>m²/48</span></td>
+          <td class="r"><span class="e" contenteditable>850</span></td>
+          <td class="r"><span class="e" contenteditable>40,800</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable>Plafón tablilla PVC · 28m²</span>
+          </td>
+          <td class="sm"><span class="e" contenteditable>m²/28</span></td>
+          <td class="r"><span class="e" contenteditable>950</span></td>
+          <td class="r"><span class="e" contenteditable>26,600</span></td>
+        </tr>
+        <tr>
+          <td><span class="e" contenteditable>Porcelana 60×60 · 32m²</span></td>
+          <td class="sm"><span class="e" contenteditable>m²/32</span></td>
+          <td class="r"><span class="e" contenteditable>1,250</span></td>
+          <td class="r"><span class="e" contenteditable>40,000</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable
+              >Instalación eléctrica (18 pts)</span
+            >
+          </td>
+          <td class="sm"><span class="e" contenteditable>Pts/18</span></td>
+          <td class="r"><span class="e" contenteditable>1,800</span></td>
+          <td class="r"><span class="e" contenteditable>32,400</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable>Pintura interior · 120m²</span>
+          </td>
+          <td class="sm"><span class="e" contenteditable>m²/120</span></td>
+          <td class="r"><span class="e" contenteditable>170</span></td>
+          <td class="r"><span class="e" contenteditable>20,400</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="tot">
+      <div class="ti">
+        <div class="tl">SUBTOTAL</div>
+        <div class="tv"><span class="e" contenteditable>178,200</span></div>
+      </div>
+      <div class="ti">
+        <div class="tl">ITBIS 18%</div>
+        <div class="tv"><span class="e" contenteditable>32,076</span></div>
+      </div>
+      <div class="ti g">
+        <div class="tl">TOTAL RD$</div>
+        <div class="tv"><span class="e" contenteditable>210,276</span></div>
+      </div>
+    </div>
+    <div class="sd">Condiciones de pago</div>
+    <div
+      style="
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px 32px;
+        margin-bottom: 16px;
+      "
+    >
+      <div>
+        <div class="lb">Método</div>
+        <div style="font-size: 12px; font-weight: 500; margin-top: 4px">
+          <span class="e" contenteditable>Transferencia bancaria</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Vencimiento</div>
+        <div style="font-size: 12px; font-weight: 500; margin-top: 4px">
+          <span class="e" contenteditable>10 · MAY · 2026</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Banco destino</div>
+        <div class="cs" style="margin-top: 4px">
+          <span class="e" contenteditable>Banco Popular Dominicano</span
+          ><br />Cta: <span class="e" contenteditable>800-000000-0</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Estado</div>
+        <div style="margin-top: 6px">
+          <span class="badge bp">Pendiente</span>
+        </div>
+      </div>
+    </div>
+    <div class="sgs">
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Recibí conforme · Cliente</div>
+      </div>
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Emitido por · Kanan Remodelaciones</div>
+      </div>
+    </div>
+    <div class="df">
+      <span>KANAN · NCF SERIE B01 · HOLA@KANAN.DO</span
+      ><span>Santo Domingo, RD</span>
+    </div>
+  </div>
+
+  <div class="doc" id="rec">
+    <div class="hint">Haz clic en cualquier campo para editar</div>
+    <div class="dh">
+      <div class="lw">
+        <div class="km"></div>
+        <div>
+          <span class="wk">KANAN</span><span class="ws">REMODELACIONES</span>
+        </div>
+      </div>
+      <div class="dr">
+        <div class="dty">Recibo de Pago</div>
+        <div class="dn">
+          <span class="e" contenteditable>REC-2026-0001</span>
+        </div>
+        <div class="dd">
+          <span class="e" contenteditable>25 · ABR · 2026</span>
+        </div>
+      </div>
+    </div>
+    <div class="sd">Datos del pago</div>
+    <div style="font-size: 12px; color: var(--p); margin-bottom: 6px">
+      Recibimos de
+    </div>
+    <div style="font-size: 16px; font-weight: 700; margin-bottom: 14px">
+      <span class="e" contenteditable>María González</span>
+    </div>
+    <div style="font-size: 12px; color: var(--p); margin-bottom: 4px">
+      La cantidad de
+    </div>
+    <div class="rec-a">RD$ <span class="e" contenteditable>105,138</span></div>
+    <div class="rec-w">
+      (<span class="e" contenteditable
+        >Ciento cinco mil ciento treinta y ocho pesos dominicanos</span
+      >)
+    </div>
+    <div
+      style="
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px 32px;
+        margin: 18px 0;
+      "
+    >
+      <div>
+        <div class="lb">Por concepto de</div>
+        <div style="font-size: 12px; font-weight: 500; margin-top: 4px">
+          <span class="e" contenteditable
+            >50% inicial — Remodelación Cocina + Área Social</span
+          >
+        </div>
+      </div>
+      <div>
+        <div class="lb">Referencia</div>
+        <div style="font-size: 12px; font-weight: 500; margin-top: 4px">
+          <span class="e" contenteditable>FAC-2026-0001</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Forma de pago</div>
+        <div style="font-size: 12px; font-weight: 500; margin-top: 4px">
+          <span class="e" contenteditable>Transferencia bancaria</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Confirmación banco</div>
+        <div style="font-size: 12px; font-weight: 500; margin-top: 4px">
+          <span class="e" contenteditable>BPD — Ref. TRF202604-0012</span>
+        </div>
+      </div>
+    </div>
+    <div class="trm">
+      <span class="e" contenteditable
+        >Saldo pendiente: RD$ 52,569 (tramo estructura) + RD$ 52,569 (entrega
+        final). Total facturado: RD$ 210,276.</span
+      >
+    </div>
+    <div class="sgs">
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Recibido por · Kanan Remodelaciones</div>
+      </div>
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Entregado por · Cliente</div>
+      </div>
+    </div>
+    <div class="df">
+      <span>KANAN · HOLA@KANAN.DO</span
+      ><span>+1 809 000 0000 · Santo Domingo, RD</span>
+    </div>
+  </div>
+
+  <div class="doc" id="sow">
+    <div class="hint">Haz clic en cualquier campo para editar</div>
+    <div class="dh">
+      <div class="lw">
+        <div class="km"></div>
+        <div>
+          <span class="wk">KANAN</span><span class="ws">REMODELACIONES</span>
+        </div>
+      </div>
+      <div class="dr">
+        <div class="dty">Alcance de Trabajo · SOW</div>
+        <div class="dn">
+          <span class="e" contenteditable>SOW-2026-0001</span>
+        </div>
+        <div class="dd">
+          <span class="e" contenteditable>25 · ABR · 2026</span>
+        </div>
+      </div>
+    </div>
+    <div class="cb">
+      <div>
+        <div class="lb">Contratante</div>
+        <div class="cn">
+          <span class="e" contenteditable>María González</span>
+        </div>
+        <div class="cs">
+          Cédula: <span class="e" contenteditable>001-1234567-8</span
+          ><br /><span class="e" contenteditable>+1 809 555 0000</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Proyecto</div>
+        <div class="cn" style="font-size: 12px">
+          <span class="e" contenteditable
+            >Remodelación Cocina + Área Social</span
+          >
+        </div>
+        <div class="cs" style="margin-top: 4px">
+          <span class="e" contenteditable>C/ El Vergel #42, Piantini, SD</span
+          ><br />Inicio: <span class="e" contenteditable>05·MAY·2026</span> ·
+          Fin: <span class="e" contenteditable>30·JUN·2026</span>
+        </div>
+      </div>
+    </div>
+    <div class="sd">Incluido en el alcance</div>
+    <ul class="ul">
+      <li>
+        <span class="e" contenteditable
+          >Demolición de tabiques y retiro de escombros del inmueble</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Construcción tabiques drywall ½" según plano acordado (48 m²)</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Instalación de plafón tablilla PVC en áreas indicadas (28 m²)</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Suministro e instalación de porcelana 60×60 antideslizante (32
+          m²)</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Instalación de 18 puntos eléctricos según plano</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Pintura interior acabado mate, dos manos (120 m²)</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Limpieza final y entrega del área de trabajo</span
+        >
+      </li>
+    </ul>
+    <div class="sd">No incluido</div>
+    <ul class="ul xl">
+      <li>
+        <span class="e" contenteditable
+          >Mobiliario, electrodomésticos o carpintería de cocina</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Plomería — cambio de tuberías o puntos sanitarios</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Trabajos no detallados en este documento</span
+        >
+      </li>
+    </ul>
+    <div class="sd">Forma de pago</div>
+    <div
+      style="
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px 20px;
+        margin-bottom: 4px;
+      "
+    >
+      <div>
+        <div class="lb">Tramo 1 · Inicio</div>
+        <div
+          style="
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--o);
+            margin-top: 4px;
+          "
+        >
+          <span class="e" contenteditable>50%</span>
+        </div>
+        <div class="cs"><span class="e" contenteditable>RD$ 105,138</span></div>
+      </div>
+      <div>
+        <div class="lb">Tramo 2 · Estructura</div>
+        <div
+          style="
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--o);
+            margin-top: 4px;
+          "
+        >
+          <span class="e" contenteditable>25%</span>
+        </div>
+        <div class="cs"><span class="e" contenteditable>RD$ 52,569</span></div>
+      </div>
+      <div>
+        <div class="lb">Tramo 3 · Entrega</div>
+        <div
+          style="
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--o);
+            margin-top: 4px;
+          "
+        >
+          <span class="e" contenteditable>25%</span>
+        </div>
+        <div class="cs"><span class="e" contenteditable>RD$ 52,569</span></div>
+      </div>
+    </div>
+    <div class="trm" style="margin-top: 18px">
+      <div class="lb" style="margin-bottom: 5px">Garantía</div>
+      <span class="e" contenteditable
+        >Kanan garantiza los trabajos por 12 meses desde la entrega final,
+        cubriendo defectos de instalación. No aplica a daños por uso inadecuado
+        o modificaciones por terceros.</span
+      >
+    </div>
+    <div class="sgs">
+      <div>
+        <div class="sl"></div>
+        <div class="sll">
+          Firma contratante ·
+          <span class="e" contenteditable>María González</span>
+        </div>
+      </div>
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Kanan Remodelaciones · Director</div>
+      </div>
+    </div>
+    <div class="df">
+      <span>KANAN · SOW-2026-0001</span
+      ><span>HOLA@KANAN.DO · Santo Domingo, RD</span>
+    </div>
+  </div>
+
+  <div class="doc" id="ot">
+    <div class="hint">Haz clic en cualquier campo para editar</div>
+    <div class="dh">
+      <div class="lw">
+        <div class="km"></div>
+        <div>
+          <span class="wk">KANAN</span><span class="ws">REMODELACIONES</span>
+        </div>
+      </div>
+      <div class="dr">
+        <div class="dty">Orden de Trabajo</div>
+        <div class="dn">
+          <span class="e" contenteditable>OT-2026-0001</span>
+        </div>
+        <div class="dd">
+          <span class="e" contenteditable>05 · MAY · 2026</span>
+        </div>
+      </div>
+    </div>
+    <div class="ot2">
+      <div>
+        <div class="lb">Cliente</div>
+        <span class="ov e" contenteditable>María González</span>
+      </div>
+      <div>
+        <div class="lb">Dirección</div>
+        <span class="ov e" contenteditable
+          >C/ El Vergel #42, Apto 3B · Piantini</span
+        >
+      </div>
+      <div>
+        <div class="lb">Técnico / Maestro</div>
+        <span class="ov e" contenteditable>Ramón Mejía</span>
+      </div>
+      <div>
+        <div class="lb">Supervisor</div>
+        <span class="ov e" contenteditable>Ángel Báez · Dir. Operaciones</span>
+      </div>
+      <div>
+        <div class="lb">Fecha de inicio</div>
+        <span class="ov e" contenteditable>05 · MAY · 2026</span>
+      </div>
+      <div>
+        <div class="lb">Entrega estimada</div>
+        <span class="ov e" contenteditable>30 · JUN · 2026</span>
+      </div>
+      <div>
+        <div class="lb">Ref. SOW / COT</div>
+        <span class="ov e" contenteditable>SOW-2026-0001 · COT-2026-0001</span>
+      </div>
+      <div>
+        <div class="lb">Estado</div>
+        <div style="margin-top: 6px">
+          <span class="badge ba">En curso</span>
+        </div>
+      </div>
+    </div>
+    <div class="sd">Tareas</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 46%">Tarea</th>
+          <th>Responsable</th>
+          <th>Días</th>
+          <th class="r">Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <span class="e" contenteditable
+              >Demolición y retiro de escombros</span
+            >
+          </td>
+          <td class="sm">
+            <span class="e" contenteditable>Ramón M. + equipo</span>
+          </td>
+          <td class="sm"><span class="e" contenteditable>2d</span></td>
+          <td class="r"><span class="badge ba">Hecho</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable>Instalación drywall (48m²)</span>
+          </td>
+          <td class="sm"><span class="e" contenteditable>Ramón M.</span></td>
+          <td class="sm"><span class="e" contenteditable>5d</span></td>
+          <td class="r"><span class="badge ba">En curso</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable
+              >Instalación eléctrica (18 pts)</span
+            >
+          </td>
+          <td class="sm">
+            <span class="e" contenteditable>Pedro Rosario</span>
+          </td>
+          <td class="sm"><span class="e" contenteditable>3d</span></td>
+          <td class="r"><span class="badge bp">Pendiente</span></td>
+        </tr>
+        <tr>
+          <td><span class="e" contenteditable>Plafón PVC (28m²)</span></td>
+          <td class="sm"><span class="e" contenteditable>Ramón M.</span></td>
+          <td class="sm"><span class="e" contenteditable>3d</span></td>
+          <td class="r"><span class="badge bp">Pendiente</span></td>
+        </tr>
+        <tr>
+          <td><span class="e" contenteditable>Porcelana 60×60 (32m²)</span></td>
+          <td class="sm"><span class="e" contenteditable>Luis García</span></td>
+          <td class="sm"><span class="e" contenteditable>5d</span></td>
+          <td class="r"><span class="badge bp">Pendiente</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable>Pintura interior (120m²)</span>
+          </td>
+          <td class="sm"><span class="e" contenteditable>Carlos Vda.</span></td>
+          <td class="sm"><span class="e" contenteditable>4d</span></td>
+          <td class="r"><span class="badge bp">Pendiente</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="sd">Materiales clave</div>
+    <div class="trm">
+      <span class="e" contenteditable
+        >Placas drywall ½" (80 uds) · Perfilería metálica (120ml) · PVC tablilla
+        blanco mate (28m²) · Porcelana Alaplana 60×60 Beige Arena (36m²) ·
+        Mezcla adhesiva (15 sacos) · Conduit EMT ½" (120ml) · Cable 12AWG THHN
+        (300ml) · Pintura Súpermatt beige (45 gal)</span
+      >
+    </div>
+    <div class="sd">Observaciones</div>
+    <div class="trm" style="min-height: 50px">
+      <span class="e" contenteditable
+        >El cliente debe despejar el área de trabajo un día antes del inicio.
+        Acceso disponible 7am–7pm. Contacto emergencia: 809-000-0000.</span
+      >
+    </div>
+    <div class="sgs">
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Autorizado · Director de Operaciones</div>
+      </div>
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Recibido · Maestro / Técnico</div>
+      </div>
+    </div>
+    <div class="df">
+      <span>KANAN · OT-2026-0001</span><span>Uso interno · No divulgar</span>
+    </div>
+  </div>
+
+  <div class="doc" id="gantt">
+    <div class="hint">Cronograma orientativo</div>
+    <div class="dh">
+      <div class="lw">
+        <div class="km"></div>
+        <div>
+          <span class="wk">KANAN</span><span class="ws">REMODELACIONES</span>
+        </div>
+      </div>
+      <div class="dr">
+        <div class="dty">Cronograma de Obra</div>
+        <div class="dn">
+          <span class="e" contenteditable>OT-2026-0001</span>
+        </div>
+        <div class="dd">
+          <span class="e" contenteditable>Mayo — Junio 2026</span>
+        </div>
+      </div>
+    </div>
+    <div class="cb" style="margin-bottom: 20px">
+      <div>
+        <div class="lb">Proyecto</div>
+        <div class="cn" style="font-size: 12px">
+          <span class="e" contenteditable
+            >Remodelación Cocina + Área Social</span
+          >
+        </div>
+      </div>
+      <div>
+        <div class="lb">Cliente</div>
+        <div class="cn" style="font-size: 12px">
+          <span class="e" contenteditable>María González · Piantini, SD</span>
+        </div>
+      </div>
+    </div>
+    <div class="gw"><div class="gg" id="gantt-grid"></div></div>
+    <div style="display: flex; gap: 20px; margin-top: 14px; flex-wrap: wrap">
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 11px;
+          color: var(--p);
+        "
+      >
+        <div
+          style="
+            width: 20px;
+            height: 10px;
+            background: var(--t);
+            border-radius: 1px;
+            opacity: 0.85;
+          "
+        ></div>
+        Preparación
+      </div>
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 11px;
+          color: var(--p);
+        "
+      >
+        <div
+          style="
+            width: 20px;
+            height: 10px;
+            background: var(--o);
+            border-radius: 1px;
+            opacity: 0.85;
+          "
+        ></div>
+        Instalación
+      </div>
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 11px;
+          color: var(--p);
+        "
+      >
+        <div
+          style="
+            width: 20px;
+            height: 10px;
+            background: var(--c);
+            border-radius: 1px;
+            opacity: 0.65;
+          "
+        ></div>
+        Acabados
+      </div>
+    </div>
+    <div class="df">
+      <span>KANAN · CRONOGRAMA V.01</span
+      ><span><span class="e" contenteditable>MAY 2026 — JUN 2026</span></span>
+    </div>
+  </div>
+
+  <div class="doc" id="reg">
+    <div class="hint">Registro activo de proyectos · Haz clic para editar</div>
+    <div class="dh">
+      <div class="lw">
+        <div class="km"></div>
+        <div>
+          <span class="wk">KANAN</span><span class="ws">REMODELACIONES</span>
+        </div>
+      </div>
+      <div class="dr">
+        <div class="dty">Registro de Proyectos</div>
+        <div class="dn"><span class="e" contenteditable>REG-2026</span></div>
+        <div class="dd">
+          Actualizado: <span class="e" contenteditable>25 · ABR · 2026</span>
+        </div>
+      </div>
+    </div>
+    <div style="overflow-x: auto">
+      <table style="table-layout: auto">
+        <thead>
+          <tr>
+            <th>Ref.</th>
+            <th>Cliente</th>
+            <th>Proyecto / Dirección</th>
+            <th>Estado</th>
+            <th>Inicio</th>
+            <th>Fin</th>
+            <th class="r">Monto RD$</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight: 700; white-space: nowrap">
+              <span class="e" contenteditable>COT-2026-0001</span>
+            </td>
+            <td><span class="e" contenteditable>María González</span></td>
+            <td class="sm">
+              <span class="e" contenteditable
+                >Cocina + Área Social · Piantini</span
+              >
+            </td>
+            <td><span class="badge ba">Activo</span></td>
+            <td class="sm"><span class="e" contenteditable>05 May</span></td>
+            <td class="sm"><span class="e" contenteditable>30 Jun</span></td>
+            <td class="r" style="font-weight: 700">
+              <span class="e" contenteditable>210,276</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="font-weight: 700; white-space: nowrap">
+              <span class="e" contenteditable>COT-2026-0002</span>
+            </td>
+            <td><span class="e" contenteditable>Empresa XYZ SRL</span></td>
+            <td class="sm">
+              <span class="e" contenteditable
+                >Oficinas corporativas · Naco</span
+              >
+            </td>
+            <td><span class="badge bp">Cotizando</span></td>
+            <td class="sm"><span class="e" contenteditable>15 May</span></td>
+            <td class="sm"><span class="e" contenteditable>31 Jul</span></td>
+            <td class="r" style="font-weight: 700">
+              <span class="e" contenteditable>485,000</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="font-weight: 700; white-space: nowrap">
+              <span class="e" contenteditable>COT-2026-0003</span>
+            </td>
+            <td><span class="e" contenteditable>Carlos Rodríguez</span></td>
+            <td class="sm">
+              <span class="e" contenteditable
+                >Baño principal · Ensanche Ozama</span
+              >
+            </td>
+            <td><span class="badge ba">Activo</span></td>
+            <td class="sm"><span class="e" contenteditable>10 Abr</span></td>
+            <td class="sm"><span class="e" contenteditable>10 May</span></td>
+            <td class="r" style="font-weight: 700">
+              <span class="e" contenteditable>78,500</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="font-weight: 700; white-space: nowrap">
+              <span class="e" contenteditable>COT-2026-0004</span>
+            </td>
+            <td><span class="e" contenteditable>Ana Martínez</span></td>
+            <td class="sm">
+              <span class="e" contenteditable
+                >Apartamento completo · Evaristo Morales</span
+              >
+            </td>
+            <td><span class="badge bd">Completado</span></td>
+            <td class="sm"><span class="e" contenteditable>03 Feb</span></td>
+            <td class="sm"><span class="e" contenteditable>28 Mar</span></td>
+            <td class="r" style="font-weight: 700">
+              <span class="e" contenteditable>320,000</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="font-weight: 700; white-space: nowrap">
+              <span class="e" contenteditable>COT-2026-0005</span>
+            </td>
+            <td><span class="e" contenteditable>Farmacia La Salud</span></td>
+            <td class="sm">
+              <span class="e" contenteditable
+                >Local comercial · Av. 27 de Febrero</span
+              >
+            </td>
+            <td><span class="badge bd">Completado</span></td>
+            <td class="sm"><span class="e" contenteditable>15 Ene</span></td>
+            <td class="sm"><span class="e" contenteditable>15 Feb</span></td>
+            <td class="r" style="font-weight: 700">
+              <span class="e" contenteditable>155,800</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="font-weight: 700; white-space: nowrap">
+              <span class="e" contenteditable>COT-2026-0006</span>
+            </td>
+            <td><span class="e" contenteditable>Roberto Peña</span></td>
+            <td class="sm">
+              <span class="e" contenteditable
+                >Área piscina + grill · Los Ríos</span
+              >
+            </td>
+            <td><span class="badge bp">Cotizando</span></td>
+            <td class="sm">—</td>
+            <td class="sm">—</td>
+            <td class="r" style="font-weight: 700">
+              <span class="e" contenteditable>190,000</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div
+      style="
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-top: 20px;
+      "
+    >
+      <div>
+        <div class="lb">Proyectos activos</div>
+        <div
+          style="
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--o);
+            margin-top: 4px;
+          "
+        >
+          2
+        </div>
+      </div>
+      <div>
+        <div class="lb">En cotización</div>
+        <div
+          style="
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--t);
+            margin-top: 4px;
+          "
+        >
+          2
+        </div>
+      </div>
+      <div>
+        <div class="lb">Monto activo total</div>
+        <div
+          style="
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--c);
+            margin-top: 4px;
+          "
+        >
+          RD$ 288,776
+        </div>
+      </div>
+    </div>
+    <div class="df">
+      <span>KANAN · REGISTRO 2026</span
+      ><span>HOLA@KANAN.DO · Santo Domingo, RD</span>
+    </div>
+  </div>
+
+  <div class="doc" id="oc">
+    <div class="hint">Haz clic en cualquier campo para editar</div>
+    <div class="dh">
+      <div class="lw">
+        <div class="km"></div>
+        <div>
+          <span class="wk">KANAN</span><span class="ws">REMODELACIONES</span>
+        </div>
+      </div>
+      <div class="dr">
+        <div class="dty">Orden de Cambio</div>
+        <div class="dn">
+          <span class="e" contenteditable>OC-2026-0001</span>
+        </div>
+        <div class="dd">
+          <span class="e" contenteditable>20 · MAY · 2026</span>
+        </div>
+      </div>
+    </div>
+    <div class="ot2">
+      <div>
+        <div class="lb">Cliente</div>
+        <span class="ov e" contenteditable>María González</span>
+      </div>
+      <div>
+        <div class="lb">Proyecto</div>
+        <span class="ov e" contenteditable
+          >Remodelación Cocina + Área Social</span
+        >
+      </div>
+      <div>
+        <div class="lb">Ref. SOW / OT original</div>
+        <span class="ov e" contenteditable>SOW-2026-0001 · OT-2026-0001</span>
+      </div>
+      <div>
+        <div class="lb">Solicitado por</div>
+        <span class="ov e" contenteditable>María González (cliente)</span>
+      </div>
+    </div>
+    <div class="sd">Descripción del cambio</div>
+    <div class="trm" style="margin-top: 0; min-height: 50px">
+      <span class="e" contenteditable
+        >El cliente solicita extender la remodelación al baño de visita: cambio
+        de porcelana piso/pared, lavamanos nuevo, pintura, e instalación de
+        nuevo punto eléctrico para luminaria de espejo.</span
+      >
+    </div>
+    <div class="sd">Justificación / razón</div>
+    <div class="trm" style="margin-top: 0">
+      <span class="e" contenteditable
+        >Aprovechamiento de equipo y materiales en sitio. El cliente decide
+        ampliar alcance al ver el avance de la cocina. Mejora estética
+        coordinada del piso público del apartamento.</span
+      >
+    </div>
+    <div class="sd">Partidas adicionales</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 44%">Descripción</th>
+          <th>Und/Cant</th>
+          <th class="r">P. Unit.</th>
+          <th class="r">Total RD$</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <span class="e" contenteditable
+              >Demolición porcelana existente baño visita</span
+            >
+          </td>
+          <td class="sm"><span class="e" contenteditable>m²/8</span></td>
+          <td class="r"><span class="e" contenteditable>450</span></td>
+          <td class="r"><span class="e" contenteditable>3,600</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable
+              >Suministro e instalación porcelana 30×60</span
+            >
+          </td>
+          <td class="sm"><span class="e" contenteditable>m²/8</span></td>
+          <td class="r"><span class="e" contenteditable>1,400</span></td>
+          <td class="r"><span class="e" contenteditable>11,200</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable
+              >Lavamanos suspendido + grifería</span
+            >
+          </td>
+          <td class="sm"><span class="e" contenteditable>Und/1</span></td>
+          <td class="r"><span class="e" contenteditable>9,500</span></td>
+          <td class="r"><span class="e" contenteditable>9,500</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable
+              >Punto eléctrico nuevo para espejo</span
+            >
+          </td>
+          <td class="sm"><span class="e" contenteditable>Pts/1</span></td>
+          <td class="r"><span class="e" contenteditable>1,800</span></td>
+          <td class="r"><span class="e" contenteditable>1,800</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable>Pintura interior baño · 12m²</span>
+          </td>
+          <td class="sm"><span class="e" contenteditable>m²/12</span></td>
+          <td class="r"><span class="e" contenteditable>170</span></td>
+          <td class="r"><span class="e" contenteditable>2,040</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="tot">
+      <div class="ti">
+        <div class="tl">SUBTOTAL CAMBIO</div>
+        <div class="tv"><span class="e" contenteditable>28,140</span></div>
+      </div>
+      <div class="ti">
+        <div class="tl">ITBIS 18%</div>
+        <div class="tv"><span class="e" contenteditable>5,065</span></div>
+      </div>
+      <div class="ti g">
+        <div class="tl">TOTAL OC RD$</div>
+        <div class="tv"><span class="e" contenteditable>33,205</span></div>
+      </div>
+    </div>
+    <div class="sd">Impacto consolidado</div>
+    <div
+      style="
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px 20px;
+      "
+    >
+      <div>
+        <div class="lb">Contrato original</div>
+        <div style="font-size: 13px; font-weight: 700; margin-top: 3px">
+          RD$ <span class="e" contenteditable>210,276</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Esta orden de cambio</div>
+        <div
+          style="
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-top: 3px;
+          "
+        >
+          + RD$ <span class="e" contenteditable>33,205</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Total ajustado</div>
+        <div
+          style="
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-top: 3px;
+          "
+        >
+          RD$ <span class="e" contenteditable>243,481</span>
+        </div>
+      </div>
+    </div>
+    <div
+      style="
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px 32px;
+        margin-top: 18px;
+      "
+    >
+      <div>
+        <div class="lb">Días adicionales</div>
+        <div style="font-size: 13px; font-weight: 700; margin-top: 3px">
+          <span class="e" contenteditable>+ 5 días laborables</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Nueva fecha entrega</div>
+        <div style="font-size: 13px; font-weight: 700; margin-top: 3px">
+          <span class="e" contenteditable>07 · JUL · 2026</span>
+        </div>
+      </div>
+    </div>
+    <div class="trm" style="margin-top: 18px">
+      <span class="e" contenteditable
+        >Esta orden de cambio modifica el contrato original. Una vez firmada,
+        sus partidas, costos y plazos se incorporan al SOW. El pago se factura
+        por separado o se prorratea en los tramos pendientes según
+        acuerdo.</span
+      >
+    </div>
+    <div class="sgs">
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Aprobado · Cliente</div>
+      </div>
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Kanan Remodelaciones · Director</div>
+      </div>
+    </div>
+    <div class="df">
+      <span>KANAN · OC-2026-0001</span
+      ><span>HOLA@KANAN.DO · Santo Domingo, RD</span>
+    </div>
+  </div>
+
+  <div class="doc" id="ae">
+    <div class="hint">Haz clic en cualquier campo para editar</div>
+    <div class="dh">
+      <div class="lw">
+        <div class="km"></div>
+        <div>
+          <span class="wk">KANAN</span><span class="ws">REMODELACIONES</span>
+        </div>
+      </div>
+      <div class="dr">
+        <div class="dty">Acta de Entrega</div>
+        <div class="dn">
+          <span class="e" contenteditable>AE-2026-0001</span>
+        </div>
+        <div class="dd">
+          <span class="e" contenteditable>30 · JUN · 2026</span>
+        </div>
+      </div>
+    </div>
+    <div class="cb">
+      <div>
+        <div class="lb">Contratante</div>
+        <div class="cn">
+          <span class="e" contenteditable>María González</span>
+        </div>
+        <div class="cs">
+          Cédula: <span class="e" contenteditable>001-1234567-8</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Proyecto</div>
+        <div class="cn" style="font-size: 12px">
+          <span class="e" contenteditable
+            >Remodelación Cocina + Área Social</span
+          >
+        </div>
+        <div class="cs" style="margin-top: 4px">
+          <span class="e" contenteditable>C/ El Vergel #42, Piantini, SD</span>
+        </div>
+      </div>
+    </div>
+    <div class="ot2">
+      <div>
+        <div class="lb">Ref. SOW / Contrato</div>
+        <span class="ov e" contenteditable>SOW-2026-0001</span>
+      </div>
+      <div>
+        <div class="lb">Inicio de obra</div>
+        <span class="ov e" contenteditable>05 · MAY · 2026</span>
+      </div>
+      <div>
+        <div class="lb">Fecha de entrega</div>
+        <span class="ov e" contenteditable>30 · JUN · 2026</span>
+      </div>
+      <div>
+        <div class="lb">Estado</div>
+        <div style="margin-top: 6px">
+          <span class="badge ba">Entrega conforme</span>
+        </div>
+      </div>
+    </div>
+    <div class="sd">Trabajos ejecutados</div>
+    <ul class="ul">
+      <li>
+        <span class="e" contenteditable
+          >Demolición y retiro de escombros — completado</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Tabiques drywall ½" instalados (48 m²)</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Plafón tablilla PVC instalado (28 m²)</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Porcelana 60×60 antideslizante instalada (32 m²)</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >18 puntos eléctricos conectados y probados</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Pintura interior dos manos aplicada (120 m²)</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Limpieza final y disposición de residuos</span
+        >
+      </li>
+    </ul>
+    <div class="sd">Entregables al cliente</div>
+    <div
+      style="
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px 24px;
+        font-size: 12px;
+        margin-bottom: 14px;
+      "
+    >
+      <div>
+        ☑ <span class="e" contenteditable>Llaves nuevas (2 juegos)</span>
+      </div>
+      <div>
+        ☑ <span class="e" contenteditable>Manual de cuidado de porcelana</span>
+      </div>
+      <div>☑ <span class="e" contenteditable>Garantía firmada</span></div>
+      <div>
+        ☑ <span class="e" contenteditable>Plano eléctrico actualizado</span>
+      </div>
+      <div>
+        ☑
+        <span class="e" contenteditable>Excedente de porcelana (2 cajas)</span>
+      </div>
+      <div>
+        ☑
+        <span class="e" contenteditable>Códigos de pintura para retoques</span>
+      </div>
+    </div>
+    <div class="sd">Saldo final liberado</div>
+    <div
+      style="
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px 20px;
+      "
+    >
+      <div>
+        <div class="lb">Total contrato</div>
+        <div style="font-size: 13px; font-weight: 700; margin-top: 3px">
+          RD$ <span class="e" contenteditable>210,276</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Pagado a la fecha</div>
+        <div style="font-size: 13px; font-weight: 700; margin-top: 3px">
+          RD$ <span class="e" contenteditable>157,707</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Saldo a liberar</div>
+        <div
+          style="
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-top: 3px;
+          "
+        >
+          RD$ <span class="e" contenteditable>52,569</span>
+        </div>
+      </div>
+    </div>
+    <div class="sd">Inicio del período de garantía</div>
+    <div class="trm" style="margin-top: 0">
+      <span class="e" contenteditable
+        >El período de garantía de 12 meses inicia hoy, 30 de junio de 2026, y
+        vence el 30 de junio de 2027. Cubre defectos de instalación según
+        términos del SOW-2026-0001. No cubre desgaste por uso, daños por
+        terceros, ni modificaciones realizadas sin autorización de Kanan.</span
+      >
+    </div>
+    <div class="sd">Observaciones del cliente</div>
+    <div class="trm" style="min-height: 50px; margin-top: 0">
+      <span class="e" contenteditable
+        >Sin observaciones. El cliente recibe la obra a entera
+        satisfacción.</span
+      >
+    </div>
+    <div class="sgs">
+      <div>
+        <div class="sl"></div>
+        <div class="sll">
+          Recibí conforme ·
+          <span class="e" contenteditable>María González</span>
+        </div>
+      </div>
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Entregado · Kanan Remodelaciones</div>
+      </div>
+    </div>
+    <div class="df">
+      <span>KANAN · AE-2026-0001 · Documento legal</span
+      ><span>HOLA@KANAN.DO · Santo Domingo, RD</span>
+    </div>
+  </div>
+
+  <div class="doc" id="pl">
+    <div class="hint">Haz clic en cualquier campo para editar</div>
+    <div class="dh">
+      <div class="lw">
+        <div class="km"></div>
+        <div>
+          <span class="wk">KANAN</span><span class="ws">REMODELACIONES</span>
+        </div>
+      </div>
+      <div class="dr">
+        <div class="dty">Punch List · Pendientes</div>
+        <div class="dn">
+          <span class="e" contenteditable>PL-2026-0001</span>
+        </div>
+        <div class="dd">
+          Walkthrough: <span class="e" contenteditable>25 · JUN · 2026</span>
+        </div>
+      </div>
+    </div>
+    <div class="ot2">
+      <div>
+        <div class="lb">Cliente</div>
+        <span class="ov e" contenteditable>María González</span>
+      </div>
+      <div>
+        <div class="lb">Proyecto</div>
+        <span class="ov e" contenteditable
+          >Remodelación Cocina + Área Social</span
+        >
+      </div>
+      <div>
+        <div class="lb">Caminata realizada por</div>
+        <span class="ov e" contenteditable
+          >Cliente + Ramón Mejía + Ángel Báez</span
+        >
+      </div>
+      <div>
+        <div class="lb">Fecha objetivo cierre</div>
+        <span class="ov e" contenteditable>29 · JUN · 2026</span>
+      </div>
+    </div>
+    <div class="sd">Pendientes identificados</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 30px">#</th>
+          <th>Ubicación</th>
+          <th>Descripción</th>
+          <th>Responsable</th>
+          <th class="r">Fecha</th>
+          <th class="r" style="width: 60px">Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="sm">01</td>
+          <td class="sm"><span class="e" contenteditable>Cocina</span></td>
+          <td>
+            <span class="e" contenteditable
+              >Retoque de pintura cerca del extractor</span
+            >
+          </td>
+          <td class="sm"><span class="e" contenteditable>Carlos V.</span></td>
+          <td class="r sm"><span class="e" contenteditable>26 Jun</span></td>
+          <td class="r"><span class="badge ba">✓</span></td>
+        </tr>
+        <tr>
+          <td class="sm">02</td>
+          <td class="sm"><span class="e" contenteditable>Cocina</span></td>
+          <td>
+            <span class="e" contenteditable
+              >Ajustar bisagras de gabinete superior derecho</span
+            >
+          </td>
+          <td class="sm"><span class="e" contenteditable>Ramón M.</span></td>
+          <td class="r sm"><span class="e" contenteditable>27 Jun</span></td>
+          <td class="r"><span class="badge bp">○</span></td>
+        </tr>
+        <tr>
+          <td class="sm">03</td>
+          <td class="sm"><span class="e" contenteditable>Sala</span></td>
+          <td>
+            <span class="e" contenteditable
+              >Reemplazar pieza de porcelana rayada (esquina NE)</span
+            >
+          </td>
+          <td class="sm"><span class="e" contenteditable>Luis G.</span></td>
+          <td class="r sm"><span class="e" contenteditable>28 Jun</span></td>
+          <td class="r"><span class="badge bp">○</span></td>
+        </tr>
+        <tr>
+          <td class="sm">04</td>
+          <td class="sm"><span class="e" contenteditable>Sala</span></td>
+          <td>
+            <span class="e" contenteditable
+              >Resellar junta entre plafón y pared norte</span
+            >
+          </td>
+          <td class="sm"><span class="e" contenteditable>Ramón M.</span></td>
+          <td class="r sm"><span class="e" contenteditable>27 Jun</span></td>
+          <td class="r"><span class="badge bp">○</span></td>
+        </tr>
+        <tr>
+          <td class="sm">05</td>
+          <td class="sm"><span class="e" contenteditable>Cocina</span></td>
+          <td>
+            <span class="e" contenteditable
+              >Probar y certificar GFCI sobre meson</span
+            >
+          </td>
+          <td class="sm"><span class="e" contenteditable>Pedro R.</span></td>
+          <td class="r sm"><span class="e" contenteditable>26 Jun</span></td>
+          <td class="r"><span class="badge ba">✓</span></td>
+        </tr>
+        <tr>
+          <td class="sm">06</td>
+          <td class="sm"><span class="e" contenteditable>General</span></td>
+          <td>
+            <span class="e" contenteditable
+              >Limpieza profunda de polvo en zócalos y marcos</span
+            >
+          </td>
+          <td class="sm">
+            <span class="e" contenteditable>Equipo limpieza</span>
+          </td>
+          <td class="r sm"><span class="e" contenteditable>29 Jun</span></td>
+          <td class="r"><span class="badge bp">○</span></td>
+        </tr>
+        <tr>
+          <td class="sm">07</td>
+          <td class="sm"><span class="e" contenteditable>Sala</span></td>
+          <td>
+            <span class="e" contenteditable
+              >Retirar protección plástica de ventanales</span
+            >
+          </td>
+          <td class="sm">
+            <span class="e" contenteditable>Equipo limpieza</span>
+          </td>
+          <td class="r sm"><span class="e" contenteditable>29 Jun</span></td>
+          <td class="r"><span class="badge bp">○</span></td>
+        </tr>
+        <tr>
+          <td class="sm">08</td>
+          <td class="sm"><span class="e" contenteditable>Cocina</span></td>
+          <td>
+            <span class="e" contenteditable
+              >Ajustar cierre suave de gaveta inferior izq.</span
+            >
+          </td>
+          <td class="sm"><span class="e" contenteditable>Ramón M.</span></td>
+          <td class="r sm"><span class="e" contenteditable>27 Jun</span></td>
+          <td class="r"><span class="badge bp">○</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div
+      style="
+        display: flex;
+        gap: 24px;
+        margin-top: 14px;
+        font-size: 11px;
+        color: var(--p);
+        flex-wrap: wrap;
+      "
+    >
+      <div>Total: <strong style="color: var(--c)">8</strong></div>
+      <div>Completados: <strong style="color: var(--accent)">2</strong></div>
+      <div>Pendientes: <strong style="color: var(--t)">6</strong></div>
+    </div>
+    <div class="sd">Observaciones</div>
+    <div class="trm" style="min-height: 50px; margin-top: 0">
+      <span class="e" contenteditable
+        >El cliente confirma que con estos 8 puntos resueltos la obra está lista
+        para entrega formal. No identificó pendientes adicionales durante la
+        caminata. Todos deben quedar cerrados antes del 29 de junio para hacer
+        la entrega final el 30.</span
+      >
+    </div>
+    <div class="sgs">
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Cliente · Lista validada</div>
+      </div>
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Maestro · Compromiso de cierre</div>
+      </div>
+    </div>
+    <div class="df">
+      <span>KANAN · PL-2026-0001 · Pre-entrega</span
+      ><span>HOLA@KANAN.DO · Santo Domingo, RD</span>
+    </div>
+  </div>
+
+  <div class="doc" id="rd">
+    <div class="hint">Haz clic en cualquier campo para editar</div>
+    <div class="dh">
+      <div class="lw">
+        <div class="km"></div>
+        <div>
+          <span class="wk">KANAN</span><span class="ws">REMODELACIONES</span>
+        </div>
+      </div>
+      <div class="dr">
+        <div class="dty">Reporte Diario de Obra</div>
+        <div class="dn">
+          <span class="e" contenteditable>RD-2026-0042</span>
+        </div>
+        <div class="dd">
+          <span class="e" contenteditable>15 · MAY · 2026</span>
+        </div>
+      </div>
+    </div>
+    <div class="ot2">
+      <div>
+        <div class="lb">Proyecto</div>
+        <span class="ov e" contenteditable
+          >Remodelación Cocina + Área Social</span
+        >
+      </div>
+      <div>
+        <div class="lb">Día de obra</div>
+        <span class="ov e" contenteditable>Día 8 de 40</span>
+      </div>
+      <div>
+        <div class="lb">Supervisor de campo</div>
+        <span class="ov e" contenteditable>Ramón Mejía</span>
+      </div>
+      <div>
+        <div class="lb">Clima / condiciones</div>
+        <span class="ov e" contenteditable>Soleado · sin afectación</span>
+      </div>
+    </div>
+    <div class="sd">Personal en obra</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Rol</th>
+          <th>Entrada</th>
+          <th>Salida</th>
+          <th class="r">Horas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="e" contenteditable>Ramón Mejía</span></td>
+          <td class="sm">
+            <span class="e" contenteditable>Maestro / Drywall</span>
+          </td>
+          <td class="sm"><span class="e" contenteditable>7:00</span></td>
+          <td class="sm"><span class="e" contenteditable>16:30</span></td>
+          <td class="r sm"><span class="e" contenteditable>9.5</span></td>
+        </tr>
+        <tr>
+          <td><span class="e" contenteditable>José Pérez</span></td>
+          <td class="sm"><span class="e" contenteditable>Ayudante</span></td>
+          <td class="sm"><span class="e" contenteditable>7:00</span></td>
+          <td class="sm"><span class="e" contenteditable>16:30</span></td>
+          <td class="r sm"><span class="e" contenteditable>9.5</span></td>
+        </tr>
+        <tr>
+          <td><span class="e" contenteditable>Pedro Rosario</span></td>
+          <td class="sm"><span class="e" contenteditable>Eléctrico</span></td>
+          <td class="sm"><span class="e" contenteditable>8:00</span></td>
+          <td class="sm"><span class="e" contenteditable>15:00</span></td>
+          <td class="r sm"><span class="e" contenteditable>7.0</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="sd">Trabajos ejecutados hoy</div>
+    <ul class="ul">
+      <li>
+        <span class="e" contenteditable
+          >Cierre de tabique norte cocina (drywall ambas caras)</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Aplicación de masilla primera mano en juntas (12 ml lineales)</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Tendido de conduit eléctrico para 6 tomacorrientes en isla</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Coordinación con plomero para pase de tubería bajo isla</span
+        >
+      </li>
+    </ul>
+    <div class="sd">Materiales recibidos</div>
+    <ul class="ul">
+      <li>
+        <span class="e" contenteditable
+          >40 placas drywall ½" — Plaza Lama — Factura PL-89231</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >15 sacos masilla en polvo — IMCA — Factura IM-4521</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Caja conduit EMT ½" (50 ml) — Eléctricos RD</span
+        >
+      </li>
+    </ul>
+    <div class="sd">Incidencias / observaciones</div>
+    <div class="trm" style="min-height: 50px; margin-top: 0">
+      <span class="e" contenteditable
+        >Sin incidencias mayores. Cliente realizó visita de cortesía a las 14:00
+        y aprobó el avance. Solicitó ajustar altura de un tomacorriente en isla
+        a 95cm en lugar de 110cm. Cambio menor sin impacto en costo.</span
+      >
+    </div>
+    <div class="sd">Avance</div>
+    <div
+      style="
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px 20px;
+      "
+    >
+      <div>
+        <div class="lb">% Avance global</div>
+        <div
+          style="
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-top: 3px;
+          "
+        >
+          <span class="e" contenteditable>22%</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Días transcurridos</div>
+        <div style="font-size: 13px; font-weight: 700; margin-top: 5px">
+          <span class="e" contenteditable>8 de 40</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">vs. cronograma</div>
+        <div style="margin-top: 6px">
+          <span class="badge ba">En tiempo</span>
+        </div>
+      </div>
+    </div>
+    <div class="sd">Plan para mañana</div>
+    <div class="trm" style="margin-top: 0">
+      <span class="e" contenteditable
+        >Continuar con segunda mano de masilla. Iniciar montaje de plafón PVC en
+        sala. Pedro continúa eléctrica de área social. Coordinación con plomero
+        a primera hora.</span
+      >
+    </div>
+    <div class="sgs">
+      <div>
+        <div class="sl"></div>
+        <div class="sll">
+          Supervisor de campo ·
+          <span class="e" contenteditable>Ramón Mejía</span>
+        </div>
+      </div>
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Director de Operaciones · Visto bueno</div>
+      </div>
+    </div>
+    <div class="df">
+      <span>KANAN · RD-2026-0042 · Bitácora interna</span
+      ><span>HOLA@KANAN.DO · Santo Domingo, RD</span>
+    </div>
+  </div>
+
+  <div class="doc" id="vt">
+    <div class="hint">Haz clic en cualquier campo para editar</div>
+    <div class="dh">
+      <div class="lw">
+        <div class="km"></div>
+        <div>
+          <span class="wk">KANAN</span><span class="ws">REMODELACIONES</span>
+        </div>
+      </div>
+      <div class="dr">
+        <div class="dty">Visita Técnica</div>
+        <div class="dn">
+          <span class="e" contenteditable>VT-2026-0001</span>
+        </div>
+        <div class="dd">
+          <span class="e" contenteditable>22 · ABR · 2026</span>
+        </div>
+      </div>
+    </div>
+    <div class="cb">
+      <div>
+        <div class="lb">Cliente</div>
+        <div class="cn">
+          <span class="e" contenteditable>María González</span>
+        </div>
+        <div class="cs">
+          <span class="e" contenteditable>+1 809 555 0000</span><br /><span
+            class="e"
+            contenteditable
+            >maria@email.com</span
+          >
+        </div>
+      </div>
+      <div>
+        <div class="lb">Inmueble visitado</div>
+        <div
+          class="cs"
+          style="font-size: 12px; color: var(--c); font-weight: 500"
+        >
+          <span class="e" contenteditable>Calle El Vergel #42, Apto 3B</span
+          ><br /><span class="e" contenteditable
+            >Piantini, Santo Domingo, DN</span
+          >
+        </div>
+      </div>
+    </div>
+    <div class="ot2">
+      <div>
+        <div class="lb">Tipo de inmueble</div>
+        <span class="ov e" contenteditable>Apartamento · 3er piso</span>
+      </div>
+      <div>
+        <div class="lb">Área total estimada</div>
+        <span class="ov e" contenteditable>165 m²</span>
+      </div>
+      <div>
+        <div class="lb">Año de construcción</div>
+        <span class="ov e" contenteditable>2008</span>
+      </div>
+      <div>
+        <div class="lb">Tipo de cliente</div>
+        <span class="ov e" contenteditable>Residencial · Familia</span>
+      </div>
+    </div>
+    <div class="sd">Áreas a intervenir</div>
+    <div
+      style="
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px 24px;
+        font-size: 12px;
+        margin-bottom: 14px;
+      "
+    >
+      <div>☑ <span class="e" contenteditable>Cocina (12 m²)</span></div>
+      <div>☐ <span class="e" contenteditable>Sala / Comedor (28 m²)</span></div>
+      <div>
+        ☑ <span class="e" contenteditable>Área social abierta (32 m²)</span>
+      </div>
+      <div>☐ <span class="e" contenteditable>Dormitorio principal</span></div>
+      <div>☐ <span class="e" contenteditable>Baño visita</span></div>
+      <div>☐ <span class="e" contenteditable>Terraza</span></div>
+    </div>
+    <div class="sd">Estado actual del inmueble</div>
+    <div class="trm" style="margin-top: 0; min-height: 50px">
+      <span class="e" contenteditable
+        >Inmueble en buen estado general. Cocina con gabinetes originales de
+        melamina deteriorada, encimera de granito en buen estado pero opaca.
+        Pisos de cerámica antigua 30×30 sin daños mayores. Instalación eléctrica
+        funcional pero sin línea dedicada para cocina moderna. Sin problemas
+        estructurales detectados.</span
+      >
+    </div>
+    <div class="sd">Trabajos solicitados por el cliente</div>
+    <ul class="ul">
+      <li>
+        <span class="e" contenteditable
+          >Demoler y reemplazar gabinetes de cocina por modernos</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Cambiar piso de cocina y área social a porcelana 60×60</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Abrir tabique entre cocina y sala (consultar viabilidad)</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Modernizar plafón con tablilla PVC</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Repintar áreas intervenidas en tono claro</span
+        >
+      </li>
+    </ul>
+    <div class="sd">Medidas levantadas</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Espacio</th>
+          <th>Largo</th>
+          <th>Ancho</th>
+          <th>Alto</th>
+          <th class="r">Área m²</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="e" contenteditable>Cocina</span></td>
+          <td class="sm"><span class="e" contenteditable>4.20m</span></td>
+          <td class="sm"><span class="e" contenteditable>2.85m</span></td>
+          <td class="sm"><span class="e" contenteditable>2.70m</span></td>
+          <td class="r"><span class="e" contenteditable>11.97</span></td>
+        </tr>
+        <tr>
+          <td><span class="e" contenteditable>Sala / comedor</span></td>
+          <td class="sm"><span class="e" contenteditable>6.80m</span></td>
+          <td class="sm"><span class="e" contenteditable>4.10m</span></td>
+          <td class="sm"><span class="e" contenteditable>2.70m</span></td>
+          <td class="r"><span class="e" contenteditable>27.88</span></td>
+        </tr>
+        <tr>
+          <td><span class="e" contenteditable>Pasillo central</span></td>
+          <td class="sm"><span class="e" contenteditable>3.50m</span></td>
+          <td class="sm"><span class="e" contenteditable>1.20m</span></td>
+          <td class="sm"><span class="e" contenteditable>2.70m</span></td>
+          <td class="r"><span class="e" contenteditable>4.20</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="sd">Materiales / referencias del cliente</div>
+    <div class="trm" style="margin-top: 0">
+      <span class="e" contenteditable
+        >Cliente refirió Pinterest con cocinas modernas estilo nórdico. Prefiere
+        madera clara con manijas negras minimalistas. Encimera blanca o gris
+        claro. Porcelana antideslizante en tonos arena o beige. Iluminación
+        cálida (3000K).</span
+      >
+    </div>
+    <div class="sd">Restricciones / logística</div>
+    <div class="trm" style="margin-top: 0">
+      <span class="e" contenteditable
+        >Acceso por ascensor de servicio. Horario permitido por administración:
+        lunes a viernes 8am–5pm, sábados 8am–1pm. Estacionamiento limitado:
+        máximo 2 vehículos. Vecinos sensibles a ruido — coordinar trabajos
+        pesados en horario diurno.</span
+      >
+    </div>
+    <div class="sd">Estimado preliminar</div>
+    <div
+      style="
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px 20px;
+      "
+    >
+      <div>
+        <div class="lb">Rango estimado</div>
+        <div
+          style="
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-top: 3px;
+          "
+        >
+          RD$ <span class="e" contenteditable>180k — 240k</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Plazo estimado</div>
+        <div style="font-size: 13px; font-weight: 700; margin-top: 3px">
+          <span class="e" contenteditable>6 — 8 semanas</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Inicio posible</div>
+        <div style="font-size: 13px; font-weight: 700; margin-top: 3px">
+          <span class="e" contenteditable>Primera semana de Mayo</span>
+        </div>
+      </div>
+    </div>
+    <div class="sd">Próximos pasos</div>
+    <div class="trm" style="margin-top: 0">
+      <span class="e" contenteditable
+        >Cotización formal con desglose por partidas en 3 días laborables. Si el
+        cliente aprueba, se firma SOW y contrato de servicios y se reserva fecha
+        de inicio. Pago inicial del 50% al firmar.</span
+      >
+    </div>
+    <div class="sgs">
+      <div>
+        <div class="sl"></div>
+        <div class="sll">
+          Visita realizada por ·
+          <span class="e" contenteditable>Ángel Báez</span>
+        </div>
+      </div>
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Cliente · Conformidad de levantamiento</div>
+      </div>
+    </div>
+    <div class="df">
+      <span>KANAN · VT-2026-0001 · Pre-cotización</span
+      ><span>HOLA@KANAN.DO · Santo Domingo, RD</span>
+    </div>
+  </div>
+
+  <div class="doc" id="cs">
+    <div class="hint">
+      Plantilla orientativa · Recomendamos validación legal antes de uso
+    </div>
+    <div class="dh">
+      <div class="lw">
+        <div class="km"></div>
+        <div>
+          <span class="wk">KANAN</span><span class="ws">REMODELACIONES</span>
+        </div>
+      </div>
+      <div class="dr">
+        <div class="dty">Contrato de Servicios</div>
+        <div class="dn">
+          <span class="e" contenteditable>CS-2026-0001</span>
+        </div>
+        <div class="dd">
+          <span class="e" contenteditable>02 · MAY · 2026</span>
+        </div>
+      </div>
+    </div>
+    <div class="sd">Comparecientes</div>
+    <div
+      style="
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        margin-bottom: 14px;
+      "
+    >
+      <div>
+        <div class="lb">EL CONTRATANTE</div>
+        <div style="font-size: 12px; line-height: 1.7; margin-top: 6px">
+          <strong
+            ><span class="e" contenteditable>María González Pérez</span></strong
+          >, dominicana, mayor de edad, portadora de la cédula No.
+          <span class="e" contenteditable>001-1234567-8</span>, domiciliada en
+          <span class="e" contenteditable
+            >Calle El Vergel #42, Apto 3B, Piantini, Distrito Nacional</span
+          >.
+        </div>
+      </div>
+      <div>
+        <div class="lb">EL CONTRATISTA</div>
+        <div style="font-size: 12px; line-height: 1.7; margin-top: 6px">
+          <strong>KANAN REMODELACIONES</strong>, representada por
+          <span class="e" contenteditable>Ángel Báez</span>, mayor de edad,
+          portador de la cédula No.
+          <span class="e" contenteditable>001-0000000-0</span>, RNC
+          <span class="e" contenteditable>1-30-00000-0</span>, domiciliado en
+          <span class="e" contenteditable
+            >Santo Domingo, República Dominicana</span
+          >.
+        </div>
+      </div>
+    </div>
+    <div class="sd">Preámbulo</div>
+    <div
+      style="
+        font-size: 11.5px;
+        color: var(--c);
+        line-height: 1.7;
+        margin-bottom: 6px;
+      "
+    >
+      EL CONTRATANTE desea ejecutar trabajos de remodelación en el inmueble
+      descrito, y EL CONTRATISTA cuenta con la experiencia y los recursos para
+      llevarlos a cabo. Por tanto, ambas partes acuerdan suscribir el presente
+      contrato, sujeto a las siguientes cláusulas:
+    </div>
+    <div style="margin: 14px 0">
+      <div
+        style="
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          color: var(--accent);
+          margin-bottom: 5px;
+          text-transform: uppercase;
+        "
+      >
+        PRIMERA · Objeto del contrato
+      </div>
+      <div style="font-size: 11.5px; line-height: 1.7">
+        <span class="e" contenteditable
+          >EL CONTRATISTA se obliga a ejecutar para EL CONTRATANTE los trabajos
+          de remodelación descritos en el Alcance de Trabajo (SOW) anexo,
+          identificado como SOW-2026-0001, el cual forma parte integral de este
+          contrato.</span
+        >
+      </div>
+    </div>
+    <div style="margin: 14px 0">
+      <div
+        style="
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          color: var(--accent);
+          margin-bottom: 5px;
+          text-transform: uppercase;
+        "
+      >
+        SEGUNDA · Alcance
+      </div>
+      <div style="font-size: 11.5px; line-height: 1.7">
+        <span class="e" contenteditable
+          >El alcance, materiales, especificaciones técnicas y trabajos no
+          incluidos están detallados en el SOW anexo. Cualquier trabajo fuera de
+          este alcance requerirá una Orden de Cambio firmada por ambas partes
+          antes de su ejecución.</span
+        >
+      </div>
+    </div>
+    <div style="margin: 14px 0">
+      <div
+        style="
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          color: var(--accent);
+          margin-bottom: 5px;
+          text-transform: uppercase;
+        "
+      >
+        TERCERA · Plazo de ejecución
+      </div>
+      <div style="font-size: 11.5px; line-height: 1.7">
+        <span class="e" contenteditable
+          >Los trabajos iniciarán el 05 de mayo de 2026 y concluirán el 30 de
+          junio de 2026, sujetos a las condiciones establecidas en este contrato
+          y a eventos de fuerza mayor.</span
+        >
+      </div>
+    </div>
+    <div style="margin: 14px 0">
+      <div
+        style="
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          color: var(--accent);
+          margin-bottom: 5px;
+          text-transform: uppercase;
+        "
+      >
+        CUARTA · Precio y forma de pago
+      </div>
+      <div style="font-size: 11.5px; line-height: 1.7">
+        <span class="e" contenteditable
+          >El precio total acordado es de RD$ 210,276.00 (Doscientos diez mil
+          doscientos setenta y seis pesos dominicanos), pagaderos en tres
+          tramos: 50% al firmar este contrato, 25% al completar la fase
+          estructural, y 25% a la entrega final mediante Acta de Entrega
+          firmada.</span
+        >
+      </div>
+    </div>
+    <div style="margin: 14px 0">
+      <div
+        style="
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          color: var(--accent);
+          margin-bottom: 5px;
+          text-transform: uppercase;
+        "
+      >
+        QUINTA · Obligaciones del contratista
+      </div>
+      <div style="font-size: 11.5px; line-height: 1.7">
+        <span class="e" contenteditable
+          >Ejecutar los trabajos con calidad profesional, suministrar mano de
+          obra calificada, supervisar la obra, cumplir el cronograma, mantener
+          el área de trabajo segura y limpia, y entregar los trabajos terminados
+          conforme al SOW.</span
+        >
+      </div>
+    </div>
+    <div style="margin: 14px 0">
+      <div
+        style="
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          color: var(--accent);
+          margin-bottom: 5px;
+          text-transform: uppercase;
+        "
+      >
+        SEXTA · Obligaciones del contratante
+      </div>
+      <div style="font-size: 11.5px; line-height: 1.7">
+        <span class="e" contenteditable
+          >Realizar los pagos en las fechas acordadas, dar acceso al inmueble en
+          horarios convenidos, despejar las áreas a intervenir antes del inicio,
+          comunicar oportunamente cualquier observación o cambio, y firmar las
+          actas de avance.</span
+        >
+      </div>
+    </div>
+    <div style="margin: 14px 0">
+      <div
+        style="
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          color: var(--accent);
+          margin-bottom: 5px;
+          text-transform: uppercase;
+        "
+      >
+        SÉPTIMA · Modificaciones
+      </div>
+      <div style="font-size: 11.5px; line-height: 1.7">
+        <span class="e" contenteditable
+          >Cualquier modificación al alcance, plazo o precio se documentará
+          mediante Orden de Cambio firmada por ambas partes antes de la
+          ejecución del trabajo modificado. Sin firma previa, EL CONTRATISTA no
+          está obligado a ejecutar trabajos adicionales.</span
+        >
+      </div>
+    </div>
+    <div style="margin: 14px 0">
+      <div
+        style="
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          color: var(--accent);
+          margin-bottom: 5px;
+          text-transform: uppercase;
+        "
+      >
+        OCTAVA · Garantía
+      </div>
+      <div style="font-size: 11.5px; line-height: 1.7">
+        <span class="e" contenteditable
+          >EL CONTRATISTA garantiza los trabajos por 12 meses a partir de la
+          firma del Acta de Entrega, contra defectos de instalación. La garantía
+          no cubre desgaste por uso, daños causados por terceros, ni
+          modificaciones realizadas sin autorización del CONTRATISTA.</span
+        >
+      </div>
+    </div>
+    <div style="margin: 14px 0">
+      <div
+        style="
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          color: var(--accent);
+          margin-bottom: 5px;
+          text-transform: uppercase;
+        "
+      >
+        NOVENA · Fuerza mayor
+      </div>
+      <div style="font-size: 11.5px; line-height: 1.7">
+        <span class="e" contenteditable
+          >Ninguna de las partes será responsable por incumplimiento causado por
+          fuerza mayor o caso fortuito (huracanes, inundaciones, disposiciones
+          gubernamentales, paros generales). En tal caso, los plazos se
+          extenderán proporcionalmente al evento.</span
+        >
+      </div>
+    </div>
+    <div style="margin: 14px 0">
+      <div
+        style="
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          color: var(--accent);
+          margin-bottom: 5px;
+          text-transform: uppercase;
+        "
+      >
+        DÉCIMA · Resolución de conflictos
+      </div>
+      <div style="font-size: 11.5px; line-height: 1.7">
+        <span class="e" contenteditable
+          >Las controversias se intentarán resolver de buena fe entre las
+          partes. De persistir el desacuerdo, las partes se someten a los
+          tribunales competentes del Distrito Nacional, República Dominicana,
+          renunciando a cualquier otro fuero.</span
+        >
+      </div>
+    </div>
+    <div style="margin: 14px 0 18px">
+      <div
+        style="
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          color: var(--accent);
+          margin-bottom: 5px;
+          text-transform: uppercase;
+        "
+      >
+        UNDÉCIMA · Vigencia
+      </div>
+      <div style="font-size: 11.5px; line-height: 1.7">
+        <span class="e" contenteditable
+          >Este contrato entra en vigor el día de su firma y vence con la firma
+          del Acta de Entrega, salvo en lo relativo a la garantía, que
+          continuará vigente por los 12 meses pactados.</span
+        >
+      </div>
+    </div>
+    <div class="trm" style="margin-top: 14px">
+      <span class="e" contenteditable
+        >Hecho y firmado en dos (2) originales de igual tenor y validez, en
+        Santo Domingo, República Dominicana, a los días del mes y año arriba
+        indicados. Las partes declaran haber leído y comprendido cada
+        cláusula.</span
+      >
+    </div>
+    <div class="sgs" style="margin-top: 40px">
+      <div>
+        <div class="sl"></div>
+        <div class="sll">EL CONTRATANTE</div>
+        <div style="font-size: 11px; color: var(--p); margin-top: 3px">
+          <span class="e" contenteditable>María González Pérez</span>
+        </div>
+        <div style="font-size: 11px; color: var(--p)">
+          Cédula: <span class="e" contenteditable>001-1234567-8</span>
+        </div>
+      </div>
+      <div>
+        <div class="sl"></div>
+        <div class="sll">EL CONTRATISTA</div>
+        <div style="font-size: 11px; color: var(--p); margin-top: 3px">
+          Kanan Remodelaciones
+        </div>
+        <div style="font-size: 11px; color: var(--p)">
+          Por: <span class="e" contenteditable>Ángel Báez</span>
+        </div>
+      </div>
+    </div>
+    <div class="df">
+      <span>KANAN · CS-2026-0001 · Documento legal</span
+      ><span>HOLA@KANAN.DO · Santo Domingo, RD</span>
+    </div>
+  </div>
+
+  <div class="doc" id="pv">
+    <div class="hint">Haz clic en cualquier campo para editar</div>
+    <div class="dh">
+      <div class="lw">
+        <div class="km"></div>
+        <div>
+          <span class="wk">KANAN</span><span class="ws">REMODELACIONES</span>
+        </div>
+      </div>
+      <div class="dr">
+        <div class="dty">Propuesta Visual</div>
+        <div class="dn">
+          <span class="e" contenteditable>PV-2026-0001</span>
+        </div>
+        <div class="dd">
+          <span class="e" contenteditable>25 · ABR · 2026</span>
+        </div>
+      </div>
+    </div>
+    <div style="margin: 32px 0 18px">
+      <div
+        style="
+          font-size: 12px;
+          letter-spacing: 0.18em;
+          color: var(--accent);
+          text-transform: uppercase;
+          margin-bottom: 14px;
+        "
+      >
+        Propuesta para
+      </div>
+      <div
+        style="
+          font-family: &quot;Fraunces&quot;, Georgia, serif;
+          font-style: italic;
+          font-size: 34px;
+          line-height: 1.2;
+          color: var(--c);
+          margin-bottom: 6px;
+        "
+      >
+        <span class="e" contenteditable>Tu cocina, repensada.</span>
+      </div>
+      <div style="font-size: 14px; color: var(--p); line-height: 1.6">
+        <span class="e" contenteditable
+          >Una remodelación integral del corazón social del apartamento — donde
+          la familia se reúne, cocina, conversa.</span
+        >
+      </div>
+    </div>
+    <div class="cb">
+      <div>
+        <div class="lb">Para</div>
+        <div class="cn">
+          <span class="e" contenteditable>María González</span>
+        </div>
+        <div class="cs">
+          <span class="e" contenteditable>Piantini, Santo Domingo</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Proyecto</div>
+        <div class="cn" style="font-size: 12px">
+          <span class="e" contenteditable>Cocina + Área Social</span>
+        </div>
+        <div class="cs" style="margin-top: 4px">
+          <span class="e" contenteditable>165 m² · 8 semanas estimadas</span>
+        </div>
+      </div>
+    </div>
+    <div class="sd">Resumen ejecutivo</div>
+    <div style="font-size: 12.5px; color: var(--c); line-height: 1.75">
+      <span class="e" contenteditable
+        >Proponemos transformar la cocina existente en un espacio funcional,
+        luminoso y conectado con el área social. Eliminamos el tabique que
+        separa la cocina del comedor para crear un flujo abierto, modernizamos
+        los acabados con porcelana de gran formato y plafón limpio, e instalamos
+        una cocina nueva con isla central que sirve como punto de reunión.</span
+      >
+    </div>
+    <div
+      style="
+        margin: 30px 0;
+        padding: 20px 0;
+        border-top: 1px solid var(--accent-soft);
+        border-bottom: 1px solid var(--accent-soft);
+        text-align: center;
+      "
+    >
+      <div
+        style="
+          font-family: &quot;Fraunces&quot;, Georgia, serif;
+          font-style: italic;
+          font-size: 20px;
+          line-height: 1.4;
+          color: var(--c);
+        "
+      >
+        "<span class="e" contenteditable
+          >No se trata de cambiar la cocina. Se trata de cambiar cómo vives en
+          ella.</span
+        >"
+      </div>
+    </div>
+    <div class="sd">Nuestro enfoque</div>
+    <div
+      style="
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 18px;
+        margin-top: 8px;
+      "
+    >
+      <div>
+        <div
+          style="
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+          "
+        >
+          01 · Apertura
+        </div>
+        <div style="font-size: 11.5px; line-height: 1.6">
+          <span class="e" contenteditable
+            >Demoler el tabique no estructural entre cocina y sala, ganando 3.2m
+            de luz visual y conectando los espacios.</span
+          >
+        </div>
+      </div>
+      <div>
+        <div
+          style="
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+          "
+        >
+          02 · Continuidad
+        </div>
+        <div style="font-size: 11.5px; line-height: 1.6">
+          <span class="e" contenteditable
+            >Unificar el piso con porcelana 60×60 en tono arena, eliminando los
+            cortes visuales que fragmentan el espacio actual.</span
+          >
+        </div>
+      </div>
+      <div>
+        <div
+          style="
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+          "
+        >
+          03 · Función
+        </div>
+        <div style="font-size: 11.5px; line-height: 1.6">
+          <span class="e" contenteditable
+            >Cocina nueva con isla central — almacenamiento, mesón de trabajo, y
+            punto de reunión casual para tomar café o supervisar tareas.</span
+          >
+        </div>
+      </div>
+    </div>
+    <div class="sd">Fases del proyecto</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 30px">#</th>
+          <th>Fase</th>
+          <th>Trabajos clave</th>
+          <th class="r">Sem.</th>
+          <th class="r">Inversión</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="sm">01</td>
+          <td><span class="e" contenteditable>Preparación</span></td>
+          <td class="sm">
+            <span class="e" contenteditable
+              >Demolición · Retiro · Tabiques</span
+            >
+          </td>
+          <td class="r sm"><span class="e" contenteditable>1–2</span></td>
+          <td class="r"><span class="e" contenteditable>58,800</span></td>
+        </tr>
+        <tr>
+          <td class="sm">02</td>
+          <td><span class="e" contenteditable>Instalaciones</span></td>
+          <td class="sm">
+            <span class="e" contenteditable>Eléctrica · Plomería · Plafón</span>
+          </td>
+          <td class="r sm"><span class="e" contenteditable>3–5</span></td>
+          <td class="r"><span class="e" contenteditable>59,000</span></td>
+        </tr>
+        <tr>
+          <td class="sm">03</td>
+          <td><span class="e" contenteditable>Acabados</span></td>
+          <td class="sm">
+            <span class="e" contenteditable
+              >Porcelana · Carpintería · Pintura</span
+            >
+          </td>
+          <td class="r sm"><span class="e" contenteditable>5–7</span></td>
+          <td class="r"><span class="e" contenteditable>60,400</span></td>
+        </tr>
+        <tr>
+          <td class="sm">04</td>
+          <td><span class="e" contenteditable>Entrega</span></td>
+          <td class="sm">
+            <span class="e" contenteditable
+              >Detalles · Limpieza · Walkthrough</span
+            >
+          </td>
+          <td class="r sm"><span class="e" contenteditable>8</span></td>
+          <td class="r"><span class="e" contenteditable>0</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="tot">
+      <div class="ti g">
+        <div class="tl">INVERSIÓN TOTAL</div>
+        <div class="tv"><span class="e" contenteditable>RD$ 210,276</span></div>
+      </div>
+    </div>
+    <div
+      style="
+        font-size: 11px;
+        color: var(--p);
+        margin-top: 6px;
+        text-align: right;
+      "
+    >
+      Incluye ITBIS · Detalle completo en cotización COT-2026-0001
+    </div>
+    <div class="sd">Por qué Kanan</div>
+    <div
+      style="
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px 24px;
+        margin-top: 8px;
+      "
+    >
+      <div style="display: flex; gap: 10px; align-items: flex-start">
+        <div
+          style="
+            font-family: &quot;Archivo&quot;;
+            font-weight: 900;
+            font-size: 18px;
+            color: var(--accent);
+            line-height: 1;
+            flex-shrink: 0;
+            width: 28px;
+          "
+        >
+          01
+        </div>
+        <div>
+          <div style="font-size: 12px; font-weight: 700; margin-bottom: 3px">
+            <span class="e" contenteditable>Reportes diarios</span>
+          </div>
+          <div style="font-size: 11px; color: var(--p); line-height: 1.6">
+            <span class="e" contenteditable
+              >Bitácora con foto y avance todos los días. Tu tranquilidad no es
+              opcional.</span
+            >
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 10px; align-items: flex-start">
+        <div
+          style="
+            font-family: &quot;Archivo&quot;;
+            font-weight: 900;
+            font-size: 18px;
+            color: var(--accent);
+            line-height: 1;
+            flex-shrink: 0;
+            width: 28px;
+          "
+        >
+          02
+        </div>
+        <div>
+          <div style="font-size: 12px; font-weight: 700; margin-bottom: 3px">
+            <span class="e" contenteditable>Equipo propio</span>
+          </div>
+          <div style="font-size: 11px; color: var(--p); line-height: 1.6">
+            <span class="e" contenteditable
+              >No subcontratamos. Los maestros que conocen tu proyecto son los
+              mismos del primer día al último.</span
+            >
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 10px; align-items: flex-start">
+        <div
+          style="
+            font-family: &quot;Archivo&quot;;
+            font-weight: 900;
+            font-size: 18px;
+            color: var(--accent);
+            line-height: 1;
+            flex-shrink: 0;
+            width: 28px;
+          "
+        >
+          03
+        </div>
+        <div>
+          <div style="font-size: 12px; font-weight: 700; margin-bottom: 3px">
+            <span class="e" contenteditable>Garantía 12 meses</span>
+          </div>
+          <div style="font-size: 11px; color: var(--p); line-height: 1.6">
+            <span class="e" contenteditable
+              >Por escrito y firmada. Si algo falla por instalación, lo
+              arreglamos sin discusión.</span
+            >
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 10px; align-items: flex-start">
+        <div
+          style="
+            font-family: &quot;Archivo&quot;;
+            font-weight: 900;
+            font-size: 18px;
+            color: var(--accent);
+            line-height: 1;
+            flex-shrink: 0;
+            width: 28px;
+          "
+        >
+          04
+        </div>
+        <div>
+          <div style="font-size: 12px; font-weight: 700; margin-bottom: 3px">
+            <span class="e" contenteditable>Sin sorpresas</span>
+          </div>
+          <div style="font-size: 11px; color: var(--p); line-height: 1.6">
+            <span class="e" contenteditable
+              >Cada trabajo extra requiere orden de cambio firmada antes de
+              ejecutarse. Tu presupuesto se respeta.</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      style="
+        margin: 30px 0 18px;
+        padding: 18px 0;
+        border-top: 1px solid var(--accent-soft);
+        border-bottom: 1px solid var(--accent-soft);
+      "
+    >
+      <div
+        style="
+          font-family: &quot;Fraunces&quot;, Georgia, serif;
+          font-style: italic;
+          font-size: 18px;
+          line-height: 1.4;
+          color: var(--c);
+          margin-bottom: 8px;
+        "
+      >
+        <span class="e" contenteditable>El siguiente paso es tuyo.</span>
+      </div>
+      <div style="font-size: 12px; color: var(--p); line-height: 1.6">
+        <span class="e" contenteditable
+          >Si esta propuesta resuena con tu visión, firmamos contrato y SOW esta
+          semana, y empezamos la primera semana de mayo. Las fechas se reservan
+          por orden de aprobación.</span
+        >
+      </div>
+    </div>
+    <div
+      style="
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px 20px;
+        margin-top: 18px;
+      "
+    >
+      <div>
+        <div class="lb">Validez</div>
+        <div style="font-size: 13px; font-weight: 700; margin-top: 3px">
+          <span class="e" contenteditable>30 días</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Reservas tu fecha</div>
+        <div style="font-size: 13px; font-weight: 700; margin-top: 3px">
+          <span class="e" contenteditable>Pago inicial 50%</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Contacto</div>
+        <div
+          style="
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 3px;
+            color: var(--accent);
+          "
+        >
+          <span class="e" contenteditable>+1 809 000 0000</span>
+        </div>
+      </div>
+    </div>
+    <div class="df" style="margin-top: 30px">
+      <span>KANAN · PV-2026-0001 · Propuesta confidencial</span
+      ><span>HOLA@KANAN.DO · Santo Domingo, RD</span>
+    </div>
+  </div>
+
+  <div class="doc" id="gr">
+    <div class="hint">Haz clic en cualquier campo para editar</div>
+    <div class="dh">
+      <div class="lw">
+        <div class="km"></div>
+        <div>
+          <span class="wk">KANAN</span><span class="ws">REMODELACIONES</span>
+        </div>
+      </div>
+      <div class="dr">
+        <div class="dty">Carta de Garantía</div>
+        <div class="dn">
+          <span class="e" contenteditable>GR-2026-0001</span>
+        </div>
+        <div class="dd">
+          <span class="e" contenteditable>30 · JUN · 2026</span>
+        </div>
+      </div>
+    </div>
+    <div style="margin: 32px 0 18px">
+      <div
+        style="
+          font-size: 12px;
+          letter-spacing: 0.18em;
+          color: var(--accent);
+          text-transform: uppercase;
+          margin-bottom: 14px;
+        "
+      >
+        Certificado de garantía
+      </div>
+      <div
+        style="
+          font-family: &quot;Fraunces&quot;, Georgia, serif;
+          font-style: italic;
+          font-size: 28px;
+          line-height: 1.2;
+          color: var(--c);
+          margin-bottom: 6px;
+        "
+      >
+        <span class="e" contenteditable
+          >Lo que construimos contigo, lo respaldamos.</span
+        >
+      </div>
+    </div>
+    <div class="cb">
+      <div>
+        <div class="lb">A favor de</div>
+        <div class="cn">
+          <span class="e" contenteditable>María González Pérez</span>
+        </div>
+        <div class="cs">
+          Cédula: <span class="e" contenteditable>001-1234567-8</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Proyecto cubierto</div>
+        <div class="cn" style="font-size: 12px">
+          <span class="e" contenteditable
+            >Remodelación Cocina + Área Social</span
+          >
+        </div>
+        <div class="cs" style="margin-top: 4px">
+          <span class="e" contenteditable>C/ El Vergel #42, Piantini, SD</span>
+        </div>
+      </div>
+    </div>
+    <div class="ot2">
+      <div>
+        <div class="lb">Ref. SOW / Contrato</div>
+        <span class="ov e" contenteditable>SOW-2026-0001 · CS-2026-0001</span>
+      </div>
+      <div>
+        <div class="lb">Acta de entrega</div>
+        <span class="ov e" contenteditable>AE-2026-0001 · 30 Jun 2026</span>
+      </div>
+      <div>
+        <div class="lb">Inicio de garantía</div>
+        <span class="ov e" contenteditable>30 · JUN · 2026</span>
+      </div>
+      <div>
+        <div class="lb">Vencimiento</div>
+        <span class="ov e" contenteditable>30 · JUN · 2027</span>
+      </div>
+    </div>
+    <div class="sd">Período de cobertura</div>
+    <div class="trm" style="margin-top: 0">
+      <span class="e" contenteditable
+        >Doce (12) meses calendario contados a partir de la fecha del Acta de
+        Entrega firmada por ambas partes. Esta garantía es intransferible y
+        aplica únicamente al proyecto identificado.</span
+      >
+    </div>
+    <div class="sd">Trabajos cubiertos</div>
+    <ul class="ul">
+      <li>
+        <span class="e" contenteditable
+          >Defectos en la instalación de drywall, plafón y pintura</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Desajustes o desprendimientos de porcelana por instalación</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Conexiones eléctricas defectuosas en puntos instalados</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Filtraciones causadas por trabajos de plomería ejecutados</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Acabados que se desprendan o degraden por aplicación incorrecta</span
+        >
+      </li>
+    </ul>
+    <div class="sd">Exclusiones</div>
+    <ul class="ul xl">
+      <li>
+        <span class="e" contenteditable>Desgaste natural por uso normal</span>
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Daños causados por terceros, mascotas, o el cliente</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Modificaciones o reparaciones sin autorización de Kanan</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Daños por fenómenos naturales (huracanes, inundaciones, sismos)</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Defectos de fabricación de materiales (cubre la garantía del
+          fabricante)</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Trabajos fuera del alcance original sin orden de cambio</span
+        >
+      </li>
+    </ul>
+    <div class="sd">Cómo reclamar</div>
+    <div class="trm" style="margin-top: 0">
+      <span class="e" contenteditable
+        >Notifica el problema dentro de las 72 horas de detectarlo, vía WhatsApp
+        al +1 809 000 0000 o correo a hola@kanan.do, indicando: número de
+        garantía (GR-XXXX), descripción y fotos. Programaremos visita de
+        inspección dentro de 5 días laborables. Si el problema cae bajo
+        cobertura, lo reparamos sin costo dentro de 10 días laborables
+        siguientes.</span
+      >
+    </div>
+    <div class="sgs" style="margin-top: 30px">
+      <div></div>
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Kanan Remodelaciones</div>
+        <div style="font-size: 11px; color: var(--p); margin-top: 3px">
+          <span class="e" contenteditable>Ángel Báez · Director</span>
+        </div>
+        <div style="font-size: 11px; color: var(--p)">
+          RNC: <span class="e" contenteditable>1-30-00000-0</span>
+        </div>
+      </div>
+    </div>
+    <div class="df">
+      <span>KANAN · GR-2026-0001 · Documento legal</span
+      ><span>HOLA@KANAN.DO · Santo Domingo, RD</span>
+    </div>
+  </div>
+
+  <div class="doc" id="ec">
+    <div class="hint">Haz clic en cualquier campo para editar</div>
+    <div class="dh">
+      <div class="lw">
+        <div class="km"></div>
+        <div>
+          <span class="wk">KANAN</span><span class="ws">REMODELACIONES</span>
+        </div>
+      </div>
+      <div class="dr">
+        <div class="dty">Estado de Cuenta</div>
+        <div class="dn">
+          <span class="e" contenteditable>EC-2026-0001</span>
+        </div>
+        <div class="dd">
+          Corte: <span class="e" contenteditable>20 · JUN · 2026</span>
+        </div>
+      </div>
+    </div>
+    <div class="cb">
+      <div>
+        <div class="lb">Cliente</div>
+        <div class="cn">
+          <span class="e" contenteditable>María González</span>
+        </div>
+        <div class="cs">
+          Cédula: <span class="e" contenteditable>001-1234567-8</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Proyecto</div>
+        <div class="cn" style="font-size: 12px">
+          <span class="e" contenteditable
+            >Remodelación Cocina + Área Social</span
+          >
+        </div>
+        <div class="cs" style="margin-top: 4px">
+          Ref: <span class="e" contenteditable>SOW-2026-0001</span>
+        </div>
+      </div>
+    </div>
+    <div class="ot2">
+      <div>
+        <div class="lb">Total contratado</div>
+        <span class="ov e" contenteditable>RD$ 210,276.00</span>
+      </div>
+      <div>
+        <div class="lb">Pagado a la fecha</div>
+        <span class="ov e" contenteditable>RD$ 157,707.00</span>
+      </div>
+      <div>
+        <div class="lb">Saldo pendiente</div>
+        <span class="ov e" contenteditable>RD$ 52,569.00</span>
+      </div>
+      <div>
+        <div class="lb">Próximo vencimiento</div>
+        <span class="ov e" contenteditable>30 · JUN · 2026</span>
+      </div>
+    </div>
+    <div class="sd">Movimientos del proyecto</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 90px">Fecha</th>
+          <th>Concepto</th>
+          <th>Documento</th>
+          <th class="r">Cargo</th>
+          <th class="r">Abono</th>
+          <th class="r">Saldo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="sm"><span class="e" contenteditable>02 May</span></td>
+          <td>
+            <span class="e" contenteditable>Facturación contrato total</span>
+          </td>
+          <td class="sm">
+            <span class="e" contenteditable>FAC-2026-0001</span>
+          </td>
+          <td class="r"><span class="e" contenteditable>210,276</span></td>
+          <td class="r sm">—</td>
+          <td class="r"><span class="e" contenteditable>210,276</span></td>
+        </tr>
+        <tr>
+          <td class="sm"><span class="e" contenteditable>05 May</span></td>
+          <td>
+            <span class="e" contenteditable>Pago tramo 1 · Inicio (50%)</span>
+          </td>
+          <td class="sm">
+            <span class="e" contenteditable>REC-2026-0001</span>
+          </td>
+          <td class="r sm">—</td>
+          <td class="r"><span class="e" contenteditable>105,138</span></td>
+          <td class="r"><span class="e" contenteditable>105,138</span></td>
+        </tr>
+        <tr>
+          <td class="sm"><span class="e" contenteditable>10 Jun</span></td>
+          <td>
+            <span class="e" contenteditable
+              >Pago tramo 2 · Estructura (25%)</span
+            >
+          </td>
+          <td class="sm">
+            <span class="e" contenteditable>REC-2026-0002</span>
+          </td>
+          <td class="r sm">—</td>
+          <td class="r"><span class="e" contenteditable>52,569</span></td>
+          <td class="r"><span class="e" contenteditable>52,569</span></td>
+        </tr>
+        <tr>
+          <td class="sm"><span class="e" contenteditable>30 Jun</span></td>
+          <td>
+            <span class="e" contenteditable
+              >(Próximo) Tramo 3 · Entrega (25%)</span
+            >
+          </td>
+          <td class="sm"><span class="e" contenteditable>Pendiente</span></td>
+          <td class="r sm">—</td>
+          <td class="r sm">—</td>
+          <td class="r"><span class="e" contenteditable>52,569</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="tot">
+      <div class="ti">
+        <div class="tl">TOTAL CARGOS</div>
+        <div class="tv"><span class="e" contenteditable>210,276</span></div>
+      </div>
+      <div class="ti">
+        <div class="tl">TOTAL ABONOS</div>
+        <div class="tv"><span class="e" contenteditable>157,707</span></div>
+      </div>
+      <div class="ti g">
+        <div class="tl">SALDO RD$</div>
+        <div class="tv"><span class="e" contenteditable>52,569</span></div>
+      </div>
+    </div>
+    <div class="sd">Próximo cobro</div>
+    <div
+      style="
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px 20px;
+      "
+    >
+      <div>
+        <div class="lb">Concepto</div>
+        <div style="font-size: 13px; font-weight: 700; margin-top: 3px">
+          <span class="e" contenteditable>Tramo 3 · Entrega final</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Monto</div>
+        <div
+          style="
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-top: 3px;
+          "
+        >
+          RD$ <span class="e" contenteditable>52,569</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Vencimiento</div>
+        <div style="font-size: 13px; font-weight: 700; margin-top: 3px">
+          <span class="e" contenteditable>30 · JUN · 2026</span>
+        </div>
+      </div>
+    </div>
+    <div class="trm" style="margin-top: 14px">
+      <span class="e" contenteditable
+        >El tramo 3 se cobra contra firma del Acta de Entrega (AE-2026-0001),
+        sujeto a cierre del Punch List vigente. Aceptamos transferencia
+        bancaria, depósito o cheque al portador.</span
+      >
+    </div>
+    <div class="df">
+      <span>KANAN · EC-2026-0001 · Estado al corte indicado</span
+      ><span>HOLA@KANAN.DO · Santo Domingo, RD</span>
+    </div>
+  </div>
+
+  <div class="doc" id="es">
+    <div class="hint">Haz clic en cualquier campo para editar</div>
+    <div class="dh">
+      <div class="lw">
+        <div class="km"></div>
+        <div>
+          <span class="wk">KANAN</span><span class="ws">REMODELACIONES</span>
+        </div>
+      </div>
+      <div class="dr">
+        <div class="dty">Encuesta de Satisfacción</div>
+        <div class="dn">
+          <span class="e" contenteditable>ES-2026-0001</span>
+        </div>
+        <div class="dd">
+          <span class="e" contenteditable>05 · JUL · 2026</span>
+        </div>
+      </div>
+    </div>
+    <div style="margin: 24px 0 18px">
+      <div
+        style="
+          font-family: &quot;Fraunces&quot;, Georgia, serif;
+          font-style: italic;
+          font-size: 24px;
+          line-height: 1.3;
+          color: var(--c);
+          margin-bottom: 8px;
+        "
+      >
+        <span class="e" contenteditable>Tu opinión nos hace mejor.</span>
+      </div>
+      <div style="font-size: 12.5px; color: var(--p); line-height: 1.6">
+        <span class="e" contenteditable
+          >Cinco minutos. Cinco preguntas. Tu respuesta cambia cómo trabajamos
+          para el próximo cliente. Gracias por ayudarnos a crecer.</span
+        >
+      </div>
+    </div>
+    <div class="cb">
+      <div>
+        <div class="lb">Cliente</div>
+        <div class="cn">
+          <span class="e" contenteditable>María González</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Proyecto / Fecha entrega</div>
+        <div
+          class="cs"
+          style="font-size: 12px; color: var(--c); font-weight: 500"
+        >
+          <span class="e" contenteditable
+            >Cocina + Área Social · 30 Jun 2026</span
+          >
+        </div>
+      </div>
+    </div>
+    <div class="sd">Califica del 1 al 5 (5 = excelente)</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 50%">Aspecto</th>
+          <th class="r" style="width: 40px">1</th>
+          <th class="r" style="width: 40px">2</th>
+          <th class="r" style="width: 40px">3</th>
+          <th class="r" style="width: 40px">4</th>
+          <th class="r" style="width: 40px">5</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <span class="e" contenteditable>Calidad de los acabados</span>
+          </td>
+          <td class="r">○</td>
+          <td class="r">○</td>
+          <td class="r">○</td>
+          <td class="r">○</td>
+          <td class="r" style="color: var(--accent); font-weight: 700">●</td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable
+              >Cumplimiento del plazo acordado</span
+            >
+          </td>
+          <td class="r">○</td>
+          <td class="r">○</td>
+          <td class="r">○</td>
+          <td class="r" style="color: var(--accent); font-weight: 700">●</td>
+          <td class="r">○</td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable>Comunicación durante la obra</span>
+          </td>
+          <td class="r">○</td>
+          <td class="r">○</td>
+          <td class="r">○</td>
+          <td class="r">○</td>
+          <td class="r" style="color: var(--accent); font-weight: 700">●</td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable>Limpieza y orden del equipo</span>
+          </td>
+          <td class="r">○</td>
+          <td class="r">○</td>
+          <td class="r">○</td>
+          <td class="r" style="color: var(--accent); font-weight: 700">●</td>
+          <td class="r">○</td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable
+              >Profesionalismo de los maestros</span
+            >
+          </td>
+          <td class="r">○</td>
+          <td class="r">○</td>
+          <td class="r">○</td>
+          <td class="r">○</td>
+          <td class="r" style="color: var(--accent); font-weight: 700">●</td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable
+              >Manejo de imprevistos / cambios</span
+            >
+          </td>
+          <td class="r">○</td>
+          <td class="r">○</td>
+          <td class="r">○</td>
+          <td class="r" style="color: var(--accent); font-weight: 700">●</td>
+          <td class="r">○</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="sd">¿Qué fue lo mejor?</div>
+    <div class="trm" style="margin-top: 0; min-height: 60px">
+      <span class="e" contenteditable
+        >El nivel de organización fue lo que más me sorprendió. Los reportes
+        diarios me daban tranquilidad incluso cuando no podía visitar la obra.
+        Sentí que estaba al tanto de todo sin tener que preguntar.</span
+      >
+    </div>
+    <div class="sd">¿Qué podríamos mejorar?</div>
+    <div class="trm" style="margin-top: 0; min-height: 60px">
+      <span class="e" contenteditable
+        >El proceso de selección de porcelana fue largo. Tal vez tener un
+        catálogo curado más reducido ayudaría a tomar decisiones más
+        rápido.</span
+      >
+    </div>
+    <div class="ot2">
+      <div>
+        <div class="lb">¿Recomendarías Kanan?</div>
+        <div style="margin-top: 6px; font-size: 12px">
+          <span style="color: var(--accent); font-weight: 700"
+            >● Sí, sin dudarlo</span
+          >
+          &nbsp;&nbsp; ○ Tal vez &nbsp;&nbsp; ○ No
+        </div>
+      </div>
+      <div>
+        <div class="lb">¿Podemos usar tu testimonio?</div>
+        <div style="margin-top: 6px; font-size: 12px">
+          <span style="color: var(--accent); font-weight: 700"
+            >● Sí, con mi nombre</span
+          >
+          &nbsp;&nbsp; ○ Sí, anónimo &nbsp;&nbsp; ○ No
+        </div>
+      </div>
+    </div>
+    <div class="sd">Tu testimonio (opcional)</div>
+    <div class="trm" style="margin-top: 0; min-height: 50px">
+      <span class="e" contenteditable
+        >"Confié mi cocina a Kanan y la entregaron mejor de lo que imaginé. La
+        organización y el respeto por los plazos fueron una sorpresa
+        grata."</span
+      >
+    </div>
+    <div class="sgs">
+      <div>
+        <div class="sl"></div>
+        <div class="sll">
+          Cliente · <span class="e" contenteditable>María González</span>
+        </div>
+      </div>
+      <div></div>
+    </div>
+    <div class="df">
+      <span>KANAN · ES-2026-0001 · Confidencial</span
+      ><span>HOLA@KANAN.DO · Gracias por confiar en nosotros</span>
+    </div>
+  </div>
+
+  <div class="doc" id="ht">
+    <div class="hint">Haz clic en cualquier campo para editar</div>
+    <div class="dh">
+      <div class="lw">
+        <div class="km"></div>
+        <div>
+          <span class="wk">KANAN</span><span class="ws">REMODELACIONES</span>
+        </div>
+      </div>
+      <div class="dr">
+        <div class="dty">Hoja de Tiempo Semanal</div>
+        <div class="dn"><span class="e" contenteditable>HT-2026-S20</span></div>
+        <div class="dd">
+          Semana <span class="e" contenteditable>11–17 May 2026</span>
+        </div>
+      </div>
+    </div>
+    <div class="ot2">
+      <div>
+        <div class="lb">Proyecto</div>
+        <span class="ov e" contenteditable
+          >Remodelación Cocina + Área Social</span
+        >
+      </div>
+      <div>
+        <div class="lb">Supervisor</div>
+        <span class="ov e" contenteditable>Ramón Mejía</span>
+      </div>
+      <div>
+        <div class="lb">Período</div>
+        <span class="ov e" contenteditable>Lunes 11 — Sábado 17 Mayo 2026</span>
+      </div>
+      <div>
+        <div class="lb">Estado</div>
+        <div style="margin-top: 6px">
+          <span class="badge bp">Pendiente de pago</span>
+        </div>
+      </div>
+    </div>
+    <div class="sd">Asistencia · Días trabajados</div>
+    <div style="overflow-x: auto">
+      <table style="table-layout: auto; font-size: 11px">
+        <thead>
+          <tr>
+            <th style="text-align: left">Personal</th>
+            <th class="r">L</th>
+            <th class="r">M</th>
+            <th class="r">M</th>
+            <th class="r">J</th>
+            <th class="r">V</th>
+            <th class="r">S</th>
+            <th class="r">Días</th>
+            <th class="r">Tarifa</th>
+            <th class="r">Total RD$</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <span class="e" contenteditable>Ramón Mejía</span><br /><span
+                style="color: var(--p)"
+                >Maestro</span
+              >
+            </td>
+            <td class="r"><span class="e" contenteditable>1</span></td>
+            <td class="r"><span class="e" contenteditable>1</span></td>
+            <td class="r"><span class="e" contenteditable>1</span></td>
+            <td class="r"><span class="e" contenteditable>1</span></td>
+            <td class="r"><span class="e" contenteditable>1</span></td>
+            <td class="r"><span class="e" contenteditable>0.5</span></td>
+            <td class="r"><span class="e" contenteditable>5.5</span></td>
+            <td class="r sm"><span class="e" contenteditable>2,500</span></td>
+            <td class="r"><span class="e" contenteditable>13,750</span></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="e" contenteditable>José Pérez</span><br /><span
+                style="color: var(--p)"
+                >Ayudante</span
+              >
+            </td>
+            <td class="r"><span class="e" contenteditable>1</span></td>
+            <td class="r"><span class="e" contenteditable>1</span></td>
+            <td class="r"><span class="e" contenteditable>1</span></td>
+            <td class="r"><span class="e" contenteditable>1</span></td>
+            <td class="r"><span class="e" contenteditable>1</span></td>
+            <td class="r"><span class="e" contenteditable>0.5</span></td>
+            <td class="r"><span class="e" contenteditable>5.5</span></td>
+            <td class="r sm"><span class="e" contenteditable>1,500</span></td>
+            <td class="r"><span class="e" contenteditable>8,250</span></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="e" contenteditable>Pedro Rosario</span><br /><span
+                style="color: var(--p)"
+                >Eléctrico</span
+              >
+            </td>
+            <td class="r">—</td>
+            <td class="r"><span class="e" contenteditable>1</span></td>
+            <td class="r"><span class="e" contenteditable>1</span></td>
+            <td class="r"><span class="e" contenteditable>1</span></td>
+            <td class="r">—</td>
+            <td class="r">—</td>
+            <td class="r"><span class="e" contenteditable>3</span></td>
+            <td class="r sm"><span class="e" contenteditable>3,000</span></td>
+            <td class="r"><span class="e" contenteditable>9,000</span></td>
+          </tr>
+          <tr>
+            <td>
+              <span class="e" contenteditable>Luis García</span><br /><span
+                style="color: var(--p)"
+                >Porcelanero</span
+              >
+            </td>
+            <td class="r">—</td>
+            <td class="r">—</td>
+            <td class="r">—</td>
+            <td class="r"><span class="e" contenteditable>1</span></td>
+            <td class="r"><span class="e" contenteditable>1</span></td>
+            <td class="r"><span class="e" contenteditable>0.5</span></td>
+            <td class="r"><span class="e" contenteditable>2.5</span></td>
+            <td class="r sm"><span class="e" contenteditable>2,800</span></td>
+            <td class="r"><span class="e" contenteditable>7,000</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tot">
+      <div class="ti">
+        <div class="tl">TOTAL DÍAS-PERSONA</div>
+        <div class="tv"><span class="e" contenteditable>16.5</span></div>
+      </div>
+      <div class="ti g">
+        <div class="tl">TOTAL NÓMINA RD$</div>
+        <div class="tv"><span class="e" contenteditable>38,000</span></div>
+      </div>
+    </div>
+    <div class="sd">Observaciones</div>
+    <div class="trm" style="min-height: 40px; margin-top: 0">
+      <span class="e" contenteditable
+        >Sábado 17 jornada media (8am–12pm). Pedro solicita anticipo de RD$
+        5,000 por emergencia familiar — autorizado contra próxima quincena. Luis
+        inicia martes 19 con porcelana sala.</span
+      >
+    </div>
+    <div class="sd">Forma de pago</div>
+    <div
+      style="
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px 20px;
+      "
+    >
+      <div>
+        <div class="lb">Método</div>
+        <div style="font-size: 13px; font-weight: 700; margin-top: 3px">
+          <span class="e" contenteditable>Efectivo</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Fecha de pago</div>
+        <div style="font-size: 13px; font-weight: 700; margin-top: 3px">
+          <span class="e" contenteditable>Sábado 17 May 2026</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Hora entrega</div>
+        <div style="font-size: 13px; font-weight: 700; margin-top: 3px">
+          <span class="e" contenteditable>13:00 en obra</span>
+        </div>
+      </div>
+    </div>
+    <div class="sgs">
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Supervisor · Reporta</div>
+      </div>
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Director · Autoriza pago</div>
+      </div>
+    </div>
+    <div class="df">
+      <span>KANAN · HT-2026-S20 · Uso interno</span
+      ><span>HOLA@KANAN.DO · No divulgar</span>
+    </div>
+  </div>
+
+  <div class="doc" id="rm">
+    <div class="hint">Haz clic en cualquier campo para editar</div>
+    <div class="dh">
+      <div class="lw">
+        <div class="km"></div>
+        <div>
+          <span class="wk">KANAN</span><span class="ws">REMODELACIONES</span>
+        </div>
+      </div>
+      <div class="dr">
+        <div class="dty">Requisición de Materiales</div>
+        <div class="dn">
+          <span class="e" contenteditable>RM-2026-0042</span>
+        </div>
+        <div class="dd">
+          <span class="e" contenteditable>14 · MAY · 2026</span>
+        </div>
+      </div>
+    </div>
+    <div class="cb">
+      <div>
+        <div class="lb">Solicitar a</div>
+        <div class="cn">
+          <span class="e" contenteditable>Plaza Lama Sucursal Naco</span>
+        </div>
+        <div class="cs">
+          <span class="e" contenteditable
+            >Av. Tiradentes esq. 27 de Febrero</span
+          ><br />Atn:
+          <span class="e" contenteditable>Manuel Hernández — Ventas</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Solicitado por</div>
+        <div class="cn" style="font-size: 12px">
+          <span class="e" contenteditable>Ramón Mejía · Maestro</span>
+        </div>
+        <div class="cs" style="margin-top: 4px">
+          <span class="e" contenteditable>Autorizado: Ángel Báez</span>
+        </div>
+      </div>
+    </div>
+    <div class="ot2">
+      <div>
+        <div class="lb">Proyecto / Ref.</div>
+        <span class="ov e" contenteditable>OT-2026-0001 · Cocina Piantini</span>
+      </div>
+      <div>
+        <div class="lb">Urgencia</div>
+        <div style="margin-top: 6px">
+          <span class="badge bp">Para mañana 7am</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Forma de entrega</div>
+        <span class="ov e" contenteditable>Despacho a obra (Piantini)</span>
+      </div>
+      <div>
+        <div class="lb">Forma de pago</div>
+        <span class="ov e" contenteditable>Crédito 30 días — Cuenta Kanan</span>
+      </div>
+    </div>
+    <div class="sd">Materiales requeridos</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 30px">#</th>
+          <th>Descripción</th>
+          <th>Especificación</th>
+          <th class="r">Und</th>
+          <th class="r">Cant.</th>
+          <th class="r">P. Ref.</th>
+          <th class="r">Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="sm">01</td>
+          <td><span class="e" contenteditable>Placas drywall ½"</span></td>
+          <td class="sm">
+            <span class="e" contenteditable>4×8 pies regular</span>
+          </td>
+          <td class="r sm"><span class="e" contenteditable>Und</span></td>
+          <td class="r"><span class="e" contenteditable>40</span></td>
+          <td class="r sm"><span class="e" contenteditable>485</span></td>
+          <td class="r"><span class="e" contenteditable>19,400</span></td>
+        </tr>
+        <tr>
+          <td class="sm">02</td>
+          <td><span class="e" contenteditable>Masilla en polvo</span></td>
+          <td class="sm">
+            <span class="e" contenteditable>Saco 18 kg USG</span>
+          </td>
+          <td class="r sm"><span class="e" contenteditable>Saco</span></td>
+          <td class="r"><span class="e" contenteditable>15</span></td>
+          <td class="r sm"><span class="e" contenteditable>520</span></td>
+          <td class="r"><span class="e" contenteditable>7,800</span></td>
+        </tr>
+        <tr>
+          <td class="sm">03</td>
+          <td>
+            <span class="e" contenteditable>Tape de papel para drywall</span>
+          </td>
+          <td class="sm"><span class="e" contenteditable>Rollo 75m</span></td>
+          <td class="r sm"><span class="e" contenteditable>Rollo</span></td>
+          <td class="r"><span class="e" contenteditable>4</span></td>
+          <td class="r sm"><span class="e" contenteditable>180</span></td>
+          <td class="r"><span class="e" contenteditable>720</span></td>
+        </tr>
+        <tr>
+          <td class="sm">04</td>
+          <td><span class="e" contenteditable>Tornillo drywall negro</span></td>
+          <td class="sm">
+            <span class="e" contenteditable>1¼" caja 1000 uds</span>
+          </td>
+          <td class="r sm"><span class="e" contenteditable>Caja</span></td>
+          <td class="r"><span class="e" contenteditable>3</span></td>
+          <td class="r sm"><span class="e" contenteditable>320</span></td>
+          <td class="r"><span class="e" contenteditable>960</span></td>
+        </tr>
+        <tr>
+          <td class="sm">05</td>
+          <td><span class="e" contenteditable>Perfilería metálica</span></td>
+          <td class="sm">
+            <span class="e" contenteditable>Canal U 3m calibre 24</span>
+          </td>
+          <td class="r sm"><span class="e" contenteditable>Und</span></td>
+          <td class="r"><span class="e" contenteditable>40</span></td>
+          <td class="r sm"><span class="e" contenteditable>165</span></td>
+          <td class="r"><span class="e" contenteditable>6,600</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="tot">
+      <div class="ti">
+        <div class="tl">SUBTOTAL</div>
+        <div class="tv"><span class="e" contenteditable>35,480</span></div>
+      </div>
+      <div class="ti">
+        <div class="tl">ITBIS 18%</div>
+        <div class="tv"><span class="e" contenteditable>6,386</span></div>
+      </div>
+      <div class="ti g">
+        <div class="tl">TOTAL RD$</div>
+        <div class="tv"><span class="e" contenteditable>41,866</span></div>
+      </div>
+    </div>
+    <div class="sd">Especificaciones de despacho</div>
+    <div class="trm" style="margin-top: 0">
+      <span class="e" contenteditable
+        >Dirección de entrega: Calle El Vergel #42, Apto 3B, Piantini. Recibe:
+        Ramón Mejía (809-555-0123). Acceso por ascensor de servicio. Horario:
+        7am–10am del 15 de mayo. Coordinar llegada con 30 minutos de
+        anticipación.</span
+      >
+    </div>
+    <div class="sd">Presupuesto autorizado</div>
+    <div
+      style="
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px 20px;
+      "
+    >
+      <div>
+        <div class="lb">Tope autorizado</div>
+        <div style="font-size: 13px; font-weight: 700; margin-top: 3px">
+          RD$ <span class="e" contenteditable>45,000</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Esta requisición</div>
+        <div
+          style="
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-top: 3px;
+          "
+        >
+          RD$ <span class="e" contenteditable>41,866</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Margen restante</div>
+        <div style="font-size: 13px; font-weight: 700; margin-top: 3px">
+          <span class="e" contenteditable>RD$ 3,134</span>
+        </div>
+      </div>
+    </div>
+    <div class="sgs">
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Solicitado · Maestro de obra</div>
+      </div>
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Autorizado · Director Operaciones</div>
+      </div>
+    </div>
+    <div class="df">
+      <span>KANAN · RM-2026-0042 · Uso interno</span
+      ><span>HOLA@KANAN.DO · Crédito a Kanan Remodelaciones SRL</span>
+    </div>
+  </div>
+
+  <div class="doc" id="ar">
+    <div class="hint">Haz clic en cualquier campo para editar</div>
+    <div class="dh">
+      <div class="lw">
+        <div class="km"></div>
+        <div>
+          <span class="wk">KANAN</span><span class="ws">REMODELACIONES</span>
+        </div>
+      </div>
+      <div class="dr">
+        <div class="dty">Acta de Reunión</div>
+        <div class="dn">
+          <span class="e" contenteditable>AR-2026-0007</span>
+        </div>
+        <div class="dd">
+          <span class="e" contenteditable>22 · MAY · 2026 · 10:00</span>
+        </div>
+      </div>
+    </div>
+    <div class="cb">
+      <div>
+        <div class="lb">Proyecto</div>
+        <div class="cn" style="font-size: 12px">
+          <span class="e" contenteditable
+            >Remodelación Cocina + Área Social</span
+          >
+        </div>
+        <div class="cs">
+          Cliente: <span class="e" contenteditable>María González</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Lugar / modalidad</div>
+        <div
+          class="cs"
+          style="font-size: 12px; color: var(--c); font-weight: 500"
+        >
+          <span class="e" contenteditable
+            >Obra · Calle El Vergel #42, Apto 3B</span
+          >
+        </div>
+        <div class="cs" style="margin-top: 4px">
+          Duración: <span class="e" contenteditable>45 minutos</span>
+        </div>
+      </div>
+    </div>
+    <div class="sd">Asistentes</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Rol</th>
+          <th class="r">Asistencia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="e" contenteditable>María González</span></td>
+          <td class="sm"><span class="e" contenteditable>Cliente</span></td>
+          <td class="r"><span class="badge ba">Presente</span></td>
+        </tr>
+        <tr>
+          <td><span class="e" contenteditable>Ángel Báez</span></td>
+          <td class="sm">
+            <span class="e" contenteditable>Director Operaciones</span>
+          </td>
+          <td class="r"><span class="badge ba">Presente</span></td>
+        </tr>
+        <tr>
+          <td><span class="e" contenteditable>Ramón Mejía</span></td>
+          <td class="sm">
+            <span class="e" contenteditable>Maestro de obra</span>
+          </td>
+          <td class="r"><span class="badge ba">Presente</span></td>
+        </tr>
+        <tr>
+          <td><span class="e" contenteditable>Luis Acosta</span></td>
+          <td class="sm">
+            <span class="e" contenteditable>Diseñador (cliente)</span>
+          </td>
+          <td class="r"><span class="badge bd">Ausente</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="sd">Agenda tratada</div>
+    <ul class="ul">
+      <li>
+        <span class="e" contenteditable>Revisión de avance — Semana 3</span>
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Selección final de porcelana y luminarias</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Revisión de presupuesto y posibles cambios</span
+        >
+      </li>
+      <li>
+        <span class="e" contenteditable
+          >Confirmación de fechas para fase de acabados</span
+        >
+      </li>
+    </ul>
+    <div class="sd">Decisiones tomadas</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 30px">#</th>
+          <th>Decisión</th>
+          <th>Justificación</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="sm">01</td>
+          <td>
+            <span class="e" contenteditable
+              >Cambiar porcelana a Alaplana 60×60 Beige Arena</span
+            >
+          </td>
+          <td class="sm">
+            <span class="e" contenteditable
+              >Mejor coordinación con cocina y disponibilidad inmediata</span
+            >
+          </td>
+        </tr>
+        <tr>
+          <td class="sm">02</td>
+          <td>
+            <span class="e" contenteditable
+              >Añadir 3 puntos de luz LED bajo gabinetes</span
+            >
+          </td>
+          <td class="sm">
+            <span class="e" contenteditable
+              >Mejora funcional sobre área de trabajo · Genera OC</span
+            >
+          </td>
+        </tr>
+        <tr>
+          <td class="sm">03</td>
+          <td>
+            <span class="e" contenteditable
+              >Mantener fecha de entrega original (30 Jun)</span
+            >
+          </td>
+          <td class="sm">
+            <span class="e" contenteditable
+              >Cambios menores absorbibles en cronograma actual</span
+            >
+          </td>
+        </tr>
+        <tr>
+          <td class="sm">04</td>
+          <td>
+            <span class="e" contenteditable
+              >Cliente provee electrodomésticos · No incluidos</span
+            >
+          </td>
+          <td class="sm">
+            <span class="e" contenteditable
+              >Confirmado por escrito · Coordinar entrega 25 Jun</span
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="sd">Acción items</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Tarea</th>
+          <th>Responsable</th>
+          <th class="r">Fecha límite</th>
+          <th class="r">Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <span class="e" contenteditable
+              >Generar OC por luminarias bajo gabinete</span
+            >
+          </td>
+          <td class="sm"><span class="e" contenteditable>Ángel B.</span></td>
+          <td class="r sm"><span class="e" contenteditable>23 May</span></td>
+          <td class="r"><span class="badge bp">Pendiente</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable
+              >Confirmar disponibilidad porcelana con suplidor</span
+            >
+          </td>
+          <td class="sm"><span class="e" contenteditable>Ramón M.</span></td>
+          <td class="r sm"><span class="e" contenteditable>23 May</span></td>
+          <td class="r"><span class="badge bp">Pendiente</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable
+              >Cliente envía detalle de electrodomésticos</span
+            >
+          </td>
+          <td class="sm"><span class="e" contenteditable>María G.</span></td>
+          <td class="r sm"><span class="e" contenteditable>26 May</span></td>
+          <td class="r"><span class="badge bp">Pendiente</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="e" contenteditable
+              >Programar siguiente reunión de avance</span
+            >
+          </td>
+          <td class="sm"><span class="e" contenteditable>Ángel B.</span></td>
+          <td class="r sm"><span class="e" contenteditable>24 May</span></td>
+          <td class="r"><span class="badge ba">Hecho</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="sd">Próxima reunión</div>
+    <div
+      style="
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px 20px;
+      "
+    >
+      <div>
+        <div class="lb">Fecha</div>
+        <div style="font-size: 13px; font-weight: 700; margin-top: 3px">
+          <span class="e" contenteditable>05 · JUN · 2026 · 10:00</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Modalidad</div>
+        <div style="font-size: 13px; font-weight: 700; margin-top: 3px">
+          <span class="e" contenteditable>Obra · Walkthrough</span>
+        </div>
+      </div>
+      <div>
+        <div class="lb">Tema</div>
+        <div style="font-size: 13px; font-weight: 700; margin-top: 3px">
+          <span class="e" contenteditable>Revisión fase acabados</span>
+        </div>
+      </div>
+    </div>
+    <div class="sgs">
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Cliente · Conformidad</div>
+      </div>
+      <div>
+        <div class="sl"></div>
+        <div class="sll">Levanta acta · Ángel Báez</div>
+      </div>
+    </div>
+    <div class="df">
+      <span>KANAN · AR-2026-0007 · Documento de seguimiento</span
+      ><span>HOLA@KANAN.DO · Santo Domingo, RD</span>
+    </div>
+  </div>
+</main>
+<script>
+  const KM =
+    '<svg width="28" height="35" viewBox="0 0 32 40"><rect x="0" width="8" height="40" fill="#1F1D1B"/><rect class="kt" x="24" width="8" height="8"/><rect x="16" y="8" width="8" height="8" fill="#1F1D1B"/><rect x="8" y="16" width="8" height="8" fill="#1F1D1B"/><rect x="16" y="24" width="8" height="8" fill="#1F1D1B"/><rect class="kb" x="24" y="32" width="8" height="8"/></svg>';
+  document.querySelectorAll(".km").forEach((el) => (el.innerHTML = KM));
+
+  document.body.classList.add("m-o");
+
+  function sw(id, btn) {
+    document.querySelectorAll(".doc").forEach((d) => d.classList.remove("on"));
+    document.querySelectorAll(".nt").forEach((b) => b.classList.remove("on"));
+    document.getElementById(id).classList.add("on");
+    btn.classList.add("on");
+  }
+
+  function sm(btn) {
+    const m = btn.dataset.m;
+    document.body.classList.remove("m-base", "m-t", "m-o", "m-plena");
+    document.body.classList.add("m-" + m);
+    document.querySelectorAll(".mb").forEach((b) => b.classList.remove("on"));
+    btn.classList.add("on");
+  }
+
+  const phases = [
+    { n: "01 · Demolición", s: 1, e: 1, c: "#B95D34" },
+    { n: "02 · Estructura", s: 1, e: 2, c: "#B95D34" },
+    { n: "03 · Eléctrica", s: 2, e: 3, c: "#6B7A3F" },
+    { n: "04 · Plomería", s: 2, e: 3, c: "#6B7A3F" },
+    { n: "05 · Drywall / Plafón", s: 3, e: 5, c: "#6B7A3F" },
+    { n: "06 · Porcelana", s: 4, e: 6, c: "#1F1D1B" },
+    { n: "07 · Carpintería", s: 5, e: 7, c: "#1F1D1B" },
+    { n: "08 · Pintura / Acabados", s: 6, e: 8, c: "#1F1D1B" },
+  ];
+  let h = '<div class="gh"><div class="ghc">Fase</div>';
+  for (let w = 1; w <= 8; w++) h += `<div class="ghc">Sem ${w}</div>`;
+  h += "</div>";
+  phases.forEach((p) => {
+    h += `<div class="gr"><div class="gp">${p.n}</div>`;
+    for (let w = 1; w <= 8; w++)
+      h += `<div class="gc">${w >= p.s && w <= p.e ? `<div class="gb" style="background:${p.c}"></div>` : ""}</div>`;
+    h += "</div>";
+  });
+  document.getElementById("gantt-grid").innerHTML = h;
+</script>

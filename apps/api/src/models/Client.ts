@@ -1,0 +1,32 @@
+import { Schema, model, Document as MongoDoc } from 'mongoose';
+
+export interface IClient extends MongoDoc {
+  name: string;
+  cedula?: string;
+  phone?: string;
+  email?: string;
+  address1?: string;
+  address2?: string;
+  type: 'residencial' | 'comercial' | 'institucional';
+}
+
+const ClientSchema = new Schema<IClient>(
+  {
+    name: { type: String, required: true },
+    cedula: String,
+    phone: String,
+    email: String,
+    address1: String,
+    address2: String,
+    type: {
+      type: String,
+      enum: ['residencial', 'comercial', 'institucional'],
+      default: 'residencial',
+    },
+  },
+  { timestamps: true }
+);
+
+ClientSchema.index({ name: 'text' });
+
+export default model<IClient>('Client', ClientSchema);

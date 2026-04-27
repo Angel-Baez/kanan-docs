@@ -1,0 +1,70 @@
+@media print {
+  /* Hide shell elements */
+  nav,
+  .kanan-theme-bar,
+  [class*="modes"],
+  .kanan-canvas .hint,
+  .kanan-canvas .add-row-btn,
+  .kanan-canvas .row-actions {
+    display: none !important;
+  }
+
+  body { background: #F3EDE3; }
+
+  .kanan-canvas main {
+    padding: 0;
+    max-width: none;
+  }
+
+  .kanan-canvas .doc {
+    padding: 28px;
+  }
+
+  .kanan-canvas .e--input {
+    border-bottom: none !important;
+    background: transparent !important;
+  }
+
+  .kanan-canvas .e {
+    border-bottom: none !important;
+    background: transparent !important;
+  }
+
+  /* Badges con borde — los rgba(.13) desaparecen en B/N */
+  .kanan-canvas .bp { background: transparent !important; border: 1px solid var(--t); color: var(--t) !important; }
+  .kanan-canvas .ba { background: transparent !important; border: 1px solid var(--o); color: var(--o) !important; }
+  .kanan-canvas .bd { background: transparent !important; border: 1px solid var(--p); color: var(--p) !important; }
+
+  /* Tablas con scroll dejan de scrollearse y rompen al ancho disponible */
+  .kanan-canvas [style*="overflow-x"] { overflow-x: visible !important; }
+  .kanan-canvas table { table-layout: auto !important; }
+
+  /* Preserva colores donde sí los necesitamos (badges, accentos, barras gantt) */
+  .kanan-canvas .badge,
+  .kanan-canvas .pv-ac,
+  .kanan-canvas .pv-trm,
+  .kanan-canvas .gb {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* Gantt no se rompe entre páginas */
+  .kanan-canvas .gw { page-break-inside: avoid; }
+
+  /* Radios de la encuesta — accentColor no se preserva en print, usamos box-shadow */
+  .kanan-canvas .es-radio {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    border: 1.5px solid var(--c);
+    border-radius: 50%;
+    background: transparent;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .kanan-canvas .es-radio:checked {
+    background: var(--c);
+    box-shadow: inset 0 0 0 2px #fff, inset 0 0 0 12px var(--c);
+  }
+}

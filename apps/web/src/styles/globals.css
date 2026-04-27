@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Archivo:wght@900&family=Fraunces:ital,wght@1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── KANAN brand tokens (shared with .kanan-canvas) ─────────────────────── */
+:root {
+  --kanan-c:  #1F1D1B;
+  --kanan-t:  #B95D34;
+  --kanan-o:  #6B7A3F;
+  --kanan-cr: #F3EDE3;
+  --kanan-p:  #8B8279;
+
+  /* Accent defaults to olivo (Modo O) */
+  --kanan-accent:      var(--kanan-o);
+  --kanan-accent-soft: rgba(107, 122, 63, .35);
+
+  /* shadcn/ui CSS variables — mapped to KANAN palette */
+  --background:   0 0% 100%;
+  --foreground:   20 5% 10%;
+  --card:         36 33% 94%;
+  --card-foreground: 20 5% 10%;
+  --popover:      36 33% 94%;
+  --popover-foreground: 20 5% 10%;
+  --primary:      20 5% 10%;
+  --primary-foreground: 36 33% 94%;
+  --secondary:    36 14% 87%;
+  --secondary-foreground: 20 5% 10%;
+  --muted:        36 14% 87%;
+  --muted-foreground: 22 5% 51%;
+  --accent:       36 14% 87%;
+  --accent-foreground: 20 5% 10%;
+  --destructive:  19 63% 47%;
+  --destructive-foreground: 36 33% 94%;
+  --border:       36 14% 80%;
+  --input:        36 14% 80%;
+  --ring:         20 5% 10%;
+  --radius:       0.25rem;
+}
+
+body.m-base {
+  --kanan-accent:      var(--kanan-p);
+  --kanan-accent-soft: rgba(139, 130, 121, .35);
+}
+body.m-t {
+  --kanan-accent:      var(--kanan-t);
+  --kanan-accent-soft: rgba(185, 93, 52, .35);
+}
+body.m-o {
+  --kanan-accent:      var(--kanan-o);
+  --kanan-accent-soft: rgba(107, 122, 63, .35);
+}
+body.m-plena {
+  --kanan-accent:      var(--kanan-o);
+  --kanan-accent-soft: rgba(107, 122, 63, .35);
+}
+
+/* ── Shell base ──────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  background: #c8bfb0;
+  font-family: 'IBM Plex Mono', monospace;
+  color: var(--kanan-c);
+  min-height: 100vh;
+}
