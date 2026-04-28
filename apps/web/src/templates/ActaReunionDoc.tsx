@@ -76,8 +76,8 @@ export function ActaReunionDoc() {
           {f.decisions.map((d, i) => (
             <tr key={i}>
               <td className="sm">{String(i + 1).padStart(2, '0')}</td>
-              <td><EditableField value={d.description} onChange={(v) => { const arr = f.decisions.map((x, j) => j === i ? { ...x, description: v } : x); set('decisions', arr); }} size={26} /></td>
-              <td className="sm"><EditableField value={d.justification} onChange={(v) => { const arr = f.decisions.map((x, j) => j === i ? { ...x, justification: v } : x); set('decisions', arr); }} size={22} /></td>
+              <td><EditableField value={d.description} onChange={(v) => { const arr = f.decisions.map((x, j) => j === i ? { ...x, description: v } : x); set('decisions', arr); }} size={26} multiline /></td>
+              <td className="sm"><EditableField value={d.justification} onChange={(v) => { const arr = f.decisions.map((x, j) => j === i ? { ...x, justification: v } : x); set('decisions', arr); }} size={22} multiline /></td>
               <td><span className="row-actions"><button className="row-del" onClick={() => set('decisions', f.decisions.filter((_, j) => j !== i))}>×</button></span></td>
             </tr>
           ))}

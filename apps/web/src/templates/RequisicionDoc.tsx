@@ -64,7 +64,7 @@ export function RequisicionDoc() {
         </div>
         <div>
           <div className="lb">Proyecto / Referencia</div>
-          <div className="ov"><EditableField value={f.projectRef} onChange={(v) => set('projectRef', v)} /></div>
+          <div className="ov"><EditableField value={f.projectName} onChange={(v) => set('projectName', v)} /></div>
         </div>
         <div>
           <div className="lb">Urgencia</div>

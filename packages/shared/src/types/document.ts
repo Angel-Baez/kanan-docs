@@ -471,7 +471,7 @@ export interface RmFields {
   requestedBy: string;
   authorizedBy: string;
   otRef: string;
-  projectRef: string;
+  projectName: string;
   urgency: string;
   deliveryMethod: string;
   paymentTerms: string;

@@ -507,7 +507,7 @@ const defaults: Record<TemplateId, () => DocumentFields> = {
     requestedBy: "",
     authorizedBy: "",
     otRef: "",
-    projectRef: "",
+    projectName: "",
     urgency: "Normal",
     deliveryMethod: "Entrega en obra",
     paymentTerms: "Crédito 30 días",

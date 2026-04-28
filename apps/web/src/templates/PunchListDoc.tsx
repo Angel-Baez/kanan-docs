@@ -68,10 +68,10 @@ export function PunchListDoc() {
           {f.items.map((item, i) => (
             <tr key={i}>
               <td className="sm">{String(item.number).padStart(2, '0')}</td>
-              <td><EditableField value={item.location} onChange={(v) => updateItem(i, 'location', v)} size={12} /></td>
+              <td><EditableField value={item.location} onChange={(v) => updateItem(i, 'location', v)} size={8} /></td>
               <td><EditableField value={item.description} onChange={(v) => updateItem(i, 'description', v)} size={22} /></td>
-              <td><EditableField value={item.responsible} onChange={(v) => updateItem(i, 'responsible', v)} size={14} /></td>
-              <td className="r sm"><EditableField value={item.date} onChange={(v) => updateItem(i, 'date', v)} size={10} /></td>
+              <td><EditableField value={item.responsible} onChange={(v) => updateItem(i, 'responsible', v)} size={10} /></td>
+              <td className="r sm"><EditableField value={item.date} onChange={(v) => updateItem(i, 'date', v)} size={6} /></td>
               <td className="r">
                 <select
                   value={item.status}

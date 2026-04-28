@@ -6,7 +6,7 @@ import { EditableField } from '../components/ui/EditableField.tsx';
 import { SignatureBlock } from '../components/ui/SignatureBlock.tsx';
 import { useDocument } from '../context/DocumentContext.tsx';
 
-const DAYS = ['L', 'M', 'M', 'J', 'V', 'S'];
+const DAYS = ['L', 'M', 'X', 'J', 'V', 'S'];
 
 function fmt(n: number) { return n.toLocaleString('es-DO', { minimumFractionDigits: 2 }); }
 
