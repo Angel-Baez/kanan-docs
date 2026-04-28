@@ -100,6 +100,7 @@ export interface FacFields {
   dueDate: string;
   bankName: string;
   bankAccount: string;
+  paymentStatus?: string;
 }
 
 // ── 03 · REC — Recibo de Pago ─────────────────────────────────────────────
@@ -166,6 +167,7 @@ export interface OtFields {
 // ── 06 · GANTT — Cronograma de Obra ──────────────────────────────────────
 export interface GanttFields {
   docNumber: string;
+  date: string;
   period: string;
   projectName: string;
   clientName: string;
@@ -186,6 +188,7 @@ export interface RegRow {
 
 export interface RegFields {
   docNumber: string;
+  date: string;
   updatedDate: string;
   rows: RegRow[];
 }
@@ -423,7 +426,6 @@ export interface EsFields {
   docNumber: string;
   date: string;
   clientName: string;
-  clientCedula: string;
   projectAndDate: string;
   ratings: EsRating[];
   bestThings: string;

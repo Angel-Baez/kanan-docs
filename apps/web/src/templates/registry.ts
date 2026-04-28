@@ -121,12 +121,6 @@ const DEFAULT_GANTT_PHASES = [
   { name: "08 · Limpieza", startWeek: 8, endWeek: 8, color: "#1F1D1B" },
 ];
 
-// ── Lazy imports (avoids circular deps at module init) ────────────────────
-const lazy = (path: string) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (() => null) as any; // replaced at runtime by direct import in registry below
-};
-
 // ── Default fields factories ───────────────────────────────────────────────
 const defaults: Record<TemplateId, () => DocumentFields> = {
   cot: (): CotFields => ({
@@ -166,6 +160,7 @@ const defaults: Record<TemplateId, () => DocumentFields> = {
     dueDate: "",
     bankName: "Banco Popular",
     bankAccount: "000-000000-0",
+    paymentStatus: "pendiente",
   }),
   rec: (): RecFields => ({
     docNumber: "REC-2026-0001",
@@ -224,6 +219,7 @@ const defaults: Record<TemplateId, () => DocumentFields> = {
   }),
   gantt: (): GanttFields => ({
     docNumber: "GANTT-2026-0001",
+    date: today(),
     period: "",
     projectName: "",
     clientName: "",
@@ -232,6 +228,7 @@ const defaults: Record<TemplateId, () => DocumentFields> = {
   }),
   reg: (): RegFields => ({
     docNumber: "REG-2026-0001",
+    date: today(),
     updatedDate: today(),
     rows: [
       {
@@ -458,7 +455,6 @@ const defaults: Record<TemplateId, () => DocumentFields> = {
     docNumber: "ES-2026-0001",
     date: today(),
     clientName: "",
-    clientCedula: "",
     projectAndDate: "",
     ratings: [
       { aspect: "Comunicación y respuesta", score: 5 },

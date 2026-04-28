@@ -15,7 +15,7 @@ export function RequisicionDoc() {
 
   useEffect(() => {
     const subtotal = f.items.reduce((acc, it) => acc + it.subtotal, 0);
-    const itbis = Math.round(subtotal * 0.18);
+    const itbis = Math.round(subtotal * 18) / 100;
     set('subtotal', subtotal);
     set('itbis', itbis);
     set('total', subtotal + itbis);
@@ -97,7 +97,7 @@ export function RequisicionDoc() {
         <tbody>
           {f.items.map((item, i) => (
             <tr key={i}>
-              <td className="sm">{String(item.number).padStart(2, '0')}</td>
+              <td className="sm">{String(i + 1).padStart(2, '0')}</td>
               <td><EditableField value={item.description} onChange={(v) => updateItem(i, 'description', v)} size={18} /></td>
               <td className="sm"><EditableField value={item.spec} onChange={(v) => updateItem(i, 'spec', v)} size={14} /></td>
               <td className="r sm"><EditableField value={item.unit} onChange={(v) => updateItem(i, 'unit', v)} size={6} /></td>

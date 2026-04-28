@@ -93,13 +93,15 @@ export function DocumentProvider({
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isFirstRender = useRef(true);
 
+  const docId = doc._id;
+
   useEffect(() => {
     if (isFirstRender.current) { isFirstRender.current = false; return; }
     setSaveStatus('saving');
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(async () => {
       try {
-        await api.documents.patchFields(doc._id, fields);
+        await api.documents.patchFields(docId, fields);
         setSaveStatus('saved');
         setTimeout(() => setSaveStatus('idle'), 2000);
       } catch (err) {
@@ -111,7 +113,8 @@ export function DocumentProvider({
       }
     }, 800);
     return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-  }, [fields]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fields, docId]);
 
   return (
     <DocumentContext.Provider value={{ doc, fields, saveStatus, dispatch, setDoc }}>

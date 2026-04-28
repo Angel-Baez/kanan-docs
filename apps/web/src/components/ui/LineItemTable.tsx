@@ -30,7 +30,7 @@ export function LineItemTable({ itemsPath = 'items', showItbis = true }: LineIte
   // Recalculate totals whenever items change
   useEffect(() => {
     const subtotal = items.reduce((acc, it) => acc + (it.total ?? 0), 0);
-    const itbis = Math.round(subtotal * 0.18);
+    const itbis = Math.round(subtotal * 18) / 100;
     setField('subtotal', subtotal);
     setField('itbis', itbis);
     setField('total', subtotal + itbis);

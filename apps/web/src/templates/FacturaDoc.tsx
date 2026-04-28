@@ -92,7 +92,15 @@ export function FacturaDoc() {
         <div>
           <div className="lb">Estado</div>
           <div style={{ marginTop: 6 }}>
-            <span className="badge bp">Pendiente</span>
+            <select
+              value={f.paymentStatus ?? 'pendiente'}
+              onChange={(e) => set('paymentStatus', e.target.value)}
+              className={(f.paymentStatus ?? 'pendiente') === 'pendiente' ? 'badge bp' : 'badge bd'}
+              style={{ font: 'inherit', fontSize: 11, background: 'transparent', border: 'none', cursor: 'pointer', padding: '2px 8px' }}
+            >
+              <option value="pendiente">Pendiente</option>
+              <option value="hecho">Cobrada</option>
+            </select>
           </div>
         </div>
       </div>

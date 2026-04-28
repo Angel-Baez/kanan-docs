@@ -28,6 +28,13 @@ export function EstadoCuentaDoc() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [f.movements.map((m) => `${m.charge ?? ''}|${m.credit ?? ''}`).join(',')]);
 
+  // Persist derived balance so PDF export sees the correct value
+  useEffect(() => {
+    const derived = f.totalContracted - f.totalPaid;
+    if (derived !== f.balance) set('balance', derived);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [f.totalContracted, f.totalPaid]);
+
   const totalCargos = f.movements.reduce((s, m) => s + (m.charge ?? 0), 0);
   const totalAbonos = f.movements.reduce((s, m) => s + (m.credit ?? 0), 0);
   const saldo = f.totalContracted - f.totalPaid;
