@@ -85,7 +85,7 @@ export function LineItemTable({ itemsPath = 'items', showItbis = true }: LineIte
                 <EditableField
                   value={item.unit}
                   onChange={(v) => updateItem(i, 'unit', v)}
-                  size={8}
+                  size={4}
                 />
               </td>
               <td className="r">
@@ -93,7 +93,7 @@ export function LineItemTable({ itemsPath = 'items', showItbis = true }: LineIte
                   value={String(item.qty)}
                   onChange={(v) => updateItem(i, 'qty', parseFloat(v.replace(/,/g, '')) || 1)}
                   numeric
-                  size={5}
+                  size={4}
                 />
               </td>
               <td className="r">
@@ -101,7 +101,7 @@ export function LineItemTable({ itemsPath = 'items', showItbis = true }: LineIte
                   value={String(item.unitPrice)}
                   onChange={(v) => updateItem(i, 'unitPrice', parseFloat(v.replace(/,/g, '')) || 0)}
                   numeric
-                  size={10}
+                  size={4}
                 />
               </td>
               <td className="r">

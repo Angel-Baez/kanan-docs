@@ -21,9 +21,19 @@ export function ReciboDoc() {
       <DocHeader docType="Recibo de Pago" />
 
       <div className="sd">Datos del pago</div>
-      <div style={{ fontSize: 12, color: 'var(--p)', marginBottom: 6 }}>Recibimos de</div>
-      <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 14 }}>
-        <EditableField value={f.clientName} onChange={(v) => set('clientName', v)} size={30} />
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 32px', marginBottom: 14 }}>
+        <div>
+          <div style={{ fontSize: 12, color: 'var(--p)', marginBottom: 4 }}>Recibimos de</div>
+          <div style={{ fontSize: 16, fontWeight: 700 }}>
+            <EditableField value={f.clientName} onChange={(v) => set('clientName', v)} size={26} />
+          </div>
+        </div>
+        <div>
+          <div className="lb">Proyecto</div>
+          <div style={{ fontSize: 13, fontWeight: 500, marginTop: 4 }}>
+            <EditableField value={f.projectName ?? ''} onChange={(v) => set('projectName', v)} size={26} placeholder="nombre del proyecto" />
+          </div>
+        </div>
       </div>
       <div style={{ fontSize: 12, color: 'var(--p)', marginBottom: 4 }}>La cantidad de</div>
       <div className="rec-a">

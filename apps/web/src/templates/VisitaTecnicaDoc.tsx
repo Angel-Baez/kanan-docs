@@ -24,6 +24,10 @@ export function VisitaTecnicaDoc() {
             <br />
             <EditableField value={f.clientEmail} onChange={(v) => set('clientEmail', v)} size={24} />
           </div>
+          <div className="lb" style={{ marginTop: 10 }}>Proyecto (opcional)</div>
+          <div className="cs">
+            <EditableField value={f.projectName ?? ''} onChange={(v) => set('projectName', v)} size={26} placeholder="nombre del proyecto" />
+          </div>
         </div>
         <div>
           <div className="lb">Inmueble visitado</div>
@@ -42,7 +46,7 @@ export function VisitaTecnicaDoc() {
         </div>
         <div>
           <div className="lb">Área total estimada</div>
-          <div className="ov"><EditableField value={f.area} onChange={(v) => set('area', v)} size={10} /> m²</div>
+          <div className="ov"><EditableField value={f.area} onChange={(v) => set('area', v)} size={2} /> m²</div>
         </div>
         <div>
           <div className="lb">Año de construcción</div>

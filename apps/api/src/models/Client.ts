@@ -1,5 +1,13 @@
 import { Schema, model, Document as MongoDoc } from 'mongoose';
 
+export interface IHistorialEntry {
+  campo: string;
+  valorAnterior?: string;
+  valorNuevo?: string;
+  fecha: Date;
+  nota?: string;
+}
+
 export interface IClient extends MongoDoc {
   name: string;
   cedula?: string;
@@ -8,7 +16,19 @@ export interface IClient extends MongoDoc {
   address1?: string;
   address2?: string;
   type: 'residencial' | 'comercial' | 'institucional';
+  historial: IHistorialEntry[];
 }
+
+const HistorialEntrySchema = new Schema<IHistorialEntry>(
+  {
+    campo: { type: String, required: true },
+    valorAnterior: String,
+    valorNuevo: String,
+    fecha: { type: Date, default: Date.now },
+    nota: String,
+  },
+  { _id: false }
+);
 
 const ClientSchema = new Schema<IClient>(
   {
@@ -23,6 +43,7 @@ const ClientSchema = new Schema<IClient>(
       enum: ['residencial', 'comercial', 'institucional'],
       default: 'residencial',
     },
+    historial: { type: [HistorialEntrySchema], default: [] },
   },
   { timestamps: true }
 );

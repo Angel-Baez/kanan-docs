@@ -1,6 +1,7 @@
 import type {
   AeFields,
   ArFields,
+  CliFields,
   CotFields,
   CsFields,
   DocumentFields,
@@ -13,6 +14,7 @@ import type {
   OcFields,
   OtFields,
   PlFields,
+  PryFields,
   PvFields,
   RdFields,
   RecFields,
@@ -166,6 +168,7 @@ const defaults: Record<TemplateId, () => DocumentFields> = {
     docNumber: "REC-2026-0001",
     date: today(),
     clientName: "",
+    projectName: "",
     amount: 0,
     amountWords: "",
     concept: "",
@@ -325,6 +328,7 @@ const defaults: Record<TemplateId, () => DocumentFields> = {
     clientCedula: "",
     address1: "",
     address2: "",
+    projectName: "",
     propertyType: "Apartamento",
     area: "",
     constructionYear: "",
@@ -540,6 +544,31 @@ const defaults: Record<TemplateId, () => DocumentFields> = {
       { task: "", responsible: "", deadline: "", status: "pendiente" },
     ],
     nextMeeting: { date: "", modality: "", topic: "" },
+  }),
+  cli: (): CliFields => ({
+    docNumber: "CLI-2026-0001",
+    date: today(),
+    clientName: "",
+    cedula: "",
+    phone: "",
+    email: "",
+    address1: "",
+    address2: "",
+    type: "residencial",
+    notes: "",
+  }),
+  pry: (): PryFields => ({
+    docNumber: "PRY-2026-0001",
+    date: today(),
+    projectName: "",
+    clientName: "",
+    address1: "",
+    address2: "",
+    status: "cotizando",
+    startDate: "",
+    endDate: "",
+    totalAmount: "",
+    notes: "",
   }),
 };
 
@@ -778,6 +807,28 @@ export const TEMPLATE_META: Record<
     isInternal: true,
     phase: "admin",
   },
+  cli: {
+    id: "cli",
+    label: "CLI",
+    docType: "Ficha de Cliente",
+    prefix: "CLI",
+    defaultFields: defaults.cli,
+    hasLineItems: false,
+    hasTotals: false,
+    isInternal: true,
+    phase: "admin",
+  },
+  pry: {
+    id: "pry",
+    label: "PRY",
+    docType: "Ficha de Proyecto",
+    prefix: "PRY",
+    defaultFields: defaults.pry,
+    hasLineItems: false,
+    hasTotals: false,
+    isInternal: true,
+    phase: "admin",
+  },
 };
 
 export const TEMPLATE_ORDER: TemplateId[] = [
@@ -801,6 +852,8 @@ export const TEMPLATE_ORDER: TemplateId[] = [
   "ht",
   "rm",
   "ar",
+  "cli",
+  "pry",
 ];
 
 export function getTemplateMeta(id: TemplateId) {

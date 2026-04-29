@@ -69,6 +69,14 @@ function normalizeNumeric(raw: string): string {
   return s.replace(',', '.'); // decimal comma
 }
 
+// Format a plain numeric string for display (e.g. "201234" → "201.234,00")
+function formatNumericDisplay(raw: string): string {
+  if (raw === '' || raw === '-') return raw;
+  const n = parseFloat(raw);
+  if (isNaN(n)) return raw;
+  return n.toLocaleString('es-DO', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
 // Short single-line fields: real <input> styled to look inline
 function InlineInput({
   value,
@@ -82,12 +90,14 @@ function InlineInput({
   // Local buffer so numeric fields can hold mid-typing state (e.g. "1,500.")
   // without parent's parseFloat resetting the input on every keystroke.
   // Guard against undefined value (fields missing from older saved documents)
-  const [local, setLocal] = useState(value ?? '');
+  const [local, setLocal] = useState(() =>
+    numeric ? formatNumericDisplay(value ?? '') : (value ?? '')
+  );
 
   // Sync from parent when external state changes (e.g. LOAD document action)
   useEffect(() => {
-    setLocal(value ?? '');
-  }, [value]);
+    setLocal(numeric ? formatNumericDisplay(value ?? '') : (value ?? ''));
+  }, [value, numeric]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value;
@@ -97,9 +107,12 @@ function InlineInput({
   };
 
   const handleBlur = () => {
-    // Numeric fields: normalize thousands/decimal separators before propagating
-    // so parent parseFloat("1500.50") works regardless of how the user typed it.
-    if (numeric) onChange(normalizeNumeric(local ?? ''));
+    if (numeric) {
+      const normalized = normalizeNumeric(local ?? '');
+      onChange(normalized);
+      // Format for display so the user sees "201.234,00" not "201234"
+      setLocal(formatNumericDisplay(normalized));
+    }
   };
 
   // Respect explicit size as a minimum, but grow to fit actual content

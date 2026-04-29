@@ -4,8 +4,7 @@ import type { TemplateId, ThemeMode } from '../../../../packages/shared/src/inde
 export interface IDocument extends MongoDoc {
   templateId: TemplateId;
   title: string;
-  projectId?: Schema.Types.ObjectId;
-  clientId?: Schema.Types.ObjectId;
+  projectId: Schema.Types.ObjectId;
   theme: ThemeMode;
   fields: Record<string, unknown>;
 }
@@ -14,8 +13,7 @@ const DocumentSchema = new Schema<IDocument>(
   {
     templateId: { type: String, required: true },
     title: { type: String, default: 'Sin título' },
-    projectId: { type: Schema.Types.ObjectId, ref: 'Project' },
-    clientId: { type: Schema.Types.ObjectId, ref: 'Client' },
+    projectId: { type: Schema.Types.ObjectId, ref: 'Project', required: true },
     theme: {
       type: String,
       enum: ['base', 't', 'o', 'plena'],
@@ -27,7 +25,6 @@ const DocumentSchema = new Schema<IDocument>(
 );
 
 DocumentSchema.index({ templateId: 1, createdAt: -1 });
-DocumentSchema.index({ clientId: 1 });
 DocumentSchema.index({ projectId: 1 });
 
 export default model<IDocument>('Document', DocumentSchema);

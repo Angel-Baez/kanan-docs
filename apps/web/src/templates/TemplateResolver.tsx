@@ -19,6 +19,8 @@ import { EncuestaDoc } from './EncuestaDoc.tsx';
 import { HojaTiempoDoc } from './HojaTiempoDoc.tsx';
 import { RequisicionDoc } from './RequisicionDoc.tsx';
 import { ActaReunionDoc } from './ActaReunionDoc.tsx';
+import { ClienteDoc } from './ClienteDoc.tsx';
+import { ProyectoDoc } from './ProyectoDoc.tsx';
 
 const COMPONENTS: Record<TemplateId, () => JSX.Element> = {
   cot:   CotizacionDoc,
@@ -41,6 +43,8 @@ const COMPONENTS: Record<TemplateId, () => JSX.Element> = {
   ht:    HojaTiempoDoc,
   rm:    RequisicionDoc,
   ar:    ActaReunionDoc,
+  cli:   ClienteDoc,
+  pry:   ProyectoDoc,
 };
 
 interface TemplateResolverProps {

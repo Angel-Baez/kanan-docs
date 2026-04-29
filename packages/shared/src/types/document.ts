@@ -1,7 +1,8 @@
 export type TemplateId =
   | 'cot' | 'fac' | 'rec' | 'sow' | 'ot' | 'gantt'
   | 'reg' | 'oc' | 'ae' | 'pl' | 'rd' | 'vt'
-  | 'cs' | 'pv' | 'gr' | 'ec' | 'es' | 'ht' | 'rm' | 'ar';
+  | 'cs' | 'pv' | 'gr' | 'ec' | 'es' | 'ht' | 'rm' | 'ar'
+  | 'cli' | 'pry';
 
 export type ThemeMode = 'base' | 't' | 'o' | 'plena';
 
@@ -108,6 +109,7 @@ export interface RecFields {
   docNumber: string;
   date: string;
   clientName: string;
+  projectName?: string;
   amount: number;
   amountWords: string;
   concept: string;
@@ -292,6 +294,7 @@ export interface VtFields {
   clientCedula: string;
   address1: string;
   address2: string;
+  projectName?: string;
   propertyType: string;
   area: string;
   constructionYear: string;
@@ -507,20 +510,49 @@ export interface ArFields {
   nextMeeting: { date: string; modality: string; topic: string };
 }
 
+// ── 21 · CLI — Ficha de Cliente ───────────────────────────────────────────
+export interface CliFields {
+  docNumber: string;
+  date: string;
+  clientName: string;
+  cedula: string;
+  phone: string;
+  email: string;
+  address1: string;
+  address2: string;
+  type: string;
+  notes: string;
+}
+
+// ── 22 · PRY — Ficha de Proyecto ─────────────────────────────────────────
+export interface PryFields {
+  docNumber: string;
+  date: string;
+  projectName: string;
+  clientName: string;
+  address1: string;
+  address2: string;
+  status: string;
+  startDate: string;
+  endDate: string;
+  totalAmount: string;
+  notes: string;
+}
+
 // ── Union de todos los fields ──────────────────────────────────────────────
 export type DocumentFields =
   | CotFields | FacFields | RecFields | SowFields | OtFields
   | GanttFields | RegFields | OcFields | AeFields | PlFields
   | RdFields | VtFields | CsFields | PvFields | GrFields
-  | EcFields | EsFields | HtFields | RmFields | ArFields;
+  | EcFields | EsFields | HtFields | RmFields | ArFields
+  | CliFields | PryFields;
 
 // ── Documento guardado en MongoDB ─────────────────────────────────────────
 export interface KananDocument {
   _id: string;
   templateId: TemplateId;
   title: string;
-  projectId?: string;
-  clientId?: string;
+  projectId: string | { _id: string; name: string; clientId: string };
   theme: ThemeMode;
   fields: DocumentFields;
   createdAt: string;

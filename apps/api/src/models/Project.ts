@@ -1,4 +1,5 @@
 import { Schema, model, Document as MongoDoc } from 'mongoose';
+import type { IHistorialEntry } from './Client.js';
 
 export interface IProject extends MongoDoc {
   name: string;
@@ -10,7 +11,19 @@ export interface IProject extends MongoDoc {
   endDate?: Date;
   totalAmount?: number;
   preferredTheme: 'base' | 't' | 'o' | 'plena';
+  historial: IHistorialEntry[];
 }
+
+const HistorialEntrySchema = new Schema<IHistorialEntry>(
+  {
+    campo: { type: String, required: true },
+    valorAnterior: String,
+    valorNuevo: String,
+    fecha: { type: Date, default: Date.now },
+    nota: String,
+  },
+  { _id: false }
+);
 
 const ProjectSchema = new Schema<IProject>(
   {
@@ -31,6 +44,7 @@ const ProjectSchema = new Schema<IProject>(
       enum: ['base', 't', 'o', 'plena'],
       default: 'o',
     },
+    historial: { type: [HistorialEntrySchema], default: [] },
   },
   { timestamps: true }
 );

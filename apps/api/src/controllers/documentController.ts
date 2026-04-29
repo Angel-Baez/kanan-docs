@@ -1,10 +1,8 @@
 import type { RequestHandler } from 'express';
 import { z } from 'zod';
 import DocumentModel from '../models/Document.js';
-import ClientModel from '../models/Client.js';
 import ProjectModel from '../models/Project.js';
 
-// Util: dot-notation flatten para PATCH parcial
 function flattenObject(
   obj: Record<string, unknown>,
   prefix = 'fields'
@@ -21,102 +19,11 @@ function flattenObject(
   return out;
 }
 
-/**
- * Extract clientName / projectName from a document's fields and upsert the
- * corresponding Client and Project records. Then link them to the document.
- * Called silently — errors are swallowed so the main save never fails.
- */
-/**
- * Normalize client/project field names across templates.
- * Some templates use template-specific names (e.g. contracteeName in CS)
- * instead of the canonical clientName / projectName.
- */
-function extractClientProject(fields: Record<string, unknown>) {
-  const str = (k: string) => (fields[k] as string | undefined)?.trim() || '';
-
-  const clientName =
-    str('clientName') ||        // most templates
-    str('contracteeName') ||    // CS · Contrato de Servicios (contratante = client)
-    '';
-
-  const projectName =
-    str('projectName') ||       // most templates
-    '';
-
-  // Contact details — try canonical names then template-specific aliases
-  const phone   = str('clientPhone');
-  const cedula  = str('clientCedula') || str('clientId');  // clientId = cédula in some templates
-  const email   = str('clientEmail');
-  const address1 = str('address1') || str('contracteeAddress');
-  const address2 = str('address2');
-
-  return { clientName, projectName, phone, cedula, email, address1, address2 };
-}
-
-async function autoLinkClientProject(
-  docId: string,
-  fields: Record<string, unknown>,
-  theme: string
-) {
-  try {
-    const { clientName, projectName, phone, cedula, email, address1, address2 } =
-      extractClientProject(fields);
-
-    if (!clientName) return;
-
-    // Upsert client by name (case-insensitive match)
-    const client = await ClientModel.findOneAndUpdate(
-      { name: { $regex: new RegExp(`^${clientName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') } },
-      {
-        $set: { name: clientName },
-        $setOnInsert: {
-          phone,
-          cedula,
-          email,
-          address: address1 + (address2 ? `, ${address2}` : ''),
-          type: 'residencial' as const,
-        },
-      },
-      { upsert: true, new: true }
-    );
-
-    let projectId: string | undefined;
-
-    if (projectName) {
-      const project = await ProjectModel.findOneAndUpdate(
-        {
-          name: { $regex: new RegExp(`^${projectName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') },
-          clientId: client._id,
-        },
-        {
-          $set: { name: projectName },
-          $setOnInsert: {
-            clientId: client._id,
-            address: address1 + (address2 ? `, ${address2}` : ''),
-            preferredTheme: theme as 'base' | 't' | 'o' | 'plena',
-          },
-        },
-        { upsert: true, new: true }
-      );
-      projectId = String(project._id);
-    }
-
-    // Link to document (only update what changed)
-    await DocumentModel.updateOne(
-      { _id: docId },
-      { $set: { clientId: client._id, ...(projectId && { projectId }) } }
-    );
-  } catch {
-    // Silent — never block the main save
-  }
-}
-
 const createSchema = z.object({
   templateId: z.string(),
   title: z.string().optional(),
   theme: z.enum(['base', 't', 'o', 'plena']).optional(),
-  projectId: z.string().optional(),
-  clientId: z.string().optional(),
+  projectId: z.string().min(1),
   fields: z.record(z.unknown()),
 });
 
@@ -125,9 +32,17 @@ export const listDocuments: RequestHandler = async (req, res, next) => {
     const { templateId, clientId, projectId } = req.query;
     const filter: Record<string, unknown> = {};
     if (templateId) filter['templateId'] = templateId;
-    if (clientId) filter['clientId'] = clientId;
-    if (projectId) filter['projectId'] = projectId;
-    const docs = await DocumentModel.find(filter).sort({ createdAt: -1 }).lean();
+    if (projectId) {
+      filter['projectId'] = projectId;
+    } else if (clientId) {
+      // Join via Project to find all docs belonging to a client
+      const projects = await ProjectModel.find({ clientId }).select('_id').lean();
+      filter['projectId'] = { $in: projects.map(p => p._id) };
+    }
+    const docs = await DocumentModel.find(filter)
+      .populate({ path: 'projectId', select: 'name clientId' })
+      .sort({ createdAt: -1 })
+      .lean();
     res.json(docs);
   } catch (e) {
     next(e);
@@ -137,14 +52,16 @@ export const listDocuments: RequestHandler = async (req, res, next) => {
 export const createDocument: RequestHandler = async (req, res, next) => {
   try {
     const body = createSchema.parse(req.body);
+    const project = await ProjectModel.findById(body.projectId).lean();
+    if (!project) {
+      res.status(404).json({ error: 'Proyecto no encontrado' });
+      return;
+    }
     const doc = await DocumentModel.create(body);
-    // Auto-link client/project in background (non-blocking)
-    void autoLinkClientProject(
-      String(doc._id),
-      doc.fields as Record<string, unknown>,
-      doc.theme
-    );
-    res.status(201).json(doc);
+    const populated = await DocumentModel.findById(doc._id)
+      .populate({ path: 'projectId', select: 'name clientId' })
+      .lean();
+    res.status(201).json(populated);
   } catch (e) {
     next(e);
   }
@@ -152,7 +69,9 @@ export const createDocument: RequestHandler = async (req, res, next) => {
 
 export const getDocument: RequestHandler = async (req, res, next) => {
   try {
-    const doc = await DocumentModel.findById(req.params['id']).lean();
+    const doc = await DocumentModel.findById(req.params['id'])
+      .populate({ path: 'projectId', select: 'name clientId' })
+      .lean();
     if (!doc) { res.status(404).json({ error: 'Documento no encontrado' }); return; }
     res.json(doc);
   } catch (e) {
@@ -163,11 +82,18 @@ export const getDocument: RequestHandler = async (req, res, next) => {
 export const replaceDocument: RequestHandler = async (req, res, next) => {
   try {
     const body = createSchema.parse(req.body);
+    const project = await ProjectModel.findById(body.projectId).lean();
+    if (!project) {
+      res.status(404).json({ error: 'Proyecto no encontrado' });
+      return;
+    }
     const doc = await DocumentModel.findByIdAndUpdate(
       req.params['id'],
       body,
       { new: true, runValidators: true }
-    ).lean();
+    )
+      .populate({ path: 'projectId', select: 'name clientId' })
+      .lean();
     if (!doc) { res.status(404).json({ error: 'Documento no encontrado' }); return; }
     res.json(doc);
   } catch (e) {
@@ -183,17 +109,10 @@ export const patchFields: RequestHandler = async (req, res, next) => {
       req.params['id'],
       { $set },
       { new: true }
-    ).lean();
+    )
+      .populate({ path: 'projectId', select: 'name clientId' })
+      .lean();
     if (!doc) { res.status(404).json({ error: 'Documento no encontrado' }); return; }
-    // Auto-link client/project in background whenever any client identifier is present
-    const f = doc.fields as Record<string, unknown>;
-    if (f['clientName'] || f['contracteeName']) {
-      void autoLinkClientProject(
-        String(doc._id),
-        doc.fields as Record<string, unknown>,
-        doc.theme
-      );
-    }
     res.json(doc);
   } catch (e) {
     next(e);
@@ -205,15 +124,23 @@ export const patchMeta: RequestHandler = async (req, res, next) => {
     const schema = z.object({
       title: z.string().optional(),
       theme: z.enum(['base', 't', 'o', 'plena']).optional(),
-      clientId: z.string().optional(),
       projectId: z.string().optional(),
     });
     const body = schema.parse(req.body);
+    if (body.projectId) {
+      const project = await ProjectModel.findById(body.projectId).lean();
+      if (!project) {
+        res.status(404).json({ error: 'Proyecto no encontrado' });
+        return;
+      }
+    }
     const doc = await DocumentModel.findByIdAndUpdate(
       req.params['id'],
       { $set: body },
       { new: true }
-    ).lean();
+    )
+      .populate({ path: 'projectId', select: 'name clientId' })
+      .lean();
     if (!doc) { res.status(404).json({ error: 'Documento no encontrado' }); return; }
     res.json(doc);
   } catch (e) {

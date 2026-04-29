@@ -24,12 +24,12 @@ export function CotizacionDoc() {
         <div>
           <div className="lb">Cliente</div>
           <div className="cn">
-            <EditableField value={f.clientName} onChange={(v) => set('clientName', v)} size={28} />
+            <EditableField value={f.clientName} onChange={(v) => set('clientName', v)} size={16} />
           </div>
           <div className="cs">
             <EditableField value={f.clientPhone} onChange={(v) => set('clientPhone', v)} size={16} />
             <br />
-            <EditableField value={f.clientEmail} onChange={(v) => set('clientEmail', v)} size={24} />
+            <EditableField value={f.clientEmail} onChange={(v) => set('clientEmail', v)} size={16} />
           </div>
         </div>
         <div>

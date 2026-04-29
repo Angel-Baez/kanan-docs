@@ -47,6 +47,7 @@ export const api = {
       request<unknown>('/clients', { method: 'POST', body: JSON.stringify(body) }),
     update: (id: string, body: unknown) =>
       request<unknown>(`/clients/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+    projects: (id: string) => request<unknown[]>(`/clients/${id}/projects`),
   },
 
   // Projects
