@@ -58,6 +58,14 @@ export const api = {
     summary: () => request<unknown>('/dashboard/summary'),
   },
 
+  // Tasks
+  tasks: {
+    list: (params?: Record<string, string>) => {
+      const qs = params ? '?' + new URLSearchParams(params).toString() : '';
+      return request<unknown[]>(`/tasks${qs}`);
+    },
+  },
+
   // Finance
   finance: {
     summary:           () => request<unknown>('/finance/summary'),

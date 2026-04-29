@@ -9,6 +9,7 @@ import clientRoutes from './routes/clients.js';
 import projectRoutes from './routes/projects.js';
 import dashboardRoutes from './routes/dashboard.js';
 import financeRoutes from './routes/finance.js';
+import taskRoutes from './routes/tasks.js';
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use('/api/v1/clients', clientRoutes);
 app.use('/api/v1/projects', projectRoutes);
 app.use('/api/v1/dashboard', dashboardRoutes);
 app.use('/api/v1/finance', financeRoutes);
+app.use('/api/v1/tasks', taskRoutes);
 
 app.use(errorHandler);
 

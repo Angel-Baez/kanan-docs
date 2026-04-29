@@ -2,3 +2,4 @@ export * from './types/document.js';
 export * from './types/client.js';
 export * from './types/project.js';
 export * from './types/financials.js';
+export * from './types/task.js';

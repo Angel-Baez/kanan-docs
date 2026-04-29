@@ -11,6 +11,7 @@ import { ClientListPage } from './pages/ClientListPage.tsx';
 import { ProjectProfilePage } from './pages/ProjectProfilePage.tsx';
 import { ProjectPipelinePage } from './pages/ProjectPipelinePage.tsx';
 import { FinancePage } from './pages/FinancePage.tsx';
+import { TasksPage } from './pages/TasksPage.tsx';
 
 export default function App() {
   return (
@@ -30,7 +31,7 @@ export default function App() {
               <Route path="/clients/:id"  element={<ClientProfilePage />} />
               <Route path="/documents"    element={<DocumentListPage />} />
               {/* Fase 3+ placeholders */}
-              <Route path="/tasks"        element={<ComingSoon label="Tareas" />} />
+              <Route path="/tasks"        element={<TasksPage />} />
               <Route path="/finance"      element={<FinancePage />} />
               <Route path="/team"         element={<ComingSoon label="Equipo" />} />
               <Route path="/settings"     element={<ComingSoon label="Configuración" />} />
