@@ -13,10 +13,28 @@ const schema = z.object({
   type: z.enum(['residencial', 'comercial', 'institucional']).default('residencial'),
 });
 
-export const listClients: RequestHandler = async (_req, res, next) => {
+export const listClients: RequestHandler = async (req, res, next) => {
   try {
     const clients = await ClientModel.find().sort({ name: 1 }).lean();
-    res.json(clients);
+
+    if (req.query['withStats'] !== 'true') {
+      res.json(clients);
+      return;
+    }
+
+    const ids = clients.map(c => c._id);
+    const counts = await ProjectModel.aggregate([
+      { $match: { clientId: { $in: ids } } },
+      { $group: { _id: '$clientId', count: { $sum: 1 }, latestStatus: { $last: '$status' } } },
+    ]);
+    const statsMap = new Map(counts.map(c => [String(c._id), c]));
+
+    const enriched = clients.map(c => ({
+      ...c,
+      projectCount: statsMap.get(String(c._id))?.count ?? 0,
+      latestProjectStatus: statsMap.get(String(c._id))?.latestStatus ?? null,
+    }));
+    res.json(enriched);
   } catch (e) {
     next(e);
   }

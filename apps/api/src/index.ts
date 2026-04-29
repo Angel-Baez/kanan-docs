@@ -7,6 +7,8 @@ import { errorHandler } from './middleware/errorHandler.js';
 import documentRoutes from './routes/documents.js';
 import clientRoutes from './routes/clients.js';
 import projectRoutes from './routes/projects.js';
+import dashboardRoutes from './routes/dashboard.js';
+import financeRoutes from './routes/finance.js';
 
 const app = express();
 
@@ -17,6 +19,8 @@ app.get('/api/health', (_req, res) => res.json({ ok: true }));
 app.use('/api/v1/documents', documentRoutes);
 app.use('/api/v1/clients', clientRoutes);
 app.use('/api/v1/projects', projectRoutes);
+app.use('/api/v1/dashboard', dashboardRoutes);
+app.use('/api/v1/finance', financeRoutes);
 
 app.use(errorHandler);
 

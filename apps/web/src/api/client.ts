@@ -41,7 +41,10 @@ export const api = {
 
   // Clients
   clients: {
-    list: () => request<unknown[]>('/clients'),
+    list: (params?: Record<string, string>) => {
+      const qs = params ? '?' + new URLSearchParams(params).toString() : '';
+      return request<unknown[]>(`/clients${qs}`);
+    },
     get: (id: string) => request<unknown>(`/clients/${id}`),
     create: (body: unknown) =>
       request<unknown>('/clients', { method: 'POST', body: JSON.stringify(body) }),
@@ -50,9 +53,23 @@ export const api = {
     projects: (id: string) => request<unknown[]>(`/clients/${id}/projects`),
   },
 
+  // Dashboard
+  dashboard: {
+    summary: () => request<unknown>('/dashboard/summary'),
+  },
+
+  // Finance
+  finance: {
+    summary:           () => request<unknown>('/finance/summary'),
+    projectFinancials: (id: string) => request<unknown>(`/projects/${id}/financials`),
+  },
+
   // Projects
   projects: {
-    list: () => request<unknown[]>('/projects'),
+    list: (params?: Record<string, string>) => {
+      const qs = params ? '?' + new URLSearchParams(params).toString() : '';
+      return request<unknown[]>(`/projects${qs}`);
+    },
     get: (id: string) => request<unknown>(`/projects/${id}`),
     create: (body: unknown) =>
       request<unknown>('/projects', { method: 'POST', body: JSON.stringify(body) }),
