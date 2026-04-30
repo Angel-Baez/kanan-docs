@@ -7,10 +7,12 @@ import {
   DollarSign,
   Clock,
   Settings,
+  LogOut,
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { KananLogoNav } from '../ui/KananLogo.tsx';
 import { SidebarLink } from './SidebarLink.tsx';
+import { useAuth } from '../../context/AuthContext.tsx';
 
 const NAV = [
   { to: '/',          icon: LayoutDashboard, label: 'Dashboard'  },
@@ -22,7 +24,21 @@ const NAV = [
   { to: '/team',      icon: Clock,           label: 'Equipo'     },
 ] as const;
 
+const ROLE_LABEL: Record<string, string> = {
+  admin:      'Admin',
+  jefe_obra:  'Jefe de Obra',
+  vendedor:   'Vendedor',
+};
+
 export function Sidebar() {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login', { replace: true });
+  };
+
   return (
     <aside style={{
       width: 220,
@@ -79,13 +95,53 @@ export function Sidebar() {
         ))}
       </nav>
 
-      {/* Footer */}
+      {/* Footer: user + settings + logout */}
       <div style={{
-        padding: '14px 20px',
+        padding: '12px 20px 16px',
         borderTop: '1px solid #2A2520',
         flexShrink: 0,
       }}>
         <SidebarLink to="/settings" icon={Settings} label="Config" />
+
+        {/* User row */}
+        {user && (
+          <div style={{
+            marginTop: 10,
+            paddingTop: 10,
+            borderTop: '1px solid #1E1B17',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 8,
+          }}>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: 10, color: '#A8A098', fontFamily: "'IBM Plex Mono', monospace", whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {user.name}
+              </div>
+              <div style={{ fontSize: 7, color: '#4A4540', fontFamily: "'IBM Plex Mono', monospace", letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: 2 }}>
+                {ROLE_LABEL[user.role] ?? user.role}
+              </div>
+            </div>
+            <button
+              onClick={handleLogout}
+              title="Cerrar sesión"
+              style={{
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                color: '#4A4540',
+                padding: 4,
+                display: 'flex',
+                transition: 'color 0.12s',
+                flexShrink: 0,
+              }}
+              onMouseEnter={e => (e.currentTarget.style.color = '#C4673A')}
+              onMouseLeave={e => (e.currentTarget.style.color = '#4A4540')}
+            >
+              <LogOut size={13} />
+            </button>
+          </div>
+        )}
       </div>
     </aside>
   );

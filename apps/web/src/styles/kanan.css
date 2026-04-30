@@ -239,7 +239,7 @@ body.m-plena .kanan-canvas .kb { fill: var(--o); }
 .kanan-canvas .ghc:first-child { text-align: left; }
 .kanan-canvas .gp  { font-size: 10px; padding-right: 6px; line-height: 1.3; }
 .kanan-canvas .gc  { height: 22px; border-left: 1px solid rgba(139, 130, 121, .12); }
-.kanan-canvas .gb  { height: 13px; margin: 4px 2px; border-radius: 1px; opacity: .85; }
+.kanan-canvas .gb  { height: 16px; margin: 4px 2px; border-radius: 1px; opacity: .85; }
 
 /* ── Recibo ──────────────────────────────────────────────────────────────── */
 .kanan-canvas .rec-a { font-size: 28px; font-weight: 700; color: var(--accent); margin: 14px 0 4px; }

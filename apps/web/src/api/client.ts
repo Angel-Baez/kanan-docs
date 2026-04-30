@@ -2,6 +2,7 @@ const BASE = '/api/v1';
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {
+    credentials: 'include',                                           // send cookies
     headers: { 'Content-Type': 'application/json', ...init?.headers },
     ...init,
   });
@@ -14,6 +15,15 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export const api = {
+  // Auth
+  auth: {
+    login:  (email: string, password: string) =>
+      request<unknown>('/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) }),
+    logout: () => request<void>('/auth/logout', { method: 'POST' }),
+    me:     () => request<unknown>('/auth/me'),
+    refresh:() => request<unknown>('/auth/refresh', { method: 'POST' }),
+  },
+
   // Documents
   documents: {
     list: (params?: Record<string, string>) => {
@@ -70,6 +80,20 @@ export const api = {
   finance: {
     summary:           () => request<unknown>('/finance/summary'),
     projectFinancials: (id: string) => request<unknown>(`/projects/${id}/financials`),
+  },
+
+  // Staff & Payroll
+  staff: {
+    list:      (params?: { all?: boolean }) => {
+      const qs = params?.all ? '?all=true' : '';
+      return request<unknown[]>(`/staff${qs}`);
+    },
+    create: (body: unknown) => request<unknown>('/staff', { method: 'POST', body: JSON.stringify(body) }),
+    patch:  (id: string, body: unknown) =>
+      request<unknown>(`/staff/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
+  },
+  payroll: {
+    summary: (month: string) => request<unknown>(`/payroll/summary?month=${month}`),
   },
 
   // Projects

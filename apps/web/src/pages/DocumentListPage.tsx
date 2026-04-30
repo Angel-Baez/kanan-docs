@@ -449,9 +449,6 @@ export function DocumentListPage() {
   return (
     <>
       <style>{STYLES}</style>
-      <AppNav />
-      <ThemeSwitcher />
-
       <div style={{ background: T.bg, minHeight: '100vh', color: T.text, fontFamily: "'IBM Plex Mono', monospace" }}>
         <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 24px 96px' }}>
 
@@ -459,7 +456,7 @@ export function DocumentListPage() {
           <div style={{ padding: '52px 0 36px', borderBottom: `1px solid ${T.border}` }}>
             <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
               <div>
-                <p style={{ fontSize: 9, letterSpacing: '0.24em', color: T.muted, textTransform: 'uppercase', marginBottom: 10, margin: '0 0 10px' }}>
+                <p style={{ fontSize: 9, letterSpacing: '0.24em', color: T.dim, textTransform: 'uppercase', marginBottom: 10, margin: '0 0 10px' }}>
                   KANAN · Sistema de Documentos
                 </p>
                 <h1 style={{

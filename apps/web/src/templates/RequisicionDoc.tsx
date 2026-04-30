@@ -87,9 +87,9 @@ export function RequisicionDoc() {
             <th style={{ width: 30 }}>#</th>
             <th>Descripción</th>
             <th>Especificación</th>
-            <th className="r">Und</th>
-            <th className="r">Cant.</th>
-            <th className="r">P. Ref.</th>
+            <th >Und</th>
+            <th >Cant.</th>
+            <th >P. Ref.</th>
             <th className="r">Subtotal</th>
             <th style={{ width: 24 }} />
           </tr>
@@ -100,9 +100,9 @@ export function RequisicionDoc() {
               <td className="sm">{String(i + 1).padStart(2, '0')}</td>
               <td><EditableField value={item.description} onChange={(v) => updateItem(i, 'description', v)} size={18} /></td>
               <td className="sm"><EditableField value={item.spec} onChange={(v) => updateItem(i, 'spec', v)} size={14} /></td>
-              <td className="r sm"><EditableField value={item.unit} onChange={(v) => updateItem(i, 'unit', v)} size={6} /></td>
-              <td className="r"><EditableField value={String(item.qty)} onChange={(v) => updateItem(i, 'qty', parseFloat(v) || 0)} numeric size={6} /></td>
-              <td className="r sm"><EditableField value={String(item.refPrice)} onChange={(v) => updateItem(i, 'refPrice', parseFloat(v) || 0)} numeric size={10} /></td>
+              <td className=" sm"><EditableField value={item.unit} onChange={(v) => updateItem(i, 'unit', v)} size={4} /></td>
+              <td ><EditableField value={String(item.qty)} onChange={(v) => updateItem(i, 'qty', parseFloat(v) || 0)} numeric size={4} /></td>
+              <td className=" sm"><EditableField value={String(item.refPrice)} onChange={(v) => updateItem(i, 'refPrice', parseFloat(v) || 0)} numeric size={8} /></td>
               <td className="r">{fmt(item.subtotal)}</td>
               <td><span className="row-actions"><button className="row-del" onClick={() => set('items', f.items.filter((_, j) => j !== i))}>×</button></span></td>
             </tr>

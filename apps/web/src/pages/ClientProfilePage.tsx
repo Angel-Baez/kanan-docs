@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Mail, Phone, CreditCard, MapPin, Pencil, X, Loader2 } from 'lucide-react';
 import { api } from '../api/client.ts';
 import { AppNav } from '../components/nav/AppNav.tsx';
@@ -68,6 +68,7 @@ interface EditForm {
 
 export function ClientProfilePage() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [client, setClient]   = useState<KananClient | null>(null);
   const [projects, setProjects] = useState<KananProject[]>([]);
   const [loading, setLoading] = useState(true);
@@ -140,15 +141,15 @@ export function ClientProfilePage() {
 
           {/* ── Back ──────────────────────────────────────────────────── */}
           <div style={{ paddingTop: 40 }}>
-            <Link
-              to="/"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 10, color: T.muted, textDecoration: 'none', letterSpacing: '0.12em', textTransform: 'uppercase', transition: 'color 0.12s' }}
+            <button
+              onClick={() => navigate(-1)}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 10, color: T.muted, background: 'none', border: 'none', cursor: 'pointer', letterSpacing: '0.12em', textTransform: 'uppercase', transition: 'color 0.12s', padding: 0, fontFamily: 'inherit' }}
               onMouseEnter={e => (e.currentTarget.style.color = T.text)}
               onMouseLeave={e => (e.currentTarget.style.color = T.muted)}
             >
               <ArrowLeft size={13} />
               Volver
-            </Link>
+            </button>
           </div>
 
           {/* ── Loading skeleton ──────────────────────────────────────── */}

@@ -1,8 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext.tsx';
 import { ToastProvider } from './context/ToastContext.tsx';
+import { AuthProvider } from './context/AuthContext.tsx';
 import { Toaster } from './components/ui/Toaster.tsx';
 import { AppShell } from './components/shell/AppShell.tsx';
+import { ProtectedRoute } from './components/auth/ProtectedRoute.tsx';
+import { LoginPage } from './pages/LoginPage.tsx';
 import { DashboardPage } from './pages/DashboardPage.tsx';
 import { DocumentListPage } from './pages/DocumentListPage.tsx';
 import { DocumentEditorPage } from './pages/DocumentEditorPage.tsx';
@@ -12,34 +15,42 @@ import { ProjectProfilePage } from './pages/ProjectProfilePage.tsx';
 import { ProjectPipelinePage } from './pages/ProjectPipelinePage.tsx';
 import { FinancePage } from './pages/FinancePage.tsx';
 import { TasksPage } from './pages/TasksPage.tsx';
+import { TeamPage } from './pages/TeamPage.tsx';
 
 export default function App() {
   return (
     <ToastProvider>
       <ThemeProvider>
-        <BrowserRouter>
-          <Routes>
-            {/* Document editor: full-screen, outside the shell */}
-            <Route path="/documents/:id" element={<DocumentEditorPage />} />
+        <AuthProvider>
+          <BrowserRouter>
+            <Routes>
+              {/* Public */}
+              <Route path="/login" element={<LoginPage />} />
 
-            {/* All other routes: inside the OS shell */}
-            <Route element={<ShellLayout />}>
-              <Route path="/"             element={<DashboardPage />} />
-              <Route path="/projects"     element={<ProjectPipelinePage />} />
-              <Route path="/projects/:id" element={<ProjectProfilePage />} />
-              <Route path="/clients"      element={<ClientListPage />} />
-              <Route path="/clients/:id"  element={<ClientProfilePage />} />
-              <Route path="/documents"    element={<DocumentListPage />} />
-              {/* Fase 3+ placeholders */}
-              <Route path="/tasks"        element={<TasksPage />} />
-              <Route path="/finance"      element={<FinancePage />} />
-              <Route path="/team"         element={<ComingSoon label="Equipo" />} />
-              <Route path="/settings"     element={<ComingSoon label="Configuración" />} />
-              <Route path="*"             element={<Navigate to="/" replace />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-        <Toaster />
+              {/* Protected: session required */}
+              <Route element={<ProtectedRoute />}>
+                {/* Document editor: full-screen, outside the shell */}
+                <Route path="/documents/:id" element={<DocumentEditorPage />} />
+
+                {/* All other routes: inside the OS shell */}
+                <Route element={<ShellLayout />}>
+                  <Route path="/"             element={<DashboardPage />} />
+                  <Route path="/projects"     element={<ProjectPipelinePage />} />
+                  <Route path="/projects/:id" element={<ProjectProfilePage />} />
+                  <Route path="/clients"      element={<ClientListPage />} />
+                  <Route path="/clients/:id"  element={<ClientProfilePage />} />
+                  <Route path="/documents"    element={<DocumentListPage />} />
+                  <Route path="/tasks"        element={<TasksPage />} />
+                  <Route path="/finance"      element={<FinancePage />} />
+                  <Route path="/team"         element={<TeamPage />} />
+                  <Route path="/settings"     element={<ComingSoon label="Configuración" />} />
+                  <Route path="*"             element={<Navigate to="/" replace />} />
+                </Route>
+              </Route>
+            </Routes>
+          </BrowserRouter>
+          <Toaster />
+        </AuthProvider>
       </ThemeProvider>
     </ToastProvider>
   );
