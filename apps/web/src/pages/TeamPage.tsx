@@ -178,13 +178,19 @@ function StaffCard({ member, onToggle, onEdit }: { member: StaffMember; onToggle
 function PayrollTab() {
   const [month, setMonth]         = useState(currentYM());
   const [data, setData]           = useState<PayrollSummary | null>(null);
-  const [loading, setLoading]     = useState(false);
+  const [loading, setLoading]     = useState(true);
+  const [error, setError]         = useState<string | null>(null);
 
   useEffect(() => {
     setLoading(true);
+    setError(null);
     api.payroll.summary(month)
-      .then(d => setData(d as PayrollSummary))
-      .catch(() => setData(null))
+      .then(d => { setData(d as PayrollSummary); setError(null); })
+      .catch((e: unknown) => {
+        console.error('[PayrollTab] Error:', e);
+        setData(null);
+        setError(e instanceof Error ? e.message : 'Error al cargar nómina');
+      })
       .finally(() => setLoading(false));
   }, [month]);
 
@@ -204,11 +210,14 @@ function PayrollTab() {
           onChange={e => setMonth(e.target.value)}
           style={{ background: T.surface, border: `1px solid ${T.border}`, color: T.text, padding: '7px 10px', fontSize: 11, fontFamily: "'IBM Plex Mono', monospace", outline: 'none', colorScheme: 'dark' }}
         />
+        <span style={{ fontSize: 8, color: T.dim }}>mes activo: {month || '(vacío)'}</span>
         <span style={{ fontSize: 9, color: T.dim, textTransform: 'capitalize' }}>{monthLabel}</span>
       </div>
 
       {loading ? (
         <div style={{ color: T.dim, fontSize: 10 }}>Cargando nómina...</div>
+      ) : error ? (
+        <p style={{ fontSize: 11, color: '#C0392B' }}>⚠ {error}</p>
       ) : !data || data.rows.length === 0 ? (
         <p style={{ fontSize: 11, color: T.dim }}>Sin registros de Hojas de Tiempo para este mes.</p>
       ) : (

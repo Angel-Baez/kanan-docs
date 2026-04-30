@@ -13,7 +13,7 @@ function d(offset: number): string {
 }
 
 function fmt(isoDate: string): string {
-  const [year, month, day] = isoDate.split("-");
+  const [year, month = "01", day = "01"] = isoDate.split("-");
   const m = [
     "ENE",
     "FEB",
@@ -45,7 +45,7 @@ function lineItems(desc: string[], basePrice: number) {
       unit: ["m²", "gl", "und", "m²", "gl"][i % 5],
       qty,
       unitPrice,
-      total: qty * unitPrice,
+      total: qty! * unitPrice,
     };
   });
 }
@@ -800,15 +800,15 @@ function buildCs(ctx: ProjectCtx) {
         },
         {
           title: "Obligaciones del Contratista",
-          body: `Ejecutar los trabajos con calidad profesional, suministrar mano de obra calificada, supervisar la obra, cumplir el cronograma, mantener el área de trabajo segura y limpia, y entregar los trabajos terminados conforme al ${docNum("SOW", ctx.idx * 10 + 5, ctx.startDate)}.`
+          body: `Ejecutar los trabajos con calidad profesional, suministrar mano de obra calificada, supervisar la obra, cumplir el cronograma, mantener el área de trabajo segura y limpia, y entregar los trabajos terminados conforme al ${docNum("SOW", ctx.idx * 10 + 5, ctx.startDate)}.`,
         },
         {
           title: "Obligaciones del Contratante",
-          body: `Realizar los pagos en las fechas acordadas, dar acceso al inmueble en horarios convenidos, despejar las áreas a intervenir antes del inicio, comunicar oportunamente cualquier observación o cambio, y firmar las actas de avance.`
+          body: `Realizar los pagos en las fechas acordadas, dar acceso al inmueble en horarios convenidos, despejar las áreas a intervenir antes del inicio, comunicar oportunamente cualquier observación o cambio, y firmar las actas de avance.`,
         },
         {
           title: "Modificaciones",
-          body: `Cualquier modificación al alcance, plazo o precio se documentará mediante Orden de Cambio firmada por ambas partes antes de la ejecución del trabajo modificado. Sin firma previa, EL CONTRATISTA no está obligado a ejecutar trabajos adicionales.`
+          body: `Cualquier modificación al alcance, plazo o precio se documentará mediante Orden de Cambio firmada por ambas partes antes de la ejecución del trabajo modificado. Sin firma previa, EL CONTRATISTA no está obligado a ejecutar trabajos adicionales.`,
         },
         {
           title: "Garantía",
@@ -1699,22 +1699,7 @@ function buildDocs(ctx: ProjectCtx, status: string) {
 
   if (status === "activo") {
     // fac1 cobrada (hecho) + rec1; fac2 pendiente (sin recibo aún)
-    return [
-      vt,
-      cot,
-      cs,
-      sow,
-      ot,
-      gantt,
-      rd,
-      ht,
-      rm,
-      ar,
-      fac1,
-      fac2,
-      rec1,
-      ec,
-    ];
+    return [vt, cot, cs, sow, ot, gantt, rd, ht, rm, ar, fac1, fac2, rec1, ec];
   }
 
   const rec2 = buildRec(ctx, 2);
@@ -1808,7 +1793,7 @@ async function seed() {
     name: p.name,
     address1: p.address1,
     address2: p.address2,
-    clientId: insertedClients[p.clientIndex]._id,
+    clientId: insertedClients[p.clientIndex]!._id,
     status: p.status,
     startDate: p.startDate ? new Date(p.startDate) : undefined,
     endDate: p.endDate ? new Date(p.endDate) : undefined,
@@ -1828,10 +1813,10 @@ async function seed() {
     const client = insertedClients[pDef.clientIndex];
     const ctx: ProjectCtx = {
       projectName: pDef.name,
-      clientName: client.name,
-      clientCedula: client.cedula || "001-0000000-0",
-      clientPhone: client.phone || "809-555-0000",
-      clientEmail: client.email || "cliente@email.com",
+      clientName: client!.name,
+      clientCedula: client!.cedula || "001-0000000-0",
+      clientPhone: client!.phone || "809-555-0000",
+      clientEmail: client!.email || "cliente@email.com",
       address1: pDef.address1,
       address2: pDef.address2,
       totalAmount: pDef.totalAmount,
@@ -1845,7 +1830,7 @@ async function seed() {
       allDocuments.push({
         templateId: doc.templateId,
         title: doc.title,
-        projectId: proj._id,
+        projectId: proj!._id,
         theme: pDef.preferredTheme,
         fields: doc.fields,
       });

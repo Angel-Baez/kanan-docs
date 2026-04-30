@@ -14,6 +14,8 @@ import dashboardRoutes from './routes/dashboard.js';
 import financeRoutes from './routes/finance.js';
 import taskRoutes from './routes/tasks.js';
 import staffRoutes, { payrollRouter } from './routes/staff.js';
+import searchRoutes from './routes/search.js';
+import notificationRoutes from './routes/notifications.js';
 
 const app = express();
 
@@ -32,8 +34,10 @@ app.use('/api/v1/projects',  authenticate, projectRoutes);
 app.use('/api/v1/dashboard', authenticate, dashboardRoutes);
 app.use('/api/v1/finance',   authenticate, financeRoutes);
 app.use('/api/v1/tasks',     authenticate, taskRoutes);
-app.use('/api/v1/staff',    authenticate, staffRoutes);
-app.use('/api/v1/payroll',  authenticate, payrollRouter);
+app.use('/api/v1/staff',         authenticate, staffRoutes);
+app.use('/api/v1/payroll',       authenticate, payrollRouter);
+app.use('/api/v1/search',        authenticate, searchRoutes);
+app.use('/api/v1/notifications', authenticate, notificationRoutes);
 
 app.use(errorHandler);
 

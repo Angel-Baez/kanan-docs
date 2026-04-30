@@ -8,11 +8,14 @@ import {
   Clock,
   Settings,
   LogOut,
+  Bell,
+  Search,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { KananLogoNav } from '../ui/KananLogo.tsx';
 import { SidebarLink } from './SidebarLink.tsx';
 import { useAuth } from '../../context/AuthContext.tsx';
+import type { KananNotification } from '../../hooks/useNotifications.ts';
 
 const NAV = [
   { to: '/',          icon: LayoutDashboard, label: 'Dashboard'  },
@@ -30,7 +33,14 @@ const ROLE_LABEL: Record<string, string> = {
   vendedor:   'Vendedor',
 };
 
-export function Sidebar() {
+interface SidebarProps {
+  notifCount: number;
+  notifOpen: boolean;
+  onNotifToggle: () => void;
+  onSearchOpen: () => void;
+}
+
+export function Sidebar({ notifCount, notifOpen, onNotifToggle, onSearchOpen }: SidebarProps) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -87,6 +97,55 @@ export function Sidebar() {
           </div>
         </div>
       </Link>
+
+      {/* Search + Notifications strip */}
+      <div style={{ padding: '8px 10px', borderBottom: '1px solid #2A2520', display: 'flex', gap: 6 }}>
+        <button
+          onClick={onSearchOpen}
+          title="Buscar (⌘K)"
+          style={{
+            flex: 1, display: 'flex', alignItems: 'center', gap: 8,
+            background: '#1E1B17', border: '1px solid #2A2520',
+            color: '#4A4540', padding: '6px 10px', cursor: 'pointer',
+            fontFamily: "'IBM Plex Mono', monospace", fontSize: 9,
+            letterSpacing: '0.1em',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = '#3A3530'; e.currentTarget.style.color = '#A8A098'; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = '#2A2520'; e.currentTarget.style.color = '#4A4540'; }}
+        >
+          <Search size={11} />
+          <span>Buscar</span>
+          <span style={{ marginLeft: 'auto', fontSize: 7, opacity: 0.5 }}>⌘K</span>
+        </button>
+
+        <button
+          onClick={onNotifToggle}
+          title="Notificaciones"
+          style={{
+            position: 'relative',
+            background: notifOpen ? '#252118' : '#1E1B17',
+            border: `1px solid ${notifOpen ? '#3A3530' : '#2A2520'}`,
+            color: notifCount > 0 ? '#B95D34' : '#4A4540',
+            padding: '6px 10px', cursor: 'pointer', lineHeight: 0,
+          }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = '#3A3530'; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = notifOpen ? '#3A3530' : '#2A2520'; }}
+        >
+          <Bell size={13} />
+          {notifCount > 0 && (
+            <span style={{
+              position: 'absolute', top: 3, right: 3,
+              background: '#B95D34', color: '#fff',
+              fontSize: 7, fontFamily: "'IBM Plex Mono', monospace",
+              width: 13, height: 13, borderRadius: '50%',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontWeight: 700,
+            }}>
+              {notifCount > 9 ? '9+' : notifCount}
+            </span>
+          )}
+        </button>
+      </div>
 
       {/* Nav */}
       <nav style={{ flex: 1, paddingTop: 12, paddingBottom: 12, overflowY: 'auto' }}>

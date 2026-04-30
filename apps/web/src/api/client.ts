@@ -96,6 +96,14 @@ export const api = {
     summary: (month: string) => request<unknown>(`/payroll/summary?month=${month}`),
   },
 
+  search: {
+    query: (q: string) => request<unknown>(`/search?q=${encodeURIComponent(q)}&limit=20`),
+  },
+
+  notifications: {
+    list: () => request<unknown>('/notifications'),
+  },
+
   // Projects
   projects: {
     list: (params?: Record<string, string>) => {

@@ -26,5 +26,6 @@ const DocumentSchema = new Schema<IDocument>(
 
 DocumentSchema.index({ templateId: 1, createdAt: -1 });
 DocumentSchema.index({ projectId: 1 });
+DocumentSchema.index({ title: 'text' });
 
 export default model<IDocument>('Document', DocumentSchema);
