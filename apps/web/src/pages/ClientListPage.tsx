@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, X, Loader2, ArrowRight } from 'lucide-react';
+import { Plus, X, Loader2, ArrowRight, Search } from 'lucide-react';
 import { api } from '../api/client.ts';
 import { useToast } from '../context/ToastContext.tsx';
+import { CardSkeleton } from '../components/ui/Skeleton.tsx';
+import { Pagination } from '../components/ui/Pagination.tsx';
 import type { KananClient } from '@kanan/shared';
 
 const T = {
@@ -28,9 +30,19 @@ const STATUS_COLOR: Record<string, string> = {
   garantia:   '#C4673A',
 };
 
+const LIMIT = 24;
+
 interface ClientWithStats extends KananClient {
   projectCount?: number;
   latestProjectStatus?: string;
+}
+
+interface PaginatedClients {
+  clients: ClientWithStats[];
+  total: number;
+  page: number;
+  limit: number;
+  pages: number;
 }
 
 const STYLES = `
@@ -40,30 +52,65 @@ const STYLES = `
 `;
 
 export function ClientListPage() {
-  const [clients, setClients] = useState<ClientWithStats[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [showNew, setShowNew] = useState(false);
-  const [newName, setNewName] = useState('');
-  const [newType, setNewType] = useState<'residencial' | 'comercial' | 'institucional'>('residencial');
-  const [saving, setSaving] = useState(false);
+  const [clients, setClients]   = useState<ClientWithStats[]>([]);
+  const [loading, setLoading]   = useState(true);
+  const [page, setPage]         = useState(1);
+  const [total, setTotal]       = useState(0);
+  const [pages, setPages]       = useState(1);
+  const [search, setSearch]     = useState('');
+  const [searchInput, setSearchInput] = useState('');
+  const [showNew, setShowNew]   = useState(false);
+  const [newName, setNewName]   = useState('');
+  const [newType, setNewType]   = useState<'residencial' | 'comercial' | 'institucional'>('residencial');
+  const [saving, setSaving]     = useState(false);
   const { addToast } = useToast();
 
-  useEffect(() => {
-    api.clients.list({ withStats: 'true' })
-      .then(data => setClients(data as ClientWithStats[]))
+  const load = useCallback((p: number, q: string) => {
+    setLoading(true);
+    const params: Record<string, string> = {
+      withStats: 'true',
+      page: String(p),
+      limit: String(LIMIT),
+    };
+    if (q) params['q'] = q;
+    api.clients.list(params)
+      .then(data => {
+        const res = data as PaginatedClients;
+        setClients(res.clients);
+        setTotal(res.total);
+        setPages(res.pages);
+      })
       .catch(() => addToast('Error cargando clientes', 'error'))
       .finally(() => setLoading(false));
-  }, []);
+  }, [addToast]);
+
+  useEffect(() => {
+    load(page, search);
+  }, [page, search, load]);
+
+  // Debounce search input
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setPage(1);
+      setSearch(searchInput);
+    }, 300);
+    return () => clearTimeout(t);
+  }, [searchInput]);
 
   const handleCreate = async () => {
     if (!newName.trim()) return;
     setSaving(true);
     try {
       const created = await api.clients.create({ name: newName.trim(), type: newType }) as ClientWithStats;
-      setClients(prev => [{ ...created, projectCount: 0 }, ...prev]);
       setNewName('');
       setShowNew(false);
       addToast('Cliente creado', 'success');
+      // Refresh first page to include new client
+      setPage(1);
+      setSearch('');
+      setSearchInput('');
+      load(1, '');
+      void created; // suppress unused var
     } catch {
       addToast('Error al crear cliente', 'error');
     } finally {
@@ -94,66 +141,83 @@ export function ClientListPage() {
           </div>
           <button
             onClick={() => setShowNew(true)}
-            style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', padding: '9px 18px', background: T.accent, border: 'none', color: '#fff', cursor: 'pointer', fontFamily: "'IBM Plex Mono', monospace' " }}
+            style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', padding: '9px 18px', background: T.accent, border: 'none', color: '#fff', cursor: 'pointer', fontFamily: "'IBM Plex Mono', monospace" }}
           >
             <Plus size={12} /> Nuevo cliente
           </button>
         </div>
 
+        {/* Search */}
+        <div className="k-in" style={{ animationDelay: '40ms', marginBottom: 24 }}>
+          <div style={{ position: 'relative', maxWidth: 340 }}>
+            <Search size={12} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: T.dim, pointerEvents: 'none' }} />
+            <input
+              value={searchInput}
+              onChange={e => setSearchInput(e.target.value)}
+              placeholder="Buscar cliente…"
+              style={{ ...inputStyle, paddingLeft: 34, fontSize: 11 }}
+            />
+          </div>
+        </div>
+
         {loading ? (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: 12 }}>
-            {[...Array(6)].map((_, i) => (
-              <div key={i} style={{ height: 100, background: '#1A1714', border: `1px solid ${T.border}`, opacity: 0.4 }} />
-            ))}
+            {[...Array(6)].map((_, i) => <CardSkeleton key={i} />)}
           </div>
         ) : clients.length === 0 ? (
-          <p style={{ fontSize: 11, color: T.dim }}>Sin clientes registrados.</p>
+          <p style={{ fontSize: 11, color: T.dim }}>
+            {search ? `Sin resultados para "${search}".` : 'Sin clientes registrados.'}
+          </p>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: 10 }}>
-            {clients.map((client, i) => {
-              const typeCfg = TYPE_CFG[client.type] ?? TYPE_CFG['residencial']!;
-              const statusColor = client.latestProjectStatus ? STATUS_COLOR[client.latestProjectStatus] : null;
-              return (
-                <Link
-                  key={String(client._id)}
-                  to={`/clients/${client._id}`}
-                  className="k-in"
-                  style={{
-                    display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-                    background: T.card, border: `1px solid ${T.border}`,
-                    padding: '16px 18px', textDecoration: 'none',
-                    transition: 'background 0.12s, border-color 0.12s',
-                    animationDelay: `${40 + i * 25}ms`,
-                    minHeight: 90,
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.background = T.cardHov; e.currentTarget.style.borderColor = '#3A3530'; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = T.card; e.currentTarget.style.borderColor = T.border; }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 10 }}>
-                    <div style={{ fontSize: 13, color: T.text, lineHeight: 1.3 }}>{client.name}</div>
-                    <span style={{ fontSize: 7, letterSpacing: '0.16em', textTransform: 'uppercase', color: typeCfg.text, background: typeCfg.bg, border: `1px solid ${typeCfg.border}`, padding: '3px 8px', flexShrink: 0 }}>
-                      {client.type}
-                    </span>
-                  </div>
-
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 14 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <span style={{ fontSize: 9, color: T.dim }}>
-                        {client.projectCount ?? 0} {client.projectCount === 1 ? 'proyecto' : 'proyectos'}
+          <>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: 10 }}>
+              {clients.map((client, i) => {
+                const typeCfg = TYPE_CFG[client.type] ?? TYPE_CFG['residencial']!;
+                const statusColor = client.latestProjectStatus ? STATUS_COLOR[client.latestProjectStatus] : null;
+                return (
+                  <Link
+                    key={String(client._id)}
+                    to={`/clients/${client._id}`}
+                    className="k-in"
+                    style={{
+                      display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+                      background: T.card, border: `1px solid ${T.border}`,
+                      padding: '16px 18px', textDecoration: 'none',
+                      transition: 'background 0.12s, border-color 0.12s',
+                      animationDelay: `${40 + i * 25}ms`,
+                      minHeight: 90,
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.background = T.cardHov; e.currentTarget.style.borderColor = '#3A3530'; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = T.card; e.currentTarget.style.borderColor = T.border; }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 10 }}>
+                      <div style={{ fontSize: 13, color: T.text, lineHeight: 1.3 }}>{client.name}</div>
+                      <span style={{ fontSize: 7, letterSpacing: '0.16em', textTransform: 'uppercase', color: typeCfg.text, background: typeCfg.bg, border: `1px solid ${typeCfg.border}`, padding: '3px 8px', flexShrink: 0 }}>
+                        {client.type}
                       </span>
-                      {statusColor && (
-                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 9, color: statusColor }}>
-                          <span style={{ width: 5, height: 5, borderRadius: '50%', background: statusColor }} />
-                          {client.latestProjectStatus}
-                        </span>
-                      )}
                     </div>
-                    <ArrowRight size={11} style={{ color: T.dim }} />
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 14 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <span style={{ fontSize: 9, color: T.dim }}>
+                          {client.projectCount ?? 0} {client.projectCount === 1 ? 'proyecto' : 'proyectos'}
+                        </span>
+                        {statusColor && (
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 9, color: statusColor }}>
+                            <span style={{ width: 5, height: 5, borderRadius: '50%', background: statusColor }} />
+                            {client.latestProjectStatus}
+                          </span>
+                        )}
+                      </div>
+                      <ArrowRight size={11} style={{ color: T.dim }} />
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+
+            <Pagination page={page} pages={pages} total={total} limit={LIMIT} onChange={p => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }); }} />
+          </>
         )}
       </div>
 

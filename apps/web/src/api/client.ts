@@ -53,7 +53,7 @@ export const api = {
   clients: {
     list: (params?: Record<string, string>) => {
       const qs = params ? '?' + new URLSearchParams(params).toString() : '';
-      return request<unknown[]>(`/clients${qs}`);
+      return request<unknown>(`/clients${qs}`);
     },
     get: (id: string) => request<unknown>(`/clients/${id}`),
     create: (body: unknown) =>

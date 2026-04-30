@@ -15,9 +15,25 @@ const schema = z.object({
 
 export const listClients: RequestHandler = async (req, res, next) => {
   try {
-    const clients = await ClientModel.find().sort({ name: 1 }).lean();
+    const { withStats, page, limit: limitQ, q } = req.query as Record<string, string | undefined>;
+    const filter: Record<string, unknown> = {};
+    if (q) filter['name'] = new RegExp(q, 'i');
 
-    if (req.query['withStats'] !== 'true') {
+    const paginated = page !== undefined;
+    const p     = Math.max(1, parseInt(page ?? '1') || 1);
+    const limit = Math.min(100, parseInt(limitQ ?? '24') || 24);
+    const skip  = (p - 1) * limit;
+
+    const [clients, total] = await Promise.all([
+      ClientModel.find(filter).sort({ name: 1 })
+        .skip(paginated ? skip : 0)
+        .limit(paginated ? limit : 0)   // 0 = no limit
+        .lean(),
+      paginated ? ClientModel.countDocuments(filter) : Promise.resolve(0),
+    ]);
+
+    if (withStats !== 'true') {
+      if (paginated) { res.json({ clients, total, page: p, limit, pages: Math.ceil(total / limit) }); return; }
       res.json(clients);
       return;
     }
@@ -28,16 +44,15 @@ export const listClients: RequestHandler = async (req, res, next) => {
       { $group: { _id: '$clientId', count: { $sum: 1 }, latestStatus: { $last: '$status' } } },
     ]);
     const statsMap = new Map(counts.map(c => [String(c._id), c]));
-
     const enriched = clients.map(c => ({
       ...c,
-      projectCount: statsMap.get(String(c._id))?.count ?? 0,
+      projectCount:        statsMap.get(String(c._id))?.count ?? 0,
       latestProjectStatus: statsMap.get(String(c._id))?.latestStatus ?? null,
     }));
+
+    if (paginated) { res.json({ clients: enriched, total, page: p, limit, pages: Math.ceil(total / limit) }); return; }
     res.json(enriched);
-  } catch (e) {
-    next(e);
-  }
+  } catch (e) { next(e); }
 };
 
 export const createClient: RequestHandler = async (req, res, next) => {

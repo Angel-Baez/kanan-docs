@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, TrendingUp, Clock, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { api } from '../api/client.ts';
 import { TEMPLATE_META } from '../templates/registry.ts';
+import { KpiSkeleton, RowSkeleton } from '../components/ui/Skeleton.tsx';
 import type { KananProject } from '@kanan/shared';
 
 const T = {
@@ -128,11 +129,19 @@ export function DashboardPage() {
         </div>
 
         {loading ? (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12 }}>
-            {[...Array(4)].map((_, i) => (
-              <div key={i} style={{ height: 96, background: T.surface, border: `1px solid ${T.border}`, opacity: 0.4 }} />
-            ))}
-          </div>
+          <>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 40 }}>
+              {[...Array(4)].map((_, i) => <KpiSkeleton key={i} />)}
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                {[...Array(5)].map((_, i) => <RowSkeleton key={i} cols={2} />)}
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                {[...Array(8)].map((_, i) => <RowSkeleton key={i} cols={3} />)}
+              </div>
+            </div>
+          </>
         ) : summary && (
           <>
             {/* KPI row */}

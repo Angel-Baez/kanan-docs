@@ -2,6 +2,8 @@ import { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, CalendarClock, Clock } from 'lucide-react';
 import { api } from '../api/client.ts';
+import { RowSkeleton } from '../components/ui/Skeleton.tsx';
+import { Pagination } from '../components/ui/Pagination.tsx';
 import type { TaskItem } from '@kanan/shared';
 
 const T = {
