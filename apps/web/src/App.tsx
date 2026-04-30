@@ -16,6 +16,8 @@ import { ProjectPipelinePage } from './pages/ProjectPipelinePage.tsx';
 import { FinancePage } from './pages/FinancePage.tsx';
 import { TasksPage } from './pages/TasksPage.tsx';
 import { TeamPage } from './pages/TeamPage.tsx';
+import { CalendarPage } from './pages/CalendarPage.tsx';
+import { SettingsPage } from './pages/SettingsPage.tsx';
 
 export default function App() {
   return (
@@ -43,7 +45,8 @@ export default function App() {
                   <Route path="/tasks"        element={<TasksPage />} />
                   <Route path="/finance"      element={<FinancePage />} />
                   <Route path="/team"         element={<TeamPage />} />
-                  <Route path="/settings"     element={<ComingSoon label="Configuración" />} />
+                  <Route path="/calendar"     element={<CalendarPage />} />
+                  <Route path="/settings"     element={<SettingsPage />} />
                   <Route path="*"             element={<Navigate to="/" replace />} />
                 </Route>
               </Route>

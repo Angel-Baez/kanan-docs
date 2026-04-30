@@ -10,6 +10,7 @@ import {
   LogOut,
   Bell,
   Search,
+  CalendarDays,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { KananLogoNav } from '../ui/KananLogo.tsx';
@@ -19,6 +20,7 @@ import type { KananNotification } from '../../hooks/useNotifications.ts';
 
 const NAV = [
   { to: '/',          icon: LayoutDashboard, label: 'Dashboard'  },
+  { to: '/calendar',  icon: CalendarDays,    label: 'Calendario' },
   { to: '/projects',  icon: KanbanSquare,    label: 'Proyectos'  },
   { to: '/clients',   icon: Users,           label: 'Clientes'   },
   { to: '/documents', icon: FileText,        label: 'Documentos' },

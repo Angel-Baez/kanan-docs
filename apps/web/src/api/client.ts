@@ -104,6 +104,28 @@ export const api = {
     list: () => request<unknown>('/notifications'),
   },
 
+  calendar: {
+    events: (start: string, end: string) =>
+      request<unknown>(`/calendar?start=${start}&end=${end}`),
+  },
+
+  settings: {
+    getCompany:    () => request<unknown>('/settings/company'),
+    updateCompany: (body: unknown) =>
+      request<unknown>('/settings/company', { method: 'PUT', body: JSON.stringify(body) }),
+    listUsers:     () => request<unknown[]>('/settings/users'),
+    createUser:    (body: unknown) =>
+      request<unknown>('/settings/users', { method: 'POST', body: JSON.stringify(body) }),
+    patchUser:     (id: string, body: unknown) =>
+      request<unknown>(`/settings/users/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
+    resetPassword: (id: string, password: string) =>
+      request<unknown>(`/settings/users/${id}/password`, { method: 'POST', body: JSON.stringify({ password }) }),
+    updateMe:      (name: string) =>
+      request<unknown>('/settings/me', { method: 'PATCH', body: JSON.stringify({ name }) }),
+    changePassword: (current: string, next: string) =>
+      request<unknown>('/settings/me/password', { method: 'POST', body: JSON.stringify({ current, next }) }),
+  },
+
   // Projects
   projects: {
     list: (params?: Record<string, string>) => {

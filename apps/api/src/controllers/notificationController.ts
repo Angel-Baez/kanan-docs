@@ -105,7 +105,11 @@ export const getNotifications: RequestHandler = async (_req, res, next) => {
       for (const doc of plDocs) {
         const f     = doc.fields as Record<string, unknown>;
         const items = (f['items'] as Array<Record<string, unknown>> | undefined) ?? [];
-        const open  = items.filter(i => (i['status'] as string | undefined) !== 'completado');
+        // PL items use "hecho" for done; anything else is open
+        const open  = items.filter(i => {
+          const s = (i['status'] as string | undefined) ?? '';
+          return s !== 'hecho' && s !== 'completado';
+        });
         if (open.length > 0) {
           notifications.push({
             id:       `pl-${doc._id}`,
