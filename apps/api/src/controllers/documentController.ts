@@ -29,24 +29,39 @@ const createSchema = z.object({
 
 export const listDocuments: RequestHandler = async (req, res, next) => {
   try {
-    const { templateId, clientId, projectId } = req.query;
+    const { templateId, clientId, projectId, page, limit: limitQ } = req.query as Record<string, string | undefined>;
     const filter: Record<string, unknown> = {};
     if (templateId) filter['templateId'] = templateId;
     if (projectId) {
       filter['projectId'] = projectId;
     } else if (clientId) {
-      // Join via Project to find all docs belonging to a client
       const projects = await ProjectModel.find({ clientId }).select('_id').lean();
       filter['projectId'] = { $in: projects.map(p => p._id) };
     }
+
+    // Pagination — only when `page` param is present
+    if (page !== undefined) {
+      const p     = Math.max(1, parseInt(page) || 1);
+      const limit = Math.min(100, parseInt(limitQ ?? '20') || 20);
+      const skip  = (p - 1) * limit;
+      const [docs, total] = await Promise.all([
+        DocumentModel.find(filter)
+          .populate({ path: 'projectId', select: 'name clientId' })
+          .sort({ createdAt: -1 })
+          .skip(skip).limit(limit)
+          .lean(),
+        DocumentModel.countDocuments(filter),
+      ]);
+      res.json({ docs, total, page: p, limit, pages: Math.ceil(total / limit) });
+      return;
+    }
+
     const docs = await DocumentModel.find(filter)
       .populate({ path: 'projectId', select: 'name clientId' })
       .sort({ createdAt: -1 })
       .lean();
     res.json(docs);
-  } catch (e) {
-    next(e);
-  }
+  } catch (e) { next(e); }
 };
 
 export const createDocument: RequestHandler = async (req, res, next) => {

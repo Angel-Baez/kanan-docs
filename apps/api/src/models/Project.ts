@@ -50,5 +50,6 @@ const ProjectSchema = new Schema<IProject>(
 );
 
 ProjectSchema.index({ clientId: 1 });
+ProjectSchema.index({ name: 'text', address1: 'text' });
 
 export default model<IProject>('Project', ProjectSchema);

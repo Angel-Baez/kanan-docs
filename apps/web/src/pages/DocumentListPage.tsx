@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
-  Plus, Trash2, FileText, Loader2, X, Search,
+  Plus, Trash2, FileText, X, Search, Loader2,
   Layers, LayoutGrid, List, ExternalLink, ChevronLeft, User,
 } from 'lucide-react';
 import { api } from '../api/client.ts';
@@ -9,7 +9,11 @@ import { TEMPLATE_META, PHASES } from '../templates/registry.ts';
 import { ThemeSwitcher } from '../components/nav/ThemeSwitcher.tsx';
 import { AppNav } from '../components/nav/AppNav.tsx';
 import { useToast } from '../context/ToastContext.tsx';
+import { Skeleton } from '../components/ui/Skeleton.tsx';
+import { Pagination } from '../components/ui/Pagination.tsx';
 import type { KananDocument, KananClient, KananProject, TemplateId } from '@kanan/shared';
+
+const GROUPS_PER_PAGE = 2;
 
 // ── Design tokens ────────────────────────────────────────────────────────────
 const T = {
@@ -271,6 +275,7 @@ export function DocumentListPage() {
   const [viewMode, setViewMode]       = useState<ViewMode>('list');
   const [activeClient, setActiveClient] = useState<string | null>(null);
   const [activePhase, setActivePhase] = useState<string | null>(null);
+  const [page, setPage]               = useState(1);
   const [pendingDelete, setPendingDelete] = useState<PendingDelete | null>(null);
   const [deleting, setDeleting]       = useState(false);
   const [wizard, setWizard]           = useState<WizardState>(initWizard);
@@ -443,15 +448,17 @@ export function DocumentListPage() {
     return counts;
   }, [docs]);
 
+  // Reset to page 1 when filters change
+  useMemo(() => { setPage(1); }, [search, activeClient, activePhase, viewMode]);
+
+  const pagedGroups = useMemo(() => grouped.slice((page - 1) * GROUPS_PER_PAGE, page * GROUPS_PER_PAGE), [grouped, page]);
+
   const hasContent = !loading && docs.length > 0;
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
     <>
       <style>{STYLES}</style>
-      <AppNav />
-      <ThemeSwitcher />
-
       <div style={{ background: T.bg, minHeight: '100vh', color: T.text, fontFamily: "'IBM Plex Mono', monospace" }}>
         <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 24px 96px' }}>
 
@@ -459,7 +466,7 @@ export function DocumentListPage() {
           <div style={{ padding: '52px 0 36px', borderBottom: `1px solid ${T.border}` }}>
             <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
               <div>
-                <p style={{ fontSize: 9, letterSpacing: '0.24em', color: T.muted, textTransform: 'uppercase', marginBottom: 10, margin: '0 0 10px' }}>
+                <p style={{ fontSize: 9, letterSpacing: '0.24em', color: T.dim, textTransform: 'uppercase', marginBottom: 10, margin: '0 0 10px' }}>
                   KANAN · Sistema de Documentos
                 </p>
                 <h1 style={{
@@ -610,9 +617,14 @@ export function DocumentListPage() {
           )}
 
           {loading && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: T.muted, fontSize: 11, padding: '88px 0', justifyContent: 'center' }}>
-              <Loader2 size={15} className="animate-spin" />
-              Cargando archivos…
+            <div style={{ paddingTop: 36, display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {[...Array(6)].map((_, i) => (
+                <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 6, padding: '16px', background: '#1A1714', border: '1px solid #2A2520' }}>
+                  <Skeleton height={10} width="45%" />
+                  <Skeleton height={8}  width="30%" />
+                  <Skeleton height={8}  width="60%" style={{ marginTop: 6 }} />
+                </div>
+              ))}
             </div>
           )}
 
@@ -717,7 +729,7 @@ export function DocumentListPage() {
               <div style={{ flex: 1, minWidth: 0 }}>
                 {viewMode === 'list' && (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                    {filtered.map((doc, i) => (
+                    {filtered.slice((page - 1) * 20, page * 20).map((doc, i) => (
                       <DocListRow key={doc._id} doc={doc} index={i} navigate={navigate} requestDelete={requestDelete} />
                     ))}
                   </div>
@@ -725,7 +737,7 @@ export function DocumentListPage() {
 
                 {viewMode === 'grid' && (
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(210px, 1fr))', gap: 8 }}>
-                    {filtered.map((doc, i) => (
+                    {filtered.slice((page - 1) * 20, page * 20).map((doc, i) => (
                       <DocGridCard key={doc._id} doc={doc} index={i} navigate={navigate} requestDelete={requestDelete} />
                     ))}
                   </div>
@@ -733,7 +745,7 @@ export function DocumentListPage() {
 
                 {viewMode === 'byProject' && (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 36 }}>
-                    {grouped.map(({ clientName, projectName, clientId, projectId, docs: groupDocs }) => (
+                    {pagedGroups.map(({ clientName, projectName, clientId, projectId, docs: groupDocs }) => (
                       <div key={projectId || `${clientName}||${projectName}`}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
                           <span style={{ fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: T.text, display: 'flex', alignItems: 'center', gap: 8, whiteSpace: 'nowrap' }}>
@@ -772,6 +784,26 @@ export function DocumentListPage() {
                       </div>
                     ))}
                   </div>
+                )}
+
+                {/* Pagination — list and grid modes (byProject paginates groups) */}
+                {(viewMode === 'list' || viewMode === 'grid') && filtered.length > 20 && (
+                  <Pagination
+                    page={page}
+                    pages={Math.ceil(filtered.length / 20)}
+                    total={filtered.length}
+                    limit={20}
+                    onChange={setPage}
+                  />
+                )}
+                {viewMode === 'byProject' && grouped.length > GROUPS_PER_PAGE && (
+                  <Pagination
+                    page={page}
+                    pages={Math.ceil(grouped.length / GROUPS_PER_PAGE)}
+                    total={grouped.length}
+                    limit={GROUPS_PER_PAGE}
+                    onChange={setPage}
+                  />
                 )}
               </div>
             </div>

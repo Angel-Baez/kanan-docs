@@ -22,7 +22,7 @@ export function GanttDoc() {
         </div>
         <div>
           <div className="lb">Cliente</div>
-          <div className="cn"><EditableField value={f.clientName} onChange={(v) => set('clientName', v)} size={26} /></div>
+          <div className="cn"><EditableField value={f.clientName} onChange={(v) => set('clientName', v)} size={16} /></div>
         </div>
         <div>
           <div className="lb">Período</div>

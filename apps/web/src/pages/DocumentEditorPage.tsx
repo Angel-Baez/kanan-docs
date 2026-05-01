@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, useSearchParams, Link } from 'react-router-dom';
+import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { Loader2, ArrowLeft, Printer, FileDown, Check } from 'lucide-react';
 import type { KananDocument, ThemeMode } from '@kanan/shared';
 import { api } from '../api/client.ts';
@@ -45,6 +45,7 @@ const THEME_MODES: { id: ThemeMode; name: string; desc: string }[] = [
 function EditorShell({ doc }: { doc: KananDocument }) {
   const { saveStatus } = useDocument();
   const { theme, setTheme } = useTheme();
+  const navigate = useNavigate();
 
   // Apply the document's saved theme on mount only
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,14 +73,14 @@ function EditorShell({ doc }: { doc: KananDocument }) {
         height: 48, flexShrink: 0,
       }}>
         {/* ← KANAN */}
-        <Link
-          to="/"
+        <button
+          onClick={() => navigate(-1)}
           style={{
             display: 'flex', alignItems: 'center', gap: 9,
             padding: '0 20px',
-            color: T.muted, textDecoration: 'none',
+            color: T.muted, background: 'none', border: 'none', cursor: 'pointer',
             borderRight: `1px solid ${T.border}`,
-            transition: 'color 0.12s', flexShrink: 0,
+            transition: 'color 0.12s', flexShrink: 0, fontFamily: 'inherit',
           }}
           onMouseEnter={e => (e.currentTarget.style.color = T.text)}
           onMouseLeave={e => (e.currentTarget.style.color = T.muted)}
@@ -91,7 +92,7 @@ function EditorShell({ doc }: { doc: KananDocument }) {
           }}>
             KANAN
           </span>
-        </Link>
+        </button>
 
         {/* Doc identity */}
         <div style={{
@@ -244,6 +245,7 @@ function PrintShell({ doc }: { doc: KananDocument }) {
 export function DocumentEditorPage() {
   const { id } = useParams<{ id: string }>();
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const isPrint = searchParams.get('print') === '1';
 
   const [doc, setDoc]   = useState<KananDocument | null>(null);
@@ -279,13 +281,13 @@ export function DocumentEditorPage() {
       <p style={{ fontSize: 11, color: '#C4673A', letterSpacing: '0.08em' }}>
         Error: {error}
       </p>
-      <Link
-        to="/"
-        style={{ fontSize: 10, color: '#7A7068', textDecoration: 'none', letterSpacing: '0.1em', display: 'flex', alignItems: 'center', gap: 6 }}
+      <button
+        onClick={() => navigate(-1)}
+        style={{ fontSize: 10, color: '#7A7068', background: 'none', border: 'none', cursor: 'pointer', letterSpacing: '0.1em', display: 'flex', alignItems: 'center', gap: 6, fontFamily: 'inherit' }}
       >
         <ArrowLeft size={12} />
         Volver
-      </Link>
+      </button>
     </div>
   );
 

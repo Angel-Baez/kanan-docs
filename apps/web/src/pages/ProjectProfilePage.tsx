@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, MapPin, Calendar, User, Pencil, X, Loader2 } from 'lucide-react';
 import { api } from '../api/client.ts';
 import { AppNav } from '../components/nav/AppNav.tsx';
 import { TEMPLATE_META, PHASES } from '../templates/registry.ts';
 import { useToast } from '../context/ToastContext.tsx';
-import type { KananProject, KananClient, KananDocument } from '@kanan/shared';
+import type { KananProject, KananClient, KananDocument, FinancialSummary } from '@kanan/shared';
 
 // ── Design tokens (same system as DocumentListPage) ───────────────────────────
 const T = {
@@ -73,9 +73,11 @@ interface EditForm {
 
 export function ProjectProfilePage() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [project, setProject] = useState<KananProject | null>(null);
   const [client, setClient]   = useState<KananClient | null>(null);
   const [docs, setDocs]       = useState<KananDocument[]>([]);
+  const [financials, setFinancials] = useState<FinancialSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -100,12 +102,14 @@ export function ProjectProfilePage() {
           endDate: toDateInput(proj.endDate),
           totalAmount: proj.totalAmount != null ? String(proj.totalAmount) : '',
         });
-        const [docsResult, clientResult] = await Promise.allSettled([
+        const [docsResult, clientResult, finResult] = await Promise.allSettled([
           api.projects.documents(id),
           proj.clientId ? api.clients.get(proj.clientId) : Promise.resolve(null),
+          api.finance.projectFinancials(id),
         ]);
         if (docsResult.status === 'fulfilled') setDocs(docsResult.value as KananDocument[]);
         if (clientResult.status === 'fulfilled' && clientResult.value) setClient(clientResult.value as KananClient);
+        if (finResult.status === 'fulfilled') setFinancials(finResult.value as FinancialSummary);
       })
       .catch((err: Error) => {
         if (err.message?.includes('404') || err.message?.includes('no encontrado')) setNotFound(true);
@@ -171,15 +175,15 @@ export function ProjectProfilePage() {
 
           {/* ── Back ──────────────────────────────────────────────────── */}
           <div style={{ paddingTop: 40 }}>
-            <Link
-              to={client ? `/clients/${project?.clientId}` : '/'}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 10, color: T.muted, textDecoration: 'none', letterSpacing: '0.12em', textTransform: 'uppercase', transition: 'color 0.12s' }}
+            <button
+              onClick={() => navigate(-1)}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 10, color: T.muted, background: 'none', border: 'none', cursor: 'pointer', letterSpacing: '0.12em', textTransform: 'uppercase', transition: 'color 0.12s', padding: 0, fontFamily: 'inherit' }}
               onMouseEnter={e => (e.currentTarget.style.color = T.text)}
               onMouseLeave={e => (e.currentTarget.style.color = T.muted)}
             >
               <ArrowLeft size={13} />
-              {client ? client.name : 'Volver'}
-            </Link>
+              Volver
+            </button>
           </div>
 
           {/* ── Loading skeleton ──────────────────────────────────────── */}
@@ -404,6 +408,34 @@ export function ProjectProfilePage() {
                   </div>
                 )}
               </div>
+
+              {/* ── Resumen financiero ───────────────────────────────── */}
+              {financials && (financials.contratado > 0 || financials.cobrado > 0 || financials.costoMateriales > 0 || financials.costoNomina > 0) && (
+                <div className="k-in" style={{ paddingTop: 52, animationDelay: '120ms' }}>
+                  <p style={{ fontSize: 8, letterSpacing: '0.26em', textTransform: 'uppercase', color: T.muted, margin: '0 0 18px' }}>
+                    Resumen financiero
+                  </p>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
+                    {[
+                      { label: 'Contratado',    value: financials.contratado,      color: T.muted  },
+                      { label: 'Cobrado',        value: financials.cobrado,          color: '#7A8C47' },
+                      { label: 'Saldo pendiente',value: financials.saldoPendiente,  color: financials.saldoPendiente > 0 ? '#C9AA71' : T.dim },
+                      { label: 'Materiales',     value: financials.costoMateriales, color: T.muted  },
+                      { label: 'Nómina',         value: financials.costoNomina,     color: T.muted  },
+                      { label: 'Margen',         value: null, pct: financials.margenPct, color: financials.margenPct > 20 ? '#7A8C47' : financials.margenPct > 0 ? '#C9AA71' : '#C4673A' },
+                    ].map(item => (
+                      <div key={item.label} style={{ background: T.card, border: `1px solid ${T.border}`, padding: '14px 16px' }}>
+                        <div style={{ fontSize: 7, letterSpacing: '0.16em', textTransform: 'uppercase', color: T.dim, marginBottom: 8 }}>{item.label}</div>
+                        <div style={{ fontSize: 16, fontFamily: 'Fraunces, serif', fontStyle: 'italic', color: item.color, lineHeight: 1 }}>
+                          {item.pct != null
+                            ? (item.pct === 0 ? '—' : `${item.pct > 0 ? '+' : ''}${item.pct.toFixed(1)}%`)
+                            : (item.value === 0 ? '—' : new Intl.NumberFormat('es-DO', { style: 'currency', currency: 'DOP', maximumFractionDigits: 0 }).format(item.value!))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* ── Historial ─────────────────────────────────────────── */}
               <div className="k-in" style={{ paddingTop: 52, animationDelay: '160ms' }}>

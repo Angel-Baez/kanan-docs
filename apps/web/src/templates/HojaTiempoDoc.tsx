@@ -1,14 +1,81 @@
-import { useEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import type { HtFields } from '@kanan/shared';
 import { DocHeader } from '../components/ui/DocHeader.tsx';
 import { DocFooter } from '../components/ui/DocFooter.tsx';
 import { EditableField } from '../components/ui/EditableField.tsx';
 import { SignatureBlock } from '../components/ui/SignatureBlock.tsx';
 import { useDocument } from '../context/DocumentContext.tsx';
+import { api } from '../api/client.ts';
 
 const DAYS = ['L', 'M', 'X', 'J', 'V', 'S'];
 
 function fmt(n: number) { return n.toLocaleString('es-DO', { minimumFractionDigits: 2 }); }
+
+interface StaffMember { _id: string; name: string; role: string; dailyRate: number }
+
+/** Dropdown autocomplete for staff name in an HT row */
+function StaffNameInput({
+  value,
+  staff,
+  onChange,
+  onSelect,
+}: {
+  value: string;
+  staff: StaffMember[];
+  onChange: (v: string) => void;
+  onSelect: (s: StaffMember) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  const matches = staff.filter(s =>
+    s.name.toLowerCase().includes(value.toLowerCase()) && value.length > 0
+  );
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  return (
+    <div ref={ref} style={{ position: 'relative', display: 'inline-block' }}>
+      <EditableField
+        value={value}
+        size={18}
+        onChange={v => { onChange(v); setOpen(true); }}
+      />
+      {open && matches.length > 0 && (
+        <div style={{
+          position: 'absolute', top: '100%', left: 0, zIndex: 100,
+          background: '#1E1B17', border: '1px solid #2A2520',
+          minWidth: 200, boxShadow: '0 4px 16px rgba(0,0,0,0.5)',
+        }}>
+          {matches.map(s => (
+            <div
+              key={s._id}
+              onMouseDown={() => { onSelect(s); setOpen(false); }}
+              style={{
+                padding: '7px 12px', cursor: 'pointer', fontSize: 11,
+                fontFamily: "'IBM Plex Mono', monospace",
+                color: '#E8DFCF', borderBottom: '1px solid #2A2520',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.background = '#252118')}
+              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+            >
+              <div>{s.name}</div>
+              <div style={{ fontSize: 8, color: '#7A7068', marginTop: 2 }}>
+                {s.role} · RD$ {s.dailyRate.toLocaleString('es-DO')} / día
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function HojaTiempoDoc() {
   const { fields, dispatch } = useDocument();
@@ -16,6 +83,12 @@ export function HojaTiempoDoc() {
   const set = (path: string, value: unknown) => dispatch({ type: 'SET_FIELD', path, value });
 
   const paymentStatus = f.paymentStatus ?? 'pendiente';
+
+  // Load staff list for autocomplete
+  const [staff, setStaff] = useState<StaffMember[]>([]);
+  useEffect(() => {
+    api.staff.list().then(d => setStaff(d as StaffMember[])).catch(() => {});
+  }, []);
 
   // Auto-compute totals whenever rows change
   useEffect(() => {
@@ -93,10 +166,24 @@ export function HojaTiempoDoc() {
                 days[d] = v === '' ? null : parseFloat(v) || 0;
                 updateRow('days', days);
               };
+              const selectStaff = (s: StaffMember) => {
+                const rows = f.rows.map((r, j) => {
+                  if (j !== i) return r;
+                  const next = { ...r, name: s.name, role: s.role, dailyRate: s.dailyRate };
+                  next.total = (next.totalDays ?? 0) * s.dailyRate;
+                  return next;
+                });
+                set('rows', rows);
+              };
               return (
                 <tr key={i}>
                   <td>
-                    <EditableField value={row.name} onChange={(v) => updateRow('name', v)} size={18} />
+                    <StaffNameInput
+                      value={row.name}
+                      staff={staff}
+                      onChange={v => updateRow('name', v)}
+                      onSelect={selectStaff}
+                    />
                     <br />
                     <span style={{ color: 'var(--p)' }}>
                       <EditableField value={row.role} onChange={(v) => updateRow('role', v)} size={14} />
