@@ -15,6 +15,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { MapPin, DollarSign, Plus, X, Loader2 } from 'lucide-react';
 import { api } from '../api/client.ts';
 import { useToast } from '../context/ToastContext.tsx';
+import { CardSkeleton } from '../components/ui/Skeleton.tsx';
 import type { KananProject, KananClient } from '@kanan/shared';
 
 const T = {
@@ -277,8 +278,17 @@ export function ProjectPipelinePage() {
 
         {loading ? (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 16 }}>
-            {[...Array(4)].map((_, i) => (
-              <div key={i} style={{ height: 240, background: T.surface, border: `1px solid ${T.border}`, opacity: 0.4 }} />
+            {COLUMNS.map((col, colIdx) => (
+              <div key={colIdx}>
+                {/* Column header skeleton */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10, paddingBottom: 10, borderBottom: `1px solid ${col.border}` }}>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: col.text, flexShrink: 0 }} />
+                  <span style={{ fontSize: 8, letterSpacing: '0.18em', textTransform: 'uppercase', color: col.text, fontWeight: 700 }}>{col.label}</span>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  {[...Array(colIdx === 1 ? 4 : colIdx === 0 ? 3 : 2)].map((_, i) => <CardSkeleton key={i} />)}
+                </div>
+              </div>
             ))}
           </div>
         ) : (

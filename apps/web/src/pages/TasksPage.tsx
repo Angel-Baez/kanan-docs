@@ -42,11 +42,14 @@ function isOverdue(deadline?: string) {
   return new Date(deadline) < new Date();
 }
 
+const GROUPS_PER_PAGE = 3;
+
 export function TasksPage() {
   const [tasks, setTasks]               = useState<TaskItem[]>([]);
   const [loading, setLoading]           = useState(true);
   const [statusFilter, setStatusFilter] = useState('pendiente');
   const [search, setSearch]             = useState('');
+  const [page, setPage]                 = useState(1);
 
   useEffect(() => {
     setLoading(true);
@@ -77,6 +80,16 @@ export function TasksPage() {
     }
     return [...map.entries()].map(([pid, v]) => ({ projectId: pid, ...v }));
   }, [filtered]);
+
+  // Reset page when filters/search change
+  useMemo(() => { setPage(1); }, [statusFilter, search]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const pagedGroups = useMemo(() => {
+    const start = (page - 1) * GROUPS_PER_PAGE;
+    return grouped.slice(start, start + GROUPS_PER_PAGE);
+  }, [grouped, page]);
+
+  const totalPages = Math.ceil(grouped.length / GROUPS_PER_PAGE);
 
   const total       = filtered.length;
   const pendientes  = filtered.filter(t => t.status === 'pendiente').length;
@@ -148,18 +161,17 @@ export function TasksPage() {
 
         {/* Content */}
         {loading ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            {[...Array(6)].map((_, i) => (
-              <div key={i} style={{ height: 52, background: T.card, border: `1px solid ${T.border}`, opacity: 0.4 }} />
-            ))}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            {[...Array(8)].map((_, i) => <RowSkeleton key={i} cols={4} />)}
           </div>
         ) : grouped.length === 0 ? (
           <p style={{ fontSize: 11, color: T.dim }}>
             {statusFilter === 'all' ? 'Sin tareas registradas.' : `Sin tareas con estado "${statusFilter}".`}
           </p>
         ) : (
+          <>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
-            {grouped.map(({ projectId, projectName, clientName, items }, gi) => (
+            {pagedGroups.map(({ projectId, projectName, clientName, items }, gi) => (
               <div key={projectId} className="k-in" style={{ animationDelay: `${gi * 40}ms` }}>
                 {/* Project header */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
@@ -245,6 +257,14 @@ export function TasksPage() {
               </div>
             ))}
           </div>
+          <Pagination
+            page={page}
+            pages={totalPages}
+            total={grouped.length}
+            limit={GROUPS_PER_PAGE}
+            onChange={p => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+          />
+          </>
         )}
       </div>
     </>

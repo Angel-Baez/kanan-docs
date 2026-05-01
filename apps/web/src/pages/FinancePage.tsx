@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { api } from '../api/client.ts';
+import { KpiSkeleton, RowSkeleton } from '../components/ui/Skeleton.tsx';
+import { Pagination } from '../components/ui/Pagination.tsx';
 import type { CompanyFinancialSummary, ProjectFinancialRow } from '@kanan/shared';
 
 const T = {
@@ -117,10 +119,13 @@ function ProjectRow({ row }: { row: ProjectFinancialRow }) {
   );
 }
 
+const ROWS_PER_PAGE = 15;
+
 export function FinancePage() {
   const [data, setData] = useState<CompanyFinancialSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [sort, setSort] = useState<'cobrado' | 'margenPct' | 'saldoPendiente'>('cobrado');
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     api.finance.summary()
@@ -132,6 +137,16 @@ export function FinancePage() {
   const sorted = data
     ? [...data.byProject].sort((a, b) => b[sort] - a[sort])
     : [];
+
+  // Reset to page 1 when sort changes
+  useMemo(() => { setPage(1); }, [sort]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const pagedRows = useMemo(() => {
+    const start = (page - 1) * ROWS_PER_PAGE;
+    return sorted.slice(start, start + ROWS_PER_PAGE);
+  }, [sorted, page]);
+
+  const totalPages = Math.ceil(sorted.length / ROWS_PER_PAGE);
 
   const thStyle = (key: typeof sort): React.CSSProperties => ({
     padding: '8px', textAlign: 'right', fontSize: 7, letterSpacing: '0.16em',
@@ -155,9 +170,17 @@ export function FinancePage() {
         </div>
 
         {loading ? (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12 }}>
-            {[...Array(4)].map((_, i) => <div key={i} style={{ height: 80, background: T.surface, border: `1px solid ${T.border}`, opacity: 0.4 }} />)}
-          </div>
+          <>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 16 }}>
+              {[...Array(4)].map((_, i) => <KpiSkeleton key={i} />)}
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 48 }}>
+              {[...Array(2)].map((_, i) => <KpiSkeleton key={i} />)}
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              {[...Array(8)].map((_, i) => <RowSkeleton key={i} cols={5} />)}
+            </div>
+          </>
         ) : data && (
           <>
             {/* Summary cards */}
@@ -201,11 +224,18 @@ export function FinancePage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {sorted.map(row => <ProjectRow key={row.projectId} row={row} />)}
+                      {pagedRows.map(row => <ProjectRow key={row.projectId} row={row} />)}
                     </tbody>
                   </table>
                 </div>
               )}
+              <Pagination
+                page={page}
+                pages={totalPages}
+                total={sorted.length}
+                limit={ROWS_PER_PAGE}
+                onChange={p => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              />
             </div>
           </>
         )}

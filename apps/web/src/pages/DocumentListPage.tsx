@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
-  Plus, Trash2, FileText, X, Search,
+  Plus, Trash2, FileText, X, Search, Loader2,
   Layers, LayoutGrid, List, ExternalLink, ChevronLeft, User,
 } from 'lucide-react';
 import { api } from '../api/client.ts';
@@ -13,7 +13,7 @@ import { Skeleton } from '../components/ui/Skeleton.tsx';
 import { Pagination } from '../components/ui/Pagination.tsx';
 import type { KananDocument, KananClient, KananProject, TemplateId } from '@kanan/shared';
 
-const GROUPS_PER_PAGE = 10;
+const GROUPS_PER_PAGE = 2;
 
 // ── Design tokens ────────────────────────────────────────────────────────────
 const T = {

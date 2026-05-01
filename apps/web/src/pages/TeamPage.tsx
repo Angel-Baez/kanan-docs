@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { UserCircle2, Plus, X, Pencil } from 'lucide-react';
 import { api } from '../api/client.ts';
+import { CardSkeleton, RowSkeleton } from '../components/ui/Skeleton.tsx';
 
 const T = {
   card:    '#1E1B17',
@@ -215,7 +216,9 @@ function PayrollTab() {
       </div>
 
       {loading ? (
-        <div style={{ color: T.dim, fontSize: 10 }}>Cargando nómina...</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {[...Array(5)].map((_, i) => <RowSkeleton key={i} cols={5} />)}
+        </div>
       ) : error ? (
         <p style={{ fontSize: 11, color: '#C0392B' }}>⚠ {error}</p>
       ) : !data || data.rows.length === 0 ? (
@@ -338,7 +341,7 @@ export function TeamPage() {
         {tab === 'equipo' ? (
           loading ? (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
-              {[...Array(4)].map((_, i) => <div key={i} style={{ height: 100, background: T.card, border: `1px solid ${T.border}`, opacity: 0.4 }} />)}
+              {[...Array(6)].map((_, i) => <CardSkeleton key={i} />)}
             </div>
           ) : (
             <>
